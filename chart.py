@@ -2,47 +2,50 @@ from diagrams import Cluster, Diagram
 from diagrams.aws.compute import Lambda
 from diagrams.aws.database import Dynamodb
 from diagrams.aws.network import APIGateway
-from diagrams.aws.ml import Rekognition
-from diagrams.onprem.iac import Terraform
 from diagrams.onprem.vcs import Github
 from diagrams.onprem.container import Docker
 from diagrams.generic.database import SQL
-from diagrams.programming.language import Python
-from diagrams.onprem.network import Nginx
-from diagrams.onprem.compute import Server
-from diagrams import Diagram, Cluster, Edge
-from diagrams.generic.blank import Blank
 from diagrams import Diagram, Cluster
 from diagrams.custom import Custom
-
+from diagrams.elastic.elasticsearch import Kibana
+from diagrams.elastic.elasticsearch import Elasticsearch
+from diagrams.programming.framework import React
+from diagrams.programming.language import Typescript
+from diagrams.programming.language import Javascript
+from diagrams.programming.framework import GraphQL
 
 with Diagram("System Architecture Diagram", show=False):
 
     with Cluster("Frontend"):
-        web_rendering = Python("WebGPU")
+        frontend = [React("React.js"), Javascript(
+            "Three.js"), Typescript("TypeScript")]
 
     with Cluster("Backend"):
         with Cluster("Serverless Compute"):
             compute = Lambda("AWS Lambda")
         with Cluster("ML Models"):
-            ml_models = [Custom("spaCy & GINZA", "./image_material2/SpaCy_logo.png"
-                                ), Custom(
-                "Keras",  "./image_material2/Keras_logo.png"), Custom("TensorFlow", "./image_material2/tensorflow.png")]
+            ml_models = [Custom("spaCy & GINZA", "image_material2/SpaCy_logo.png"), Custom(
+                "Keras", "image_material2/Keras_Logo.png"), Custom("TensorFlow", "image_material2/tensorflow.png"), Custom("Transformer based GPT", "image_material2/GPT_Logo.png")]
         with Cluster("Database"):
             db = Dynamodb("DynamoDB")
             graph_db = SQL("Neo4j")
         with Cluster("Search Engine"):
-            search = Custom("Elasticsearch",
-                            "./image_material2/Elasticsearch_logo.png")
+            search = Elasticsearch("Elasticsearch")
 
     with Cluster("Development Tools and Services"):
         dev_tools = [Github("Git"), Docker("Docker")]
 
     with Cluster("Infrastructure and Deployment"):
-        deployment = [APIGateway("GraphQL API"), Nginx("Server")]
-        monitoring = Custom("Kibana", "./image_material2/kibana.png")
+        deployment = [APIGateway("GraphQL API")]
+        monitoring = Kibana("Kibana")
 
-    web_rendering >> compute
+    with Cluster("API"):
+        api = GraphQL("GraphQL")
+
+    with Cluster("Project Management Tools"):
+        project_tools = Custom("Jira Confluence", "image_material2/jira.png")
+
+    frontend >> compute
     compute >> db
     compute >> graph_db
     compute >> ml_models
@@ -55,3 +58,5 @@ with Diagram("System Architecture Diagram", show=False):
     compute >> deployment
     deployment >> monitoring
     monitoring >> compute
+    api >> compute
+    compute >> project_tools
