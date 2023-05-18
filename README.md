@@ -25,7 +25,9 @@
 
 <br>
 
-![System Architecture Diagram](system_architecture_diagram.png)
+
+![Diagram](https://showme.redstarplugin.com/s/eR2JvcwQ)
+
 
 ## バックエンド開発環境:
 
