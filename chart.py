@@ -7,11 +7,9 @@ from diagrams.onprem.container import Docker
 from diagrams.generic.database import SQL
 from diagrams import Diagram, Cluster
 from diagrams.custom import Custom
-from diagrams.elastic.elasticsearch import Kibana
-from diagrams.elastic.elasticsearch import Elasticsearch
+from diagrams.elastic.elasticsearch import Elasticsearch, Kibana
 from diagrams.programming.framework import React
-from diagrams.programming.language import Typescript
-from diagrams.programming.language import Javascript
+from diagrams.programming.language import Typescript, Javascript
 from diagrams.programming.framework import GraphQL
 
 with Diagram("System Architecture Diagram", show=False):
@@ -39,13 +37,9 @@ with Diagram("System Architecture Diagram", show=False):
         deployment = [APIGateway("GraphQL API")]
         monitoring = Kibana("Kibana")
 
-    with Cluster("API"):
-        api = GraphQL("GraphQL")
+    api = GraphQL("GraphQL")
 
-    with Cluster("Project Management Tools"):
-        project_tools = Custom("Jira Confluence", "image_material2/jira.png")
-
-    frontend >> compute
+    frontend >> api >> compute
     compute >> db
     compute >> graph_db
     compute >> ml_models
@@ -54,9 +48,9 @@ with Diagram("System Architecture Diagram", show=False):
     graph_db >> compute
     search >> compute
     ml_models >> compute
-    dev_tools >> compute
     compute >> deployment
     deployment >> monitoring
     monitoring >> compute
     api >> compute
-    compute >> project_tools
+    dev_tools - compute
+    api >> frontend
