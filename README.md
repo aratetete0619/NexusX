@@ -73,6 +73,9 @@
 
 10. **拡張性**: システムは新機能の追加や既存機能の改善を容易にするため、モジュール性と拡張性を持っていることが求められます。
 
+
+![System Architecture Diagram](https://showme.redstarplugin.com/s/QjNl601q)
+
 ## バックエンド開発環境:
 - NLPライブラリ: spaCyとGINZA
 - AutoMLライブラリ: AutoKeras、H2O、またはGoogle Cloud AutoML等
