@@ -73,28 +73,29 @@
 
 10. **拡張性**: システムは新機能の追加や既存機能の改善を容易にするため、モジュール性と拡張性を持っていることが求められます。
 
+## 技術スタック
 
 ![System Architecture Diagram](https://showme.redstarplugin.com/s/QjNl601q)
 
-## バックエンド開発環境:
+### バックエンド開発環境:
 - NLPライブラリ: spaCyとGINZA
 - AutoMLライブラリ: AutoKeras、H2O、またはGoogle Cloud AutoML等
 - 強化学習ライブラリ: OpenAI Gym、Ray RLlib等
 - マシンラーニングライブラリ: TensorFlow、Keras
 - マシンラーニングモデル: TransformerベースのGPT
 
-## フロントエンド開発環境:
+### フロントエンド開発環境:
 
 - ライブラリ: React.js
 - 3D描画ライブラリ: Three.js
 - プログラミング言語: TypeScript
 
-## データベース:
+### データベース:
 
 - データベース管理システム: DynamoDB（ユーザーデータやその他の非グラフ型データを保存するため）
 - グラフデータベース: Neo4j（エンティティ間の関連性を保存およびクエリするため
 
-## 開発ツールおよびサービス:
+### 開発ツールおよびサービス:
 
 - 検索エンジン: Elasticsearch
 - データ可視化ツール: Kibana
@@ -102,7 +103,7 @@
 - コンテナ化: Docker
 - コンテナオーケストレーション: Kubernetes
 
-##  インフラストラクチャおよびデプロイメント:
+###  インフラストラクチャおよびデプロイメント:
 
 - サーバーレスコンピューティングサービス: AWS Lambda
 - API Gateway: AWS API Gateway
@@ -110,10 +111,10 @@
 - ウェブクローリングとテキスト解析: Amazon EC2/ECS
 - クラウドサービス: AWS
 
-## API: 
+### API: 
 - APIの設計とクエリ言語: GraphQL
 
-## プロジェクト管理ツール:
+### プロジェクト管理ツール:
 - Jira Confluence
 
 ## 🤖アプリの挙動: 
