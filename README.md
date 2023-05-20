@@ -73,6 +73,8 @@
 
 10. **拡張性**: システムは新機能の追加や既存機能の改善を容易にするため、モジュール性と拡張性を持っていることが求められます。
 
+<br>
+
 ## 技術スタック
 
 ![System Architecture Diagram](https://showme.redstarplugin.com/s/QjNl601q)
