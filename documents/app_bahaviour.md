@@ -19,3 +19,4 @@
 
 9. **共有**: ユーザーは検索結果をソーシャルメディアで共有することができます。これにより、アプリケーションの認知度を高めることができます。
 
+[![Image from Gyazo](https://i.gyazo.com/b1aef22a6c02ffa79c85c74b99a4b528.png)](https://gyazo.com/b1aef22a6c02ffa79c85c74b99a4b528)
