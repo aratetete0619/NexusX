@@ -1,8 +1,8 @@
-# NexusX
+![NexusX Main Logo 800x600](https://github.com/aratetete0619/NexusX/assets/120061560/a770db3b-e51e-4ff6-843b-f1577fcd7ad3)
 
 NexusX is an application that allows users to visually explore various connections. It visualizes relationships between movie or drama characters, external links of websites, interactions between celebrities, or ties between technologies. These visualizations can be used for sharing and creating presentation materials.
 
-![NexusX Main Logo 800x600](https://github.com/aratetete0619/NexusX/assets/120061560/49ba7f2e-546b-4b62-b81a-367984b09f18)
+
 
 
 ## Installation
