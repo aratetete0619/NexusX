@@ -2,7 +2,9 @@
 
 
 ## What is NexusX?
-"NexusX is more than an app – it's your personal knowledge explorer. Navigate through intricate connections, unravel the mysteries behind relationships, and unearth fascinating insights like never before. Whether you're examining the bonds between your favorite movie characters, investigating interactions between tech giants, or discovering hidden links on websites, NexusX opens a world of understanding at your fingertips. Share your findings with others or use the detailed visualizations to augment your presentations. Embrace the joy of discovery and see the world through a whole new lens with NexusX."
+"NexusX is more than an app – it's your personal knowledge explorer.<br>
+<br>
+Navigate through intricate connections, unravel the mysteries behind relationships, and unearth fascinating insights like never before. Whether you're examining the bonds between your favorite movie characters, investigating interactions between tech giants, or discovering hidden links on websites, NexusX opens a world of understanding at your fingertips. Share your findings with others or use the detailed visualizations to augment your presentations. Embrace the joy of discovery and see the world through a whole new lens with NexusX."
 
 
 
