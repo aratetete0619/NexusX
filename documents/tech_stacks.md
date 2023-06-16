@@ -41,4 +41,3 @@
 ### プロジェクト管理ツール:
 - Jira Confluence
 
-[![Image from Gyazo](https://i.gyazo.com/b1aef22a6c02ffa79c85c74b99a4b528.png)](https://gyazo.com/b1aef22a6c02ffa79c85c74b99a4b528)
