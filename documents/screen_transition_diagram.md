@@ -1,5 +1,4 @@
 ## 画面遷移表
-```
 
 [![Image from Gyazo](https://i.gyazo.com/52d52687c9d09e598b683e065e8fba18.jpg)](https://gyazo.com/52d52687c9d09e598b683e065e8fba18)
 
