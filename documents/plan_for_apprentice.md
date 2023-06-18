@@ -8,4 +8,10 @@
 
 ## 3. ワイヤーフレーム
 
-https://github.com/aratetete0619/NexusX/blob/main/documents/wire_frame.md
+[wire_frame.md](https://github.com/aratetete0619/NexusX/blob/main/documents/wire_frame.md)
+
+## 4.テーブル設計書
+
+[tables.md](https://github.com/aratetete0619/NexusX/blob/main/documents/tables.md)
+
+## システム構成図
