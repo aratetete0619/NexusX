@@ -51,9 +51,7 @@
 
 **テーブル：ReinforcementLearning**
 
-| カラム名 | データ型 | NULL | キー | 初期値 | AUTO
-
- INCREMENT | その他 |
+| カラム名 | データ型 | NULL | キー | 初期値 | AUTO INCREMENT | その他 |
 | --- | --- | --- | --- | --- | --- | --- |
 | id | bigint(20) |  | PRIMARY |  | YES | |
 | user_id | bigint(20) |  | FOREIGN |  |  | |
