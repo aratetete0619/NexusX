@@ -1,6 +1,6 @@
 ## 1. 業務フロー
 
-[phases.md](https://github.com/aratetete0619/NexusX/blob/main/documents/phases.md)
+[development_phases_workflow.md](https://github.com/aratetete0619/NexusX/blob/main/documents/develpment_phases_workflow.md)
 
 ## 2. 画面遷移図
 
