@@ -48,13 +48,25 @@ services:
     build: ./backend
     ports:
       - 8000:8000
-  db:
+  db_neo4j:
     image: neo4j:latest
     volumes:
       - $HOME/neo4j/data:/data
     ports:
       - 7474:7474
       - 7687:7687
+  db_dynamodb:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - 8000:8000
+  db_mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
     environment:
@@ -67,6 +79,10 @@ services:
       - 5601:5601
     depends_on:
       - elasticsearch
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
   automl:
     image: automl:latest
     depends_on:
@@ -77,6 +93,17 @@ services:
       - backend
 
 ```
+
+Reactフロントエンド
+バックエンドAPI
+Neo4jデータベース
+DynamoDBデータベース
+MySQLデータベース
+Elasticsearchサービス
+Kibanaサービス
+Redisキャッシュ
+自動機械学習サービス
+強化学習サービス
 
 上記のYAMLファイルは、フロントエンドとしてReact、バックエンドとしてPython(Flask等)、データベースとしてNeo4j、そしてElasticsearchとKibanaを設定しています。これは最初のフェーズの要件に基づいています。バックエンドのビルドに関しては、各自のDockerfileが必要となります。
 
