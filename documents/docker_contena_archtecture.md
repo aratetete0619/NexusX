@@ -94,16 +94,16 @@ services:
 
 ```
 
-Reactフロントエンド
-バックエンドAPI
-Neo4jデータベース
-DynamoDBデータベース
-MySQLデータベース
-Elasticsearchサービス
-Kibanaサービス
-Redisキャッシュ
-自動機械学習サービス
-強化学習サービス
+1. Reactフロントエンド
+2. バックエンドAPI
+3. Neo4jデータベース
+4. DynamoDBデータベース
+5. MySQLデータベース
+6. Elasticsearchサービス
+7. Kibanaサービス
+8. Redisキャッシュ
+9. 自動機械学習サービス
+10.強化学習サービス
 
 上記のYAMLファイルは、フロントエンドとしてReact、バックエンドとしてPython(Flask等)、データベースとしてNeo4j、そしてElasticsearchとKibanaを設定しています。これは最初のフェーズの要件に基づいています。バックエンドのビルドに関しては、各自のDockerfileが必要となります。
 
