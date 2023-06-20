@@ -20,6 +20,9 @@
 8. **DynamoDB Container**: 非グラフ型のデータを保存するためのコンテナです。しかし、DynamoDBの公式Dockerイメージは存在しないため、ローカル開発環境では代替のNoSQLデータベース（例：MongoDB）を使用するか、AWSのDynamoDB Localを使用します。
 
 
+![Diagram](https://kroki.io/graphviz/svg/eNp9kcFOwzAMhu97Cmt3btxQkVYKCNEh2LhNHNzEtGGdUzkpokK8O6WgsbVZrvm_P7G_aFMKNhXcwucMBHmrjSTP6cUM2GqCjauwoaSwHy_90XxFqDzciGVPrOewUba2khR1S0Oeotr2ASwe7_ZhKUQ8pA9kz98gQ48FOtoDtn-2_O1nHePOZmkUWnbrpzxKXNfovFGOUFQFa5J3o_5BIT1Q96ZAxpPxirRxcIWqooNdsBvCRevtMp90m1aamv7qhl-tKNoRe8j7UdhwGW8cyz27PBY6EfwDjJwGmanVIDbyGmTCZoPoob8gMHJ44pKoxdA3xsb8-garPPAO)
+
+
 **メリット**
 - Dockerを使用すると、それぞれのサービスを個別のコンテナとして管理でき、それぞれの依存性を隔離することができます。これにより、各サービスの設定やアップデートが他のサービスに影響を与えることがありません。
 - 公式のDockerイメージを使用することで、それぞれのサービスを迅速にセットアップできます。
