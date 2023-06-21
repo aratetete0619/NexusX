@@ -35,7 +35,7 @@
 
 こちらはあなたのプロジェクトの全体像を捉え、それを元にしたDocker Compose YAMLファイルの初期バージョンです。納期に合わせて、最初に必要なコンポーネントだけを含め、後のフェーズで必要なサービスを後から追加します。
 
-```yaml
+```
 version: '3'
 services:
   react:
@@ -61,11 +61,11 @@ services:
   db_dynamodb:
     image: amazon/dynamodb-local:latest
     ports:
-      - 8000:8000
+      - 8001:8000
   db_mysql:
     image: mysql:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./mysql-data:/var/lib/mysql
     ports:
@@ -87,15 +87,15 @@ services:
     ports:
       - 6379:6379
   automl:
-    image: automl:latest
+    build: ./automl
     depends_on:
       - backend
   reinforcement_learning:
-    image: reinforcement_learning:latest
+    build: ./reinforcement_learning
     depends_on:
       - backend
-
 ```
+
 
 1. Reactフロントエンド
 2. バックエンドAPI
