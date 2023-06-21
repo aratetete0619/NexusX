@@ -1,0 +1,63 @@
+version: '3'
+services:
+  react:
+    build: ./frontend
+    volumes:
+      - ./frontend:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    command: npm start
+    depends_on:
+      - backend
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - 8000:8000
+  db_neo4j:
+    image: neo4j:latest
+    volumes:
+      - $HOME/neo4j/data:/data
+    ports:
+      - 7474:7474
+      - 7687:7687
+  db_dynamodb:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - 8001:8000
+  db_mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    volumes:
+      - ./kibana-data:/usr/share/kibana/data
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+  redis:
+    image: redis:latest
+    volumes:
+      - ./redis-data:/data
+    ports:
+      - 6379:6379
+volumes:
+  node_modules:
