@@ -4,7 +4,8 @@ services:
     build: ./frontend
     volumes:
       - ./frontend:/usr/src/app
-      - node_modules:/usr/src/app/node_modules
+      - /usr/src/app/.next
+      - /usr/src/app/node_modules
     ports:
       - 3000:3000
     command: npm start

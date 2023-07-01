@@ -1,5 +1,5 @@
 # ベースとなるイメージを指定。Node.jsのLTS版を使用
-FROM node:14
+FROM node:16
 
 # 作業ディレクトリを設定
 WORKDIR /usr/src/app
@@ -14,8 +14,6 @@ COPY package*.json ./
 # 依存関係をインストール
 RUN npm cache clean --force
 RUN npm install --silent
-RUN ls -la /usr/src/app/node_modules
-
 
 # node_modulesディレクトリを作成
 RUN mkdir -p /usr/src/app/node_modules && chown -R node:node /usr/src/app
@@ -25,6 +23,9 @@ USER node
 
 # 全てのローカルファイルをコピー
 COPY --chown=node:node . .
+
+# アプリケーションをビルド
+RUN npm run build
 
 # アプリケーションをスタート
 CMD ["npm", "start"]
