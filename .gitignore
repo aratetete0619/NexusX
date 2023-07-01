@@ -3,3 +3,5 @@
 elasticsearch-data/
 mysql-data/
 redis-data/
+kibana-data/
+frontend/node_modules/
