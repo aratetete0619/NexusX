@@ -1,2 +1,5 @@
 .env
 .vscode/
+elasticsearch-data/
+mysql-data/
+redis-data/
