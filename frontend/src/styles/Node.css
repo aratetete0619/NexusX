@@ -1,0 +1,52 @@
+.node {
+  /* Other styles */
+  padding: 10px;
+  min-height: 171px;
+  /* Change this line */
+  background-color: #D2DB10;
+  border: none;
+  border-radius: 100%;
+  /* Adjust this value to change the roundness of the rectangle */
+  cursor: pointer;
+  transition: border 0.3s ease;
+  color: rgb(61, 71, 77);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  font-family: 'Noto Serif JP', serif;
+  line-height: 31px;
+  box-sizing: content-box;
+  white-space: pre-wrap;
+  min-width: 1px;
+  opacity: 1;
+  z-index: 1;
+  position: absolute;
+  min-width: 171px;
+  /* ノードの最小幅を指定 */
+  max-width: 200px;
+  /* ノードの最大幅を指定 */
+  white-space: normal;
+  /* 改行を有効にする */
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.node.selected {
+  border: 4px solid #1E90FF;
+  /* water blue color */
+  box-shadow: none;
+  transform: none;
+}
+
+.node:hover {
+  border: 4px solid #1E90FF;
+  /* water blue color when hovered */
+}
+
+.node:active {
+  border: 4px solid #1E90FF;
+  /* water blue color when active */
+}

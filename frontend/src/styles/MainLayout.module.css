@@ -1,0 +1,9 @@
+/* src/styles/MainLayout.module.css */
+.container {
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
