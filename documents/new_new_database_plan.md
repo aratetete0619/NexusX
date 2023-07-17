@@ -20,37 +20,33 @@ Internet
                          |--- AWS EC2 Instances (For Neo4j, Cassandra, Elasticsearch, Redis)
 ```
 
-次に、データベース設計表は以下のようになります。
-
 | データベースタイプ | データベース名   | テーブル/キー名                    | カラム/値型        | 目的                                                                                       |
 |----------------|--------------|-------------------------------|------------------|----------------------------------------------------------------------------------------------|
-| Graph          | Neo4j (on EC2) | Entities                      | entity_id (PK)   | エンティティとその関係を保存します。                                                               |
-|                |              |                               | name             |                                                                                              |
-|                |              |                               | type             |                                                                                              |
-|                |              | Relationships                | relationship_id (PK) |                                                                                              |
-|                |              |                               | entity_id_1 (FK) |                                                                                              |
-|                |              |                               | entity_id_2 (FK) |                                                                                              |
-|                |              |                               | type             |                                                                                              |
-| NoSQL          | Cassandra (on EC2) | UserFeedback                  | feedback_id (PK) | ユーザーフィードバック、クローリングのメタデータなど、非構造化または半構造化データを保存します。                                       |
-|                |              |                               | user_id (FK)     |                                                                                              |
-|                |              |                               | feedback_text    |                                                                                              |
-|                |              | CrawlingMetadata              | metadata_id (PK) |                                                                                              |
-|                |              |                               | url              |                                                                                              |
-|                |              |                               | timestamp        |                                                                                              |
-|                |              |                               | status           |                                                                                              |
-| RDBMS          | MySQL (on RDS) | Users                         | user_id (PK)     | ユーザーアカウント情報、購読プラン、および課金情報を保存します。                                                            |
-|                |              |                               | username         |                                                                                              |
-|                |              |                               | email            |                                                                                              |
-|                |              |                               | password_hash    |                                                                                              |
-|                |              | Subscriptions                 | subscription_id (PK) |                                                                                              |
-|                |              |                               | user_id (FK)     |                                                                                              |
-|                |              |                               | plan             |                                                                                              |
-|                |              |                               | start_date       |                                                                                              |
-|                |              |                               | end_date         |                                                                                              |
-| Search Engine  | Elasticsearch (on EC2)| (Index) Entities              | document_id (PK) | エンティティと関係性のデータをインデックス化し、高速な検索を可能にします。                                                     |
-|                |              |                               | content          |                                                                                              |
-| In-memory Cache| Redis (on EC2) | search:<query>                | [Result List]    | 頻繁にアクセスされるデータや計算結果を一時的に保存し、データベースへの負荷を軽減し、レスポンス時間を短縮します。                   |
-|                |              | entity:<entity_id>:relationships | {nodes: [...], edges: [...]}  |                                                                                           |
-|                |              | session:<session_id>            | {user_id: ..., last_activity: ...}  |                                                                                           |
+| Graph          | Neo4j (on EC2) | Node Types                    | type             | エンティティを表すノードのタイプ（映画、人物、ウェブサイトなど）。  |
+|                |              |                               | name             | ノードの名前。 |
+|                |              |                               | entity_id        | ノードの一意の識別子。 |
+|                |              | Edge Types                    | type             | ノード間の関係性を表すエッジのタイプ（出演、リンクなど）。 |
+|                |              |                               | entity_id_1      | 関係性の始点となるノードの識別子。 |
+|                |              |                               | entity_id_2      | 関係性の終点となるノードの識別子。 |
+| NoSQL          | Cassandra (on EC2) | UserFeedback                  | feedback_id (PK) | ユーザーフィードバック、クローリングのメタデータなど、非構造化または半構造化データを保存します。  |
+|                |              |                               | user_id          | フィードバックを提供したユーザーの識別子。 |
+|                |              |                               | feedback_text    | フィードバックの内容。 |
+|                |              | CrawlingMetadata              | metadata_id      | クローリングのメタデータの識別子。 |
+|                |              |                               | url              | クローリングしたウェブサイトのURL。 |
+|                |              |                               | timestamp        | クローリングを実行した時間。 |
+|                |              |                               | status           | クローリングの結果（成功、失敗など）。 |
+| RDBMS          | MySQL (on RDS) | Users                         | user_id (PK)     | ユーザーアカウント情報、購読プラン、および課金情報を保存します。 |
+|                |              |                               | username         | ユーザーの名前。 |
+|                |              |                               | email            | ユーザーのメールアドレス。 |
+|                |              |                               | password_hash    | ハッシュ化されたユーザーのパスワード。 |
+|                |              | Subscriptions                 | subscription_id  | サブスクリプションの識別子。 |
+|                |              |                               | user_id          | サブスクリプションを持つユーザーの識別子。 |
+|                |              |                               | plan             | サブスクリプションのプラン。 |
+|                |              |                               | start_date       | サブスクリプションの開始日。 |
+|                |              |                               | end_date         | サブスクリプションの終了日。 |
+| Search Engine  | Elasticsearch (on EC2)| Entities              | document_id      | エンティティと関係性のデータをインデックス化し、高速な検索を可能にします。 |
+|                |              |                               | content          | インデックス化する内容。 |
+| In-memory Cache| Redis (on EC2) | search:<query>                | Result List      | 頻繁にアクセスされるデータや計算結果を一時的に保存し、データベースへの負荷を軽減し、レスポンス時間を短縮します。 |
+|                |              | entity:<entity_id>:relationships | nodes and edges  | エンティティの関係性の一覧。 |
+|                |              | session:<session_id>            | user_id and last_activity  | セッションの情報。 |
 
-この設計では、ユーザー情報を保存するMySQLデータベースはAWS RDSでホストされ、その他のデータベース（Neo4j、Cassandra、Elasticsearch、Redis）はAWS EC2でホストされています。
