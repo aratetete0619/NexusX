@@ -1,4 +1,3 @@
-// src/redux/reducers/edges.ts
 import { Edge } from '../../types/index';
 import { ADD_EDGE } from '../actions/actionTypes';
 import { AddEdgeAction } from '../actions/addEdge';

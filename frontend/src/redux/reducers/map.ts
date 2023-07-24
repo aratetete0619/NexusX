@@ -1,5 +1,5 @@
 // src/redux/reducers/map.ts
-import { MOVE_NODE, SET_MAP_SIZE } from '../actions';
+import { MOVE_NODE, SET_MAP_SIZE, UPDATE_SEARCH_BAR_POSITION } from '../actions';
 
 const initialMapState = {
   width: 10000,
@@ -9,6 +9,12 @@ const initialMapState = {
 const map = (state = initialMapState, action) => {
   switch (action.type) {
     case MOVE_NODE:
+      return {
+        ...state,
+        width: Math.max(state.width, action.payload.mapWidth),
+        height: Math.max(state.height, action.payload.mapHeight),
+      };
+    case UPDATE_SEARCH_BAR_POSITION:
       return {
         ...state,
         width: Math.max(state.width, action.payload.mapWidth),

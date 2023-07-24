@@ -14,6 +14,11 @@ import colorFrequencyMapReducer from './colorFrequencyMapReducer'
 import backgroundColorFrequencyMapReducer from './backgroundColorFrequencyMapReducer';
 import showPickerReducer from './showPickerReducer';
 import popupPositionReducer from './popupPositionReducer';
+import edgeCreation from './edgeCreation';
+import setHandlePosition from './handles';
+import handlePositions from './handlePositionsReducer'
+import searchQueryReducer from './searchQuery';
+import searchBarPositionReducer from './searchBarPositionReducer';
 import { SET_SELECTED_NODE_ID } from '../actions/setSelectedNodeId';
 
 const initialSelectedNodeIdState = null;
@@ -37,12 +42,17 @@ const rootReducer = combineReducers({
   nodeEditing,
   nodeName,
   showNodeSettings,
+  edgeCreation,
+  setHandlePosition,
+  handlePositions,
   colorState: colorReducer,
   primaryColors: primaryColorsReducer,
   primaryBackgroundColors: primaryBackgroundColorsReducer,
   colorFrequencyMap: colorFrequencyMapReducer,
   backgroundColorFrequencyMap: backgroundColorFrequencyMapReducer,
   showPicker: showPickerReducer,
+  searchQuery: searchQueryReducer,
+  searchBarPosition: searchBarPositionReducer,
   popupPosition: popupPositionReducer,
 });
 

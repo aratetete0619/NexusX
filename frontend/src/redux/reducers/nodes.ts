@@ -9,7 +9,7 @@ import {
 } from '../actions';
 
 const initialNodesState = [{
-  id: 1,
+  id: '1',
   name: 'Initial Node',
   x: 500,
   y: 500,

@@ -8,6 +8,10 @@ import { RootState } from '../redux/reducers';
 import { addNode, addEdge, hideNodeSettings, showToolbuttonAction, togglePicker, hidePicker } from '../redux/actions';
 import '../styles/NodeSettings.css';
 import { NODE_WIDTH } from '../constants/constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const NodeSettings: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +23,7 @@ const NodeSettings: React.FC = () => {
   const backgroundColor = useSelector((state: RootState) => state.colorState.backgroundColor);
   const [edgeConnection, setEdgeConnection] = useState(false);
   const selectedNodeId = useSelector((state: RootState) => state.selectedNodeId);
+  const selectedNodeName = useSelector((state: RootState) => state.nodes.find(node => node.id === selectedNodeId)?.name);
   const [colorInput, setColorInput] = useState('');
   const showColorPicker = useSelector(
     (state: RootState) => state.showPicker.color
@@ -36,7 +41,7 @@ const NodeSettings: React.FC = () => {
     e.preventDefault();
 
     const node = {
-      id: Date.now(),
+      id: uuidv4(),
       name: title,
       description: description,
       color: color,
@@ -48,7 +53,7 @@ const NodeSettings: React.FC = () => {
 
     if (edgeConnection && selectedNodeId !== null) {
       const edge = {
-        id: Date.now(),
+        id: uuidv4(),
         source: selectedNodeId,
         target: node.id,
       };
@@ -77,6 +82,10 @@ const NodeSettings: React.FC = () => {
         dispatch(hidePicker('background'));
       }}
     >
+      <div className="node-name">From {selectedNodeName}</div>
+      <div className="back-button-container" onClick={handleBack}>
+        <FontAwesomeIcon icon={faArrowLeft} className="back-button" />
+      </div>
       <label>
         Title
         <input
@@ -84,6 +93,7 @@ const NodeSettings: React.FC = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter title here"
         />
       </label>
 
@@ -93,6 +103,7 @@ const NodeSettings: React.FC = () => {
           className="node-settings-input"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          placeholder="Enter description here"
         />
       </label>
 
@@ -128,8 +139,9 @@ const NodeSettings: React.FC = () => {
         />
       </label>
 
-      <button className="node-settings-button" onClick={handleSubmit}>Create</button>
-      <button onClick={handleBack}>Back</button>
+      <div className="buttons-container">
+        <button className="node-settings-button" onClick={handleSubmit}>Save</button>
+      </div>
     </div>
   );
 };

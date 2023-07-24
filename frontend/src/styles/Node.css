@@ -1,12 +1,10 @@
 .node {
-  /* Other styles */
+  position: relative;
   padding: 10px;
   min-height: 171px;
-  /* Change this line */
   background-color: #D2DB10;
   border: none;
   border-radius: 100%;
-  /* Adjust this value to change the roundness of the rectangle */
   cursor: pointer;
   transition: border 0.3s ease;
   color: rgb(61, 71, 77);
@@ -19,7 +17,7 @@
   white-space: pre-wrap;
   min-width: 1px;
   opacity: 1;
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   min-width: 171px;
   /* ノードの最小幅を指定 */

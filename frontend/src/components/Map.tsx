@@ -17,27 +17,27 @@ import {
 } from '../redux/actions';
 
 const Map: React.FC = () => {
+
+
   const dispatch = useDispatch();
   const nodes = useSelector(state => state.nodes);
   const edges = useSelector(state => state.edges);
   const selectedNodeId = useSelector(state => state.selectedNodeId);
   const mapSize = useSelector(state => state.map);
-
   const [startPos, setStartPos] = useState<Position>({ x: 0, y: 0 });
   const [translate, setTranslate] = useState<Position>({ x: 0, y: 0 });
   const [dragging, setDragging] = useState<boolean>(false);
   const [mouseDown, setMouseDown] = useState<boolean>(false);
   const [viewport, setViewport] = useState<Position>({ x: window.innerWidth, y: window.innerHeight });
   const popupPosition = useSelector((state: RootState) => state.popupPosition);
-
-
-
+  const [renderedEdges, setRenderedEdges] = useState(null);
 
 
   const startDrag = (e: MouseEvent) => {
     setStartPos({ x: e.clientX, y: e.clientY });
     setMouseDown(true);
   };
+
 
   const moveDrag = (e: MouseEvent) => {
     if (mouseDown) {
@@ -48,17 +48,16 @@ const Map: React.FC = () => {
         y: Math.max(Math.min(translate.y + dy, 0), viewport.y - mapSize.y),
       };
       setTranslate(newTranslate);
-
-      // Update toolbutton position based on new map position
       dispatch(setPopupPosition(newTranslate));
-
       setStartPos({ x: e.clientX, y: e.clientY });
     }
   };
 
+
   const stopDrag = (e: MouseEvent) => {
     setMouseDown(false);
   };
+
 
   const [, drop] = useDrop({
     accept: `Node`,
@@ -79,13 +78,35 @@ const Map: React.FC = () => {
   });
 
 
-
   const handleDeselectNode = () => {
     dispatch(setLastDeselectedNodeId(selectedNodeId));
     dispatch(setSelectedNodeId(null));
     dispatch(showToolbuttonAction(false));
     dispatch(hideNodeSettings());
   }
+
+
+  const renderEdges = (edges: EdgeType[], nodes: NodeType[], uniqueKey: string) => {
+    return edges.map((edge, index) => {
+      const fromNode = nodes.find(node => node.id === edge.source);
+      const toNode = nodes.find(node => node.id === edge.target);
+      if (!fromNode || !toNode) {
+        return null;
+      }
+      return (
+        <Edge key={`${uniqueKey}_${index}`}
+          fromNode={fromNode}
+          toNode={toNode}
+          color={edge.color} />
+      );
+    });
+  }
+
+  useEffect(() => {
+    setRenderedEdges(renderEdges(edges, nodes, 'map_edges'));
+  }, [edges]);
+
+
 
   function calculateInitialCenter(nodes: NodeType[]): Position {
     console.log(nodes);
@@ -96,29 +117,30 @@ const Map: React.FC = () => {
     const yPositions = nodes.map(node => node.top);
     const centerX = (Math.max(...xPositions) + Math.min(...xPositions)) / 2;
     const centerY = (Math.max(...yPositions) + Math.min(...yPositions)) / 2;
-
     return { x: -centerX, y: -centerY };
   }
+
 
   useEffect(() => {
     setTranslate(calculateInitialCenter(nodes));
   }, [nodes]);
 
+
   useEffect(() => {
     const handleResize = () => {
       setViewport({ x: window.innerWidth, y: window.innerHeight });
     };
-
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
+
   useEffect(() => {
     console.log('Map size updated:', mapSize);
   }, [mapSize]);
+
 
   return (
     <div
@@ -142,19 +164,7 @@ const Map: React.FC = () => {
           selected={node.id === selectedNodeId}
         />
       ))}
-      {edges.map(edge => {
-        const fromNode = nodes.find(node => node.id === edge.source);
-        const toNode = nodes.find(node => node.id === edge.target);
-        if (!fromNode || !toNode) {
-          return null;
-        }
-        return (
-          <Edge key={edge.id}
-            fromNode={fromNode}
-            toNode={toNode}
-            color={edge.color} />
-        );
-      })}
+      {renderedEdges}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export type Node = {
+export type NodeData = {
   id: number;
   name: string;
   x: number;
@@ -8,12 +8,17 @@ export type Node = {
 };
 
 export type Edge = {
-  id: number;
-  from: number;
-  to: number;
-  color: string;
-  parentEdge?: number;
+  id: string;
+  source: {
+    nodeId: string;
+    position: string;
+  };
+  target: {
+    nodeId: string;
+    position: string;
+  };
 };
+
 
 export type Position = {
   x: number;

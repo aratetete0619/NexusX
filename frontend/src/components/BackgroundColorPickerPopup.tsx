@@ -1,5 +1,5 @@
 // ColorPickerPopup.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBackgroundColor } from '../redux/actions';
 import { RootState } from '../redux/reducers';

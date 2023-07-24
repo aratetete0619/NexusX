@@ -13,6 +13,11 @@ export * from './setToolbuttonPositionAction';
 export * from './setPopupPosition'
 export * from './mapSize'
 export * from './colorActions';
+export * from './toggleEdgeCreationMode'
+export * from './edgeCreation';
+export * from './updateHandlePosition'
+export * from './updateSearchQuery'
+export * from './searchBarPosition'
 export { default as hideNodeSettings } from './hideNodeSettings';
 export { default as showNodeSettings } from './showNodeSettings';
 export { default as setNodeEditing } from './setNodeEditing';

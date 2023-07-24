@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faDiagramProject, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/Sidebar.module.css';
@@ -13,15 +12,15 @@ const Sidebar = () => {
         <ul className={styles.sidebarList}>
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faGlobe} className={styles.icon} />
-            <Link href="/"><span className={styles.linkText}>Explore</span></Link>
+            <a href="/explore"><span className={styles.linkText}>Explore</span></a> {/* Link を a タグに変更 */}
           </li>
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faDiagramProject} className={styles.icon} />
-            <Link href="/about"><span className={styles.linkText}>Optimization</span></Link>
+            <a href="/about"><span className={styles.linkText}>Optimization</span></a> {/* Link を a タグに変更 */}
           </li>
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faUserCheck} className={styles.icon} />
-            <Link href="/contact"><span className={styles.linkText}>Registration</span></Link>
+            <a href="/registration"><span className={styles.linkText}>Registration</span></a> {/* Link を a タグに変更 */}
             <span className={styles.premiumIcon}>🌟</span>
           </li>
         </ul>

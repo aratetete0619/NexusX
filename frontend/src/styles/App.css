@@ -1,8 +1,14 @@
 /* styles/App.css */
 
 body {
-  margin: 1000px;
-  padding: 1000px;
   box-sizing: border-box;
   /* その他必要な全体的なスタイルをここに記述 */
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }

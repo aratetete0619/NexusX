@@ -1,0 +1,58 @@
+/* styles/SearchArea.module.css */
+.searchBarContainer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1em auto;
+  max-width: 600px;
+  width: 100%;
+  z-index: 3;
+  height: 10vh;
+}
+
+.searchInput {
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  flex-grow: 1;
+  padding: 1em;
+  padding-right: 30px;
+  font-size: 1.2em;
+  /* フォントサイズを大きく */
+  letter-spacing: 0.05em;
+  /* 文字間隔を開ける */
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 2em;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.5);
+  width: 100%;
+  outline: none;
+}
+
+.searchButton {
+  padding: 0.5em;
+  font-size: 1em;
+  background-color: #fff;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.5);
+  width: 50%;
+}
+
+.searchButton:hover {
+  background-color: #eee;
+}
+
+.searchIcon {
+  position: absolute;
+  right: -10px;
+  top: 45%;
+  transform: translateY(-120%);
+  cursor: pointer;
+}

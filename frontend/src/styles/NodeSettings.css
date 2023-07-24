@@ -4,8 +4,8 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-
   padding: 10px;
+  padding-top: 100px;
   background-color: #F0F2CD;
   z-index: 2;
   border: 1px solid #F0F0F0;
@@ -20,7 +20,6 @@
   flex-direction: column;
   margin-bottom: 20px;
   font-family: 'Mulish', sans-serif;
-  font-weight: bold;
   font-size: 14px;
 }
 
@@ -47,18 +46,55 @@
   margin-bottom: 0;
 }
 
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+  /* Optional: use this to add space between the buttons */
+}
+
 .node-settings-button {
   /* その他のスタイル */
   transition: background-color 0.3s ease;
   margin-top: 5px;
+  background-color: #D2DB10;
+  width: 130px;
+  height: 45px;
+  color: #fff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
 }
 
+
+
+
 .node-settings-button:hover {
-  background-color: #ddd;
+  cursor: pointer;
 }
 
 .node-settings-button:active {
   background-color: #aaa;
+}
+
+.node-optimization-button {
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
+  background-color: #0778f4;
+  width: 130px;
+  height: 45px;
+  color: #fff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-optimization-button:hover {
+  cursor: pointer;
 }
 
 .color-container {
@@ -87,4 +123,35 @@
   height: 45px;
   background-color: #DDDFE3;
   border-color: #DDDFE3;
+}
+
+.node-settings .fa-arrow-left {
+  margin-right: 5px;
+}
+
+.back-button-container {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  font-size: 24px;
+  order: 2;
+}
+
+.back-button+span {
+  order: 1;
+  margin-right: 10px;
+}
+
+.node-name {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }

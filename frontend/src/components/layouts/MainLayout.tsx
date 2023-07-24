@@ -1,16 +1,14 @@
-// src/components/layouts/MainLayout.tsx
 import Sidebar from '../Sidebar';
-import styles from '../../styles/MainLayout.module.css';
 
-const MainLayout = ({ children }) => {
+
+const MainLayout: React.FC = ({ children }) => {
   return (
-    <div className={styles.container}>
+    <div className="main-layout">
       <Sidebar />
-      <div className={styles.content}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 };
+
 
 export default MainLayout;

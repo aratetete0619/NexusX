@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/Node.css';
 import { useDrag } from 'react-dnd';
+import Handle from './Handle';
 import Toolbutton from './Toolbutton';
 import IconButton from './IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { Node as NodeType } from '../types/index';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateNodeName, setSelectedNodeId, discardNewNode, deleteNode, showToolbuttonAction, setNodeEditing, setNodeName, setToolbuttonPositionAction, hideNodeSettings } from '../redux/actions';
+import { updateNodeName, setSelectedNodeId, discardNewNode, deleteNode, showToolbuttonAction, setNodeEditing, setNodeName, setToolbuttonPositionAction, hideNodeSettings, updateHandlePosition } from '../redux/actions';
 
 interface NodeProps {
   node: NodeType;
@@ -30,7 +31,6 @@ const Node: React.FC<NodeProps> = ({ node }) => {
     }
   }, [selected, node.x, node.y]);
 
-
   const [{ }, drag] = useDrag({
     type: `Node`,
     item: { id: node.id, left: node.x, top: node.y },
@@ -43,7 +43,6 @@ const Node: React.FC<NodeProps> = ({ node }) => {
       dispatch(setToolbuttonPositionAction(node.x, node.y));
     }
   };
-
 
   const handleDoubleClick = () => {
     dispatch(setNodeEditing(node.id, true));
@@ -71,15 +70,23 @@ const Node: React.FC<NodeProps> = ({ node }) => {
   };
 
 
+  const handlePositionChange = (position: "top" | "bottom" | "left" | "right", coords: { x: number, y: number }) => {
+    dispatch(updateHandlePosition(node.id, position, coords));
+  };
+
+
 
   return (
-    <>
+    <div
+      style={{
+        position: "absolute",
+        top: `${node.y}px`,
+        left: `${node.x}px`,
+      }}>
       <div
         className={`node ${selected ? 'selected' : ''}`}
         style={{
           position: "absolute",
-          top: `${node.y}px`,
-          left: `${node.x}px`,
           color: node.color,  // 文字色の設定
           backgroundColor: node.backgroundColor,  // 背景色の設定
         }}
@@ -91,6 +98,10 @@ const Node: React.FC<NodeProps> = ({ node }) => {
           ? <input type="text" autoFocus value={name} onChange={handleInputChange} onBlur={handleInputBlur} />
           : <>
             {node.name}
+            <Handle nodeId={node.id} position="top" onPositionChange={(coords) => handlePositionChange('top', coords)} />
+            <Handle nodeId={node.id} position="bottom" onPositionChange={(coords) => handlePositionChange('bottom', coords)} />
+            <Handle nodeId={node.id} position="left" onPositionChange={(coords) => handlePositionChange('left', coords)} />
+            <Handle nodeId={node.id} position="right" onPositionChange={(coords) => handlePositionChange('right', coords)} />
             {selected &&
               <div
                 style={{ position: "absolute", right: 0, top: 0 }}>
@@ -110,8 +121,9 @@ const Node: React.FC<NodeProps> = ({ node }) => {
           toolbuttonPosition={toolbuttonPosition}
         />
       }
-    </>
+    </div>
   );
+
 
 }
 
