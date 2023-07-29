@@ -47,7 +47,7 @@
 |                |              |                               | sender_id (FK)   | メッセージの送信者                                                                          |
 |                |              |                               | receiver_id (FK) | メッセ
 
-ージの受信者                                                                          |
+ージの受信者 |                                                                         |
 |                |              |                               | message_text     | メッセージの本文                                                                          |
 | RDBMS          | MySQL (on RDS) | NodeMedia                     | node_id (FK)     | ノードに関連するメディア情報を保存します。                                                                     |
 |                |              |                               | media_id (PK)    |                                                                                              |
