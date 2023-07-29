@@ -33,10 +33,18 @@ const PolarNodePopup = () => {
         {imagePath && <img src={`/${imagePath}`} alt={name} className={styles.popupImage} />}
         <h2 className={styles.popupTitle}>{name}</h2>
       </div>
-      <p className={styles.popupLabel}><strong>Label:</strong> {labels.join(', ')}</p>
-      <p className={styles.popupDescription}><strong>Description:</strong> {selectedPolarNode.description}</p>
+      <p className={styles.popupLabel}>
+        <strong>Label</strong>
+        <span className={styles.labelValue}>{labels.join(', ')}</span>
+      </p>
+      <div className={styles.popupDescription}>
+        <h3 className={styles.h3Description}>Description</h3>
+        <span className={styles.descriptionValue}>{selectedPolarNode.description}</span>
+      </div>
     </div>
   );
+
+
 };
 
 export default PolarNodePopup;
