@@ -21,7 +21,10 @@
   background-size: cover;
   background-position: center;
   overflow: visible;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto',
+    sans-serif;
+  font-family: 'Work Sans',
+    sans-serif;
   font-size: 20px;
 }
 
@@ -43,7 +46,6 @@
   text-overflow: ellipsis;
   max-width: 300px;
   bottom: -30px;
-  font-family: 'Roboto', sans-serif;
 }
 
 .withImage {
