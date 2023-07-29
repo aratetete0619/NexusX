@@ -1,0 +1,62 @@
+.circle {
+  position: relative;
+  /* add this line */
+  min-width: 171px !important;
+  min-height: 171px !important;
+  max-width: 300px;
+  max-height: 300px;
+  word-wrap: break-word;
+  border-radius: 50% !important;
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  border: 0.1px solid #DDDDDD;
+  animation: fadeIn 0.5s;
+  background-size: cover;
+  background-position: center;
+  overflow: visible;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+}
+
+.circle:hover,
+.circle.selected {
+  box-shadow: 0 0 10px blue;
+}
+
+.selected {
+  box-shadow: 0 0 10px blue;
+}
+
+.nameBelow {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  bottom: -30px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.withImage {
+  padding-bottom: 20px;
+  /* add enough padding to make room for the name */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

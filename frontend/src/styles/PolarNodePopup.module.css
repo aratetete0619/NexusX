@@ -1,0 +1,49 @@
+/* PolarNodePopup.module.css */
+.popupContainer {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-width: 400px;
+}
+
+.popupTitle {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.popupLabel,
+.popupDescription {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+
+.popupDescription {
+  white-space: pre-line;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 30px;
+}
+
+.popupImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}

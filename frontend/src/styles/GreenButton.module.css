@@ -1,0 +1,14 @@
+.customButton {
+  font-family: 'Roboto',
+    sans-serif;
+  font-family: 'Work Sans',
+    sans-serif;
+  color: #FFFFFF;
+  background-color: #4ad596;
+  justify-content: center;
+  font-weight: bold;
+  border: none;
+  height: 60px;
+  border-radius: 10px;
+  margin: 10px;
+}
