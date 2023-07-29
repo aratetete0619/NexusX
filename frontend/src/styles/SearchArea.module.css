@@ -10,9 +10,9 @@
   align-items: center;
   margin: 1em auto;
   max-width: 600px;
-  width: 100%;
+  width: 150%;
   z-index: 3;
-  height: 10vh;
+  height: auto;
 }
 
 .searchInput {
@@ -22,9 +22,7 @@
   padding: 1em;
   padding-right: 30px;
   font-size: 1.2em;
-  /* フォントサイズを大きく */
   letter-spacing: 0.05em;
-  /* 文字間隔を開ける */
   border: none;
   border-radius: 10px;
   background: #fff;
@@ -32,6 +30,11 @@
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.5);
   width: 100%;
   outline: none;
+  transition: width 0.5s, height 0.5s, border-radius 0.5s;
+  resize: none;
+  overflow: auto;
+  min-height: 20px;
+  max-height: 300px;
 }
 
 .searchButton {
@@ -55,4 +58,40 @@
   top: 45%;
   transform: translateY(-120%);
   cursor: pointer;
+}
+
+/* styles/SearchArea.module.css */
+.circle {
+  min-width: 200px !important;
+  min-height: 200px !important;
+  max-width: 300px;
+  max-height: 300px;
+  word-wrap: break-word;
+  border-radius: 50% !important;
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  border: 0.1px solid #DDDDDD;
+  animation: fadeIn 0.5s;
+  font-family: 'Roboto', sans-serif;
+  flex-grow: 1;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

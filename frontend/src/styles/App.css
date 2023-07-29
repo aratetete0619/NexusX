@@ -1,8 +1,12 @@
 /* styles/App.css */
 
+html,
 body {
   box-sizing: border-box;
-  /* その他必要な全体的なスタイルをここに記述 */
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  /* スクロールバーを非表示にする */
 }
 
 .app {
@@ -10,5 +14,5 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
 }
