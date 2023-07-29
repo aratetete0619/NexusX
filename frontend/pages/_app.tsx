@@ -1,5 +1,7 @@
 // _app.tsx
 import React from 'react';
+import { ErrorProvider } from '../src/contexts/ErrorContext';
+import ErrorPopup from '../src/components/ErrorPopup';
 import { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -17,17 +19,20 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
-      <ApolloProvider client={apolloClient}>
-        <Provider store={store}>
-          <DndProvider backend={HTML5Backend}>
-            <PersistGate loading={null} persistor={persistor}>
-              <Component {...pageProps} />
-            </PersistGate>
-          </DndProvider>
-        </Provider>
-      </ApolloProvider>
-    </GoogleOAuthProvider>
+    <ErrorProvider>
+      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+        <ApolloProvider client={apolloClient}>
+          <Provider store={store}>
+            <DndProvider backend={HTML5Backend}>
+              <PersistGate loading={null} persistor={persistor}>
+                <Component {...pageProps} />
+                <ErrorPopup />
+              </PersistGate>
+            </DndProvider>
+          </Provider>
+        </ApolloProvider>
+      </GoogleOAuthProvider>
+    </ErrorProvider>
   );
 }
 
