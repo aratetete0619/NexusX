@@ -18,6 +18,11 @@ export * from './edgeCreation';
 export * from './updateHandlePosition'
 export * from './updateSearchQuery'
 export * from './searchBarPosition'
+export * from './searchBarFocus'
+export * from './setResults'
+export * from './selectedPolarNode'
+export * from './setNodeDragDifference'
+export { updateDraggedPosition } from './updateDraggedPosition';
 export { default as hideNodeSettings } from './hideNodeSettings';
 export { default as showNodeSettings } from './showNodeSettings';
 export { default as setNodeEditing } from './setNodeEditing';

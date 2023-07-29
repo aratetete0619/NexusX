@@ -19,6 +19,11 @@ import setHandlePosition from './handles';
 import handlePositions from './handlePositionsReducer'
 import searchQueryReducer from './searchQuery';
 import searchBarPositionReducer from './searchBarPositionReducer';
+import searchBarFocus from './searchBarFocus'
+import searchResults from './searchResults';
+import selectedPolarNode from './selectedPolarNode'
+import draggedPositions from './draggedPositions';
+import nodeDragDifference from './nodeDragDifference';
 import { SET_SELECTED_NODE_ID } from '../actions/setSelectedNodeId';
 
 const initialSelectedNodeIdState = null;
@@ -45,6 +50,11 @@ const rootReducer = combineReducers({
   edgeCreation,
   setHandlePosition,
   handlePositions,
+  searchBarFocus,
+  searchResults,
+  selectedPolarNode,
+  draggedPositions,
+  nodeDragDifference,
   colorState: colorReducer,
   primaryColors: primaryColorsReducer,
   primaryBackgroundColors: primaryBackgroundColorsReducer,
