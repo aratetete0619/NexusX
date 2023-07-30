@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS `nexusx`;
 USE `nexusx`;
 CREATE TABLE Users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(255) NOT NULL UNIQUE,
+  username VARCHAR(255),
   email VARCHAR(255) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   icon_image VARCHAR(255),
@@ -107,7 +107,6 @@ CREATE TABLE BiasMonitoring (
   bias_metric DECIMAL(5, 2) NOT NULL,
   timestamp TIMESTAMP NOT NULL
 );
-CREATE INDEX idx_users_username ON Users(username);
 CREATE INDEX idx_users_email ON Users(email);
 CREATE INDEX idx_usergroups_user_id ON UserGroups(user_id);
 CREATE INDEX idx_usergroups_group_id ON UserGroups(group_id);

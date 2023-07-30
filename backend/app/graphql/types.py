@@ -20,3 +20,8 @@ class Result(ObjectType):
     neo4j_data = Field(Neo4jData)
     description = String()
     score = Float()
+
+
+class User(ObjectType):
+    id = String()
+    email = String()

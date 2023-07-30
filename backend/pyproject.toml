@@ -24,6 +24,11 @@ langdetect = "1.0.9"
 faker = "^19.2.0"
 en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0.tar.gz"}
 sqlalchemy = "^2.0.19"
+mysql-connector-python = "^8.1.0"
+bcrypt = "^4.0.1"
+python-dotenv = "^1.0.0"
+slowapi = "^0.1.8"
+passlib = "^1.7.4"
 
 
 [build-system]

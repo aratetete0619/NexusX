@@ -1,8 +1,8 @@
 # schema.py
 
-from graphene import ObjectType, String, Field, List, Float, Schema
-from .resolvers import resolve_search  # resolvers.pyから関数をインポート
-from .types import Result  # types.pyから型をインポート
+from graphene import ObjectType, String, Field, List, Schema, Mutation
+from .resolvers import resolve_search, resolve_create_user
+from .types import Result
 
 
 class Query(ObjectType):
@@ -12,4 +12,24 @@ class Query(ObjectType):
     resolve_search = resolve_search
 
 
-schema = Schema(query=Query)
+class CreateUserOutput(ObjectType):
+    id = String()
+    email = String()
+
+
+class CreateUser(Mutation):
+    class Arguments:
+        email = String(required=True)
+        password = String(required=True)
+
+    Output = CreateUserOutput
+
+    def mutate(root, info, email, password):
+        return resolve_create_user(email, password)
+
+
+class Mutation(ObjectType):
+    create_user = CreateUser.Field()
+
+
+schema = Schema(query=Query, mutation=Mutation)
