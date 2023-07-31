@@ -6,6 +6,7 @@ import MainLayout from '../src/components/layouts/MainLayout'
 import CustomDragLayer from '@/src/components/CustomDragLayer';
 import PolarNodeDragLayer from '@/src/components/PolarNodeDragLayer'
 import PolarNodePouup from '../src/components/PolarNodePopup'
+import Sidebar from '../src/components/Sidebar'
 
 const ExplorePage: React.FC = () => {
   const [viewport, setViewport] = useState({ x: 0, y: 0 });
@@ -19,6 +20,7 @@ const ExplorePage: React.FC = () => {
 
   return (
     <MainLayout>
+      <Sidebar />
       <div className="app">
         <CustomDragLayer />
         <PolarNodeDragLayer viewport={viewport} />

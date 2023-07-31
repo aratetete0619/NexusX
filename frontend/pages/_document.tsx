@@ -14,7 +14,9 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&family=Work+Sans:ital,wght@0,100;0,700;1,700&display=swap" rel="stylesheet" />
-
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@800&family=Work+Sans:ital,wght@0,100;0,700;1,200;1,700&display=swap" rel="stylesheet" />
         </Head>
         <body>
           <Main />

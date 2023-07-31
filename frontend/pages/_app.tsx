@@ -19,21 +19,23 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    <ErrorProvider>
-      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
-        <ApolloProvider client={apolloClient}>
-          <Provider store={store}>
-            <DndProvider backend={HTML5Backend}>
-              <PersistGate loading={null} persistor={persistor}>
-                <Component {...pageProps} />
-                <ErrorPopup />
-              </PersistGate>
-            </DndProvider>
-          </Provider>
-        </ApolloProvider>
-      </GoogleOAuthProvider>
-    </ErrorProvider>
-  );
+    <div className="app">
+      <ErrorProvider>
+        <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+          <ApolloProvider client={apolloClient}>
+            <Provider store={store}>
+              <DndProvider backend={HTML5Backend}>
+                <PersistGate loading={null} persistor={persistor}>
+                  <Component {...pageProps} />
+                  <ErrorPopup />
+                </PersistGate>
+              </DndProvider>
+            </Provider>
+          </ApolloProvider>
+        </GoogleOAuthProvider>
+      </ErrorProvider>
+    </div>
+  )
 }
 
 export default App;

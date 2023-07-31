@@ -12,3 +12,8 @@
   border-radius: 10px;
   margin: 10px;
 }
+
+.customButton.login {
+  width: 200px;
+  height: 30px;
+}

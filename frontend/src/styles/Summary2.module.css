@@ -1,0 +1,158 @@
+.container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-size: 50px;
+}
+
+.step {
+  margin-top: 50px;
+  display: flex;
+}
+
+.stepImage {
+  margin-top: 50px;
+}
+
+.img {
+  height: auto;
+  margin-top: 30px;
+}
+
+.stepContent {}
+
+.description {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.steps {
+  font-size: 50px;
+}
+
+.green {
+  color: #4ad596;
+}
+
+@media screen and (min-width: 769px) {
+  .container {
+    top: 100vh;
+    width: 65%;
+    margin-bottom: 150px;
+  }
+
+  .title {
+    margin-top: 200px;
+  }
+
+  .step {
+    justify-content: space-between;
+  }
+
+  .stepContent {
+    width: 50%;
+    order: 1;
+  }
+
+  .description {
+    width: 100%;
+  }
+
+  .steps {
+    width: 100%;
+  }
+
+  .stepImage {
+    width: 50%;
+    order: 2;
+    padding-left: 100px;
+  }
+
+  .img {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    top: auto;
+  }
+
+  .step {
+    flex-wrap: wrap-reverse;
+  }
+
+  .stepContent {
+    width: 50%;
+    transform: none;
+    order: 1;
+  }
+
+  .steps {
+    width: 100%;
+    order: 2;
+  }
+
+  .description {
+    width: 100%;
+    order: 3;
+  }
+
+  .stepImage {
+    width: 50%;
+    align-self: flex-start;
+    order: 4;
+  }
+
+  .img {
+    max-width: 100%;
+  }
+}
+
+
+@media screen and (max-width: 420px) {
+  .step {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stepContent {
+    width: 100%;
+    transform: none;
+    order: 2;
+  }
+
+  .steps {
+    width: 100%;
+    order: 1;
+  }
+
+  .description {
+    width: 100%;
+    order: 3;
+  }
+
+  .stepImage {
+    width: 100%;
+    align-self: center;
+    order: 4;
+  }
+
+  .img {
+    max-width: 90%;
+  }
+}

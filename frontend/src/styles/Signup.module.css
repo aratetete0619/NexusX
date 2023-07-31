@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   height: 100vh;
+  overflow: hidden;
   font-family: 'Roboto',
     sans-serif;
   font-family: 'Work Sans',
@@ -12,7 +13,7 @@
 .leftSection {
   background-color: #4ad596;
   width: 33.33%;
-  height: 100vh;
+  height: 100%;
   color: #FFFFFF;
   display: flex;
   justify-content: center;

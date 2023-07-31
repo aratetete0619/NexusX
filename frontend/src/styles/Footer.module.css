@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px;
+  padding-bottom: 50px;
+  background-color: #f0f0f0;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  bottom: 0;
+  font-family: 'Mulish', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  flex-wrap: wrap;
+  min-height: 300px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 30%;
+}
+
+.paragraph {
+  margin: 5px 0;
+}
+
+.copyRight {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .column {
+    flex: 1 1 auto;
+    margin-bottom: 20px;
+  }
+
+  .copyRight {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
