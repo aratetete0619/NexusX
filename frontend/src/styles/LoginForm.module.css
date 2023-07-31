@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-weight: bold;
+  padding: 20px;
+}
+
+.container p {
+  margin-bottom: 30px;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputField {
+  margin-bottom: 10px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #d3d3d3;
+  padding: 10px;
+}
+
+.inputField::placeholder {
+  padding-left: 10px;
+}
+
+.oauthButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.submitButton {
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  border: none;
+  background-color: #32CD32;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #228B22;
+}

@@ -1,0 +1,19 @@
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleImage {
+  width: 100px;
+  /* あるいは他の適切なサイズ */
+  height: auto;
+}
+
+.titleText {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  color: #FFFFFF;
+}
