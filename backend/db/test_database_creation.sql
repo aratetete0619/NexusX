@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `nexusx`;
-USE `nexusx`;
+CREATE DATABASE IF NOT EXISTS `test_nexusx`;
+USE `test_nexusx`;
 CREATE TABLE Users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(255),
@@ -8,7 +8,6 @@ CREATE TABLE Users (
   icon_image VARCHAR(255),
   is_admin BOOLEAN NOT NULL DEFAULT FALSE,
   confirmation_code VARCHAR(255),
-  confirmation_code_created_at TIMESTAMP,
   confirmed BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE Groups (
@@ -110,21 +109,6 @@ CREATE TABLE BiasMonitoring (
   bias_metric DECIMAL(5, 2) NOT NULL,
   timestamp TIMESTAMP NOT NULL
 );
-CREATE TABLE NodeEvaluationScores (
-  score_id INT AUTO_INCREMENT PRIMARY KEY,
-  node_id INT NOT NULL,
-  click_count INT NOT NULL DEFAULT 0,
-  favorite_count INT NOT NULL DEFAULT 0,
-  visualize_relations_count INT NOT NULL DEFAULT 0,
-  score DECIMAL(5, 2) NOT NULL,
-  last_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-CREATE TABLE UserFavorites (
-  user_id INT NOT NULL,
-  node_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (node_id) REFERENCES NodeMedia(node_id)
-);
 CREATE INDEX idx_users_email ON Users(email);
 CREATE INDEX idx_usergroups_user_id ON UserGroups(user_id);
 CREATE INDEX idx_usergroups_group_id ON UserGroups(group_id);
@@ -149,6 +133,3 @@ CREATE INDEX idx_recommendationdata_user_id ON RecommendationData(user_id);
 CREATE INDEX idx_recommendationdata_entity_id ON RecommendationData(entity_id);
 CREATE INDEX idx_modelperformance_model_id ON ModelPerformance(model_id);
 CREATE INDEX idx_biasmonitoring_model_id ON BiasMonitoring(model_id);
-CREATE INDEX idx_nodeevaluationscores_node_id ON NodeEvaluationScores(node_id);
-CREATE INDEX idx_userfavorites_user_id ON UserFavorites(user_id);
-CREATE INDEX idx_userfavorites_node_id ON UserFavorites(node_id);
