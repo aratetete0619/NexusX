@@ -24,6 +24,10 @@ import searchResults from './searchResults';
 import selectedPolarNode from './selectedPolarNode'
 import draggedPositions from './draggedPositions';
 import nodeDragDifference from './nodeDragDifference';
+import centerPolarNode from './centerPolarNode'
+import searchBarReducer from './searchBarReducer'
+import polarEdgesReducer from './polarEdges';
+import { favoritesReducer } from "./favoritesReducer";
 import { SET_SELECTED_NODE_ID } from '../actions/setSelectedNodeId';
 
 const initialSelectedNodeIdState = null;
@@ -55,6 +59,8 @@ const rootReducer = combineReducers({
   selectedPolarNode,
   draggedPositions,
   nodeDragDifference,
+  searchBarReducer,
+  centerPolarNode,
   colorState: colorReducer,
   primaryColors: primaryColorsReducer,
   primaryBackgroundColors: primaryBackgroundColorsReducer,
@@ -64,6 +70,8 @@ const rootReducer = combineReducers({
   searchQuery: searchQueryReducer,
   searchBarPosition: searchBarPositionReducer,
   popupPosition: popupPositionReducer,
+  polarEdges: polarEdgesReducer,
+  favorites: favoritesReducer,
 });
 
 export default rootReducer;

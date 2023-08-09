@@ -3,7 +3,7 @@ import { SET_TOOLBUTTON_POSITION } from '../actions/actionTypes';
 
 const initialState = { x: 0, y: 0 };
 
-const toolbuttonPositionReducer = (state = initialState, action) => {
+const toolbuttonPosition = (state = initialState, action) => {
   switch (action.type) {
     case SET_TOOLBUTTON_POSITION:
       return action.payload;
@@ -12,4 +12,4 @@ const toolbuttonPositionReducer = (state = initialState, action) => {
   }
 };
 
-export default toolbuttonPositionReducer;
+export default toolbuttonPosition;

@@ -11,9 +11,9 @@ import {
 const initialNodesState = [{
   id: '1',
   name: 'Initial Node',
-  x: 500,
-  y: 500,
-  isNew: false
+  x: 800,
+  y: 300,
+  isNew: false,
 }];
 
 const nodes = (state = initialNodesState, action) => {

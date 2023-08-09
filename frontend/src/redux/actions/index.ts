@@ -22,6 +22,11 @@ export * from './searchBarFocus'
 export * from './setResults'
 export * from './selectedPolarNode'
 export * from './setNodeDragDifference'
+export * from './setCenterPolarNode'
+export * from './updateQuery'
+export * from './addPolarEdge'
+export * from './clearPolarEdgeInfo'
+export * from './favoriteNode'
 export { updateDraggedPosition } from './updateDraggedPosition';
 export { default as hideNodeSettings } from './hideNodeSettings';
 export { default as showNodeSettings } from './showNodeSettings';
