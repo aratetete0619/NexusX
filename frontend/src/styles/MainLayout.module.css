@@ -1,0 +1,57 @@
+/* src/styles/MainLayout.module.css */
+
+.main-layout {
+  display: flex;
+  /* フレックスボックスを使ってレイアウトを調整 */
+}
+
+
+
+.container {
+  display: flex;
+
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.sidebar-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.sidebar-container.open {
+  width: 200px;
+  /* サイドバーが開いているときの幅 */
+}
+
+.sidebar-container.closed {
+  width: 50px;
+  border-right: 1px solid #f0f0f0;
+  /* 右側に線を引く */
+}
+
+.toggle-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* 必要に応じて他のスタイルを追加 */
+}
+
+
+.closed-sidebar {
+  /* 既存のスタイル */
+  border-right: 1px solid #f0f0f0;
+  /* 右側に線を引く */
+}
+
+.open-button {
+  position: absolute;
+  right: 10px;
+  /* 右側からの距離を調整 */
+  top: 10px;
+}

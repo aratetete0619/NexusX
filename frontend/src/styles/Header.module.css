@@ -1,0 +1,126 @@
+/* styles/Header.module.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: 130px;
+  background-color: #F0F0F0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.nav,
+.buttonGroup {
+  flex: 1;
+  max-width: 45%;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav a {
+  font-size: 14px;
+  color: black;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.logo {
+  height: 90px;
+  width: 150px;
+}
+
+.customButton {
+  font-family: 'Roboto', sans-serif;
+  color: #FFFFFF;
+  background-color: #4ad596;
+  justify-content: center;
+  font-weight: bold;
+  border: none;
+  height: 60px;
+  border-radius: 10px;
+  padding: 0px 20px;
+}
+
+.login {
+  width: 100px;
+  height: 40px;
+  background-color: #d2db10;
+}
+
+@media screen and (min-width: 769px) {
+  .nav a {
+    margin-left: 40px;
+  }
+
+  .customButton {
+    margin: 10px;
+  }
+}
+
+@media screen and (min-width: 421px) and (max-width: 768px) {
+  .nav a {
+    margin-left: 20px;
+  }
+
+  .customButton {
+    margin: 5px;
+  }
+
+  .login {
+    width: 80px;
+    height: 30px;
+  }
+
+  .logo {
+    height: 60px;
+    width: 100px;
+  }
+}
+
+/* styles/Header.module.css */
+@media screen and (max-width: 420px) {
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .navLinks {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+
+  .navLinks a {
+    margin: 10px 0;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .customButton,
+  .login {
+    margin: 5px 15px;
+  }
+
+  .logo {
+    height: 60px;
+    width: 100px;
+  }
+}

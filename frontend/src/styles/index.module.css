@@ -1,0 +1,23 @@
+/* styles/index.css */
+.container {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+
+}
+
+.content {
+  flex: 1;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}

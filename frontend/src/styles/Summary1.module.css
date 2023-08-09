@@ -1,0 +1,172 @@
+.container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px;
+  font-family: 'Mulish', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-size: 50px;
+}
+
+.step {
+  margin-top: 50px;
+  display: flex;
+}
+
+.stepImage {
+  margin-top: 50px;
+}
+
+.img {
+  height: auto;
+  margin-top: 30px;
+}
+
+.stepContent {}
+
+.description {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.steps {
+  font-size: 50px;
+}
+
+.pink {
+  color: #f40772;
+}
+
+@media screen and (min-width: 769px) {
+  .container {
+    top: 100vh;
+    width: 65%;
+  }
+
+  .title {
+    margin-top: 200px;
+  }
+
+  .step {
+    justify-content: space-between;
+  }
+
+  .stepImage {
+    width: 50%;
+  }
+
+  .img {
+    width: 90%;
+  }
+
+  .stepContent {
+    width: 50%;
+    transform: translateX(50px);
+  }
+
+  .description {
+    width: 100%;
+  }
+
+  .steps {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    top: auto;
+  }
+
+  .step {
+    flex-wrap: wrap;
+    align-items: center;
+    /* Align items vertically in the center */
+  }
+
+  .stepImage {
+    order: 1;
+    /* Image will come before the title and description */
+    width: 50%;
+    align-self: flex-start;
+    /* Align image at the start */
+  }
+
+  .img {
+    max-width: 90%;
+  }
+
+  .stepContent {
+    order: 2;
+    /* Title and description will come after the image */
+    width: 50%;
+    transform: none;
+  }
+
+  .steps {
+    order: 1;
+    /* Title comes before the description */
+    width: 100%;
+  }
+
+  .description {
+    order: 2;
+    /* Description comes after the title */
+    width: 100%;
+  }
+}
+
+
+@media screen and (max-width: 420px) {
+  .container {
+    top: auto;
+  }
+
+  .step {
+    flex-direction: column;
+    align-items: center;
+    /* Align items vertically in the center */
+  }
+
+  .stepImage {
+    order: 2;
+    /* Image will come after the title and description */
+    width: 100%;
+    align-self: center;
+    /* Align image at the center */
+  }
+
+  .img {
+    max-width: 90%;
+  }
+
+  .stepContent {
+    order: 3;
+    /* Description will come after the title and image */
+    width: 100%;
+    transform: none;
+  }
+
+  .steps {
+    order: 1;
+    /* Title comes first */
+    width: 100%;
+  }
+
+  .description {
+    order: 4;
+    /* Description comes after the title and image */
+    width: 100%;
+  }
+}

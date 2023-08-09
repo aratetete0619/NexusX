@@ -1,0 +1,54 @@
+.container {
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slogan {
+  text-align: center;
+  font-family: 'Mulish', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  color: #FFFFFF;
+}
+
+.slogan h1 {
+  font-size: 48px;
+}
+
+.slogan h2 {
+  font-size: 30px;
+  line-height: 1.5;
+}
+
+.customButton {
+  font-family: 'Roboto', sans-serif;
+  color: #FFFFFF;
+  background-color: #4ad596;
+  justify-content: center;
+  font-weight: bold;
+  border: none;
+  height: 60px;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0px 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .slogan h1 {
+    font-size: 30px;
+  }
+
+  .slogan h2 {
+    font-size: 20px;
+  }
+
+  .customButton {
+    font-size: 12px;
+    height: 45px;
+    padding: 0px 20px;
+  }
+}

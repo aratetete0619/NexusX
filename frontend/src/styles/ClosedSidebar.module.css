@@ -1,0 +1,21 @@
+.closedSidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  background-color: #FFFFFF;
+  z-index: 3;
+  border-right: 1px solid #f0f0f0;
+}
+
+.openButton {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 20px;
+}

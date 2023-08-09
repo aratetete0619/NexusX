@@ -1,0 +1,30 @@
+.customButton {
+  font-family: 'Roboto',
+    sans-serif;
+  color: #FFFFFF;
+  background-color: #4ad596;
+  justify-content: center;
+  font-weight: bold;
+  border: none;
+  height: 60px;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 15px;
+  transition: transform 0.3s ease;
+  border: solid 2px transparent;
+}
+
+.customButton.login {
+  width: 200px;
+  height: 30px;
+}
+
+.customButton:hover {
+  transform: scale(1.05);
+  border-color: #007BFF;
+}
+
+.customButton:active {
+  transform: scale(0.95);
+  border-color: #0056b3;
+}
