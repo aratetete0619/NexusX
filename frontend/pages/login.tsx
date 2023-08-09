@@ -1,5 +1,7 @@
+import React from 'react'
 import LoginForm from '../src/components/LoginForm';
 import RandomTitle from '../src/components/RandomTitle';
+import SuccessPopup from '../src/components/SuccessPopup';
 import styles from '../src/styles/login.module.css';
 
 const LoginPage = () => {
@@ -13,6 +15,7 @@ const LoginPage = () => {
           <h1>Sign in</h1>
         </div>
         <LoginForm />
+        <SuccessPopup />
       </div>
     </div>
   );
