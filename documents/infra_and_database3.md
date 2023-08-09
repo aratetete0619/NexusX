@@ -2,6 +2,7 @@
 
 まず、以下のインフラ構成図を考えてみました。
 
+```
 Internet
   |
   |--- AWS Route 53 (DNS)
@@ -22,7 +23,7 @@ Internet
                          |--- AWS Lambda (Serverless computing for specific tasks)
                          |--- AWS CloudWatch (Monitoring and Logging)
                          |--- IAM Policies & Security Groups (Access Control)
-
+```
 
 次に、データベース設計表は以下のようになります。
 
