@@ -2,15 +2,16 @@
 
 まず、以下のインフラ構成図を考えてみました。
 
-```
 Internet
   |
   |--- AWS Route 53 (DNS)
          |
          |--- AWS CloudFront (CDN)
                 |
+                |--- AWS WAF (Web Application Firewall)
+                |
                 |--- AWS S3 Bucket (Static website hosting for frontend)
-                |--- AWS Elastic Beanstalk (Backend application)
+                |--- AWS Elastic Beanstalk or ECS (Backend application)
                          |
                          |--- AWS EC2 Instances (Web servers)
                          |      |
@@ -18,7 +19,10 @@ Internet
                          |
                          |--- AWS RDS MySQL (For user accounts, subscriptions, etc.)
                          |--- AWS EC2 Instances (For Neo4j, Cassandra, Elasticsearch, Redis)
-```
+                         |--- AWS Lambda (Serverless computing for specific tasks)
+                         |--- AWS CloudWatch (Monitoring and Logging)
+                         |--- IAM Policies & Security Groups (Access Control)
+
 
 次に、データベース設計表は以下のようになります。
 
