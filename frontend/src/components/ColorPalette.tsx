@@ -1,21 +1,17 @@
-// ColorPalette.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/reducers';
 import { setColor, setBackgroundColor } from '../redux/actions';
-import '../styles/ColorPalette.css';
+import styles from '../styles/colorPalette.module.css';
 
 const ColorPalette: React.FC<{ paletteType: 'color' | 'background' }> = ({ paletteType }) => {
   const dispatch = useDispatch();
   const primaryColors = useSelector((state: RootState) => state.primaryColors);
   const primaryBackgroundColors = useSelector((state: RootState) => state.primaryBackgroundColors);
-
-  // Use primaryColors or primaryBackgroundColors based on the paletteType
   const colors = paletteType === 'color' ? primaryColors : primaryBackgroundColors;
 
-  const handleColorClick = (color) => {
 
-    // Dispatch the appropriate action based on the paletteType
+  const handleColorClick = (color: string) => {
     if (paletteType === 'color') {
       dispatch(setColor(color));
     } else if (paletteType === 'background') {
@@ -23,17 +19,19 @@ const ColorPalette: React.FC<{ paletteType: 'color' | 'background' }> = ({ palet
     }
   };
 
+
   return (
-    <div className="palette-container">
-      {colors.map((color, index) => (
+    <div className={styles.paletteContainer}>
+      {colors.map((color: string, index: number) => (
         <div
           key={index}
-          className="palette-color"
+          className={styles.paletteColor}
           style={{ backgroundColor: color }}
           onClick={(event) => {
             event.stopPropagation();
             handleColorClick(color);
           }}
+          data-testid="palette-color"
         />
       ))}
     </div>
