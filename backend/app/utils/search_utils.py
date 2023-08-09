@@ -4,6 +4,15 @@ import os
 from langdetect import detect
 from elasticsearch import Elasticsearch, TransportError, NotFoundError, ConnectionError
 from neo4j import GraphDatabase
+from graphql import GraphQLError
+from typing import Dict
+from neo4j.exceptions import ServiceUnavailable
+import logging
+from neo4j.graph import Node, Relationship
+
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 nlp_ja = spacy.load("ja_ginza")
@@ -26,9 +35,9 @@ def node_to_dict(node):
 
 def preprocess_query(query):
     # 文字列の正規化
-    query = query.lower()  # 小文字化
-    query = re.sub(r"\W+", " ", query)  # 特殊文字をスペースに置換
-    query = re.sub(r"\d+", "#", query)  # 数字をハッシュ記号に置換
+    query = query.lower()
+    query = re.sub(r"\W+", " ", query)
+    query = re.sub(r"\d+", "#", query)
 
     # 言語検出
     try:
@@ -45,7 +54,7 @@ def preprocess_query(query):
     elif detected_lang == "ja":
         doc = nlp_ja(query)
         lemmas = [token.lemma_ for token in doc]
-    else:  # 複数の言語が混在していると判断した場合、SpacyとGinzaの両方を用いて処理します。
+    else:
         doc_en = nlp_en(query)
         lemmas.extend([token.lemma_ for token in doc_en])
         doc_ja = nlp_ja(query)
@@ -55,14 +64,22 @@ def preprocess_query(query):
 
 
 def get_data_from_neo4j(es_id):
-    try:
-        with driver.session() as session:
-            result = session.run(
-                "MATCH (n) WHERE n.es_id = $es_id RETURN n", es_id=es_id
-            )
-            return node_to_dict(result.single()[0])
-    except Exception as e:
-        return {"error": f"Failed to get data from Neo4j: {str(e)}"}
+    with driver.session() as session:
+        result = session.run(
+            "MATCH (n) WHERE n.es_id = $es_id RETURN n", {"es_id": es_id}
+        )
+        try:
+            node = result.single().value()
+            node_dict = {
+                "identity": node.id,
+                "labels": list(node.labels),
+                "properties": dict(node),
+            }
+            return node_dict
+        except ServiceUnavailable:
+            return {"error": "Failed to connect to the database."}
+        except Exception as e:
+            return {"error": "An error occurred while executing the query."}
 
 
 def calculate_score_based_on_neo4j_data(neo4j_data):
@@ -75,7 +92,7 @@ def search_in_elasticsearch(preprocessed_query):
     try:
         es = Elasticsearch(["localhost:9200"])
     except ConnectionError as e:
-        return {"error": str(e)}
+        return {"error": "An error occurred while connecting to the search service."}
 
     words = preprocessed_query.split()
 
@@ -112,6 +129,16 @@ def search_in_elasticsearch(preprocessed_query):
                         }
                     }
                 },
+                {"match_phrase": {"name": {"query": preprocessed_query, "boost": 2.0}}},
+                {
+                    "match": {
+                        "name": {
+                            "query": preprocessed_query,
+                            "fuzziness": "AUTO",
+                            "boost": 2.0,
+                        }
+                    }
+                },
             ]
             + proximity_queries
         }
@@ -120,25 +147,104 @@ def search_in_elasticsearch(preprocessed_query):
     try:
         response = es.search(index="people", body={"query": query, "size": 24})
     except (TransportError, NotFoundError) as e:
-        return {"error": str(e)}
+        return {"error": "An error occurred while executing the search."}
 
-    search_results = response["hits"]["hits"]
-
-    # Elasticsearchから取得したIDを使用してNeo4jからデータを取得し、結果を組み合わせる
-    combined_results = []
-    for result in search_results:
-        es_id = result["_id"]
-        es_score = result["_score"]
-        description = result["_source"]["description"]
+    hits = response["hits"]["hits"]
+    processed_hits = []
+    for hit in hits:
+        es_id = hit["_id"]
+        description = hit["_source"]["description"]
         neo4j_data = get_data_from_neo4j(es_id)
-        neo4j_score = calculate_score_based_on_neo4j_data(neo4j_data)
-        combined_score = es_score * neo4j_score  # ElasticsearchのスコアとNeo4jのスコアを組み合わせる
-        combined_results.append(
-            {
-                "neo4j_data": neo4j_data,
-                "description": description,
-                "score": combined_score,
+        if isinstance(neo4j_data, dict):
+            processed_hit = {
+                "identity": neo4j_data["identity"],
+                "labels": neo4j_data["labels"],
+                "properties": {**neo4j_data["properties"], "description": description},
             }
-        )
+            processed_hits.append(processed_hit)
+        else:
+            # handle error here, for example:
+            print(f"Error: Expected a dict but got {type(neo4j_data)}")
 
-    return combined_results
+    return processed_hits
+
+
+def get_description_from_elasticsearch(es_id, index):
+    try:
+        es = Elasticsearch(["localhost:9200"])
+    except ConnectionError as e:
+        raise GraphQLError("An error occurred while connecting to the search service.")
+
+    try:
+        print(
+            f"Attempting to retrieve data from Elasticsearch with es_id: {es_id} and index: {index}"
+        )  # Add this line
+        response = es.get(index=index, id=es_id)
+        print(f"Retrieved data from Elasticsearch: {response}")  # Add this line
+        return response["_source"]["description"]
+    except (TransportError, NotFoundError) as e:
+        raise GraphQLError("An error occurred while retrieving data.")
+
+
+def get_related_nodes_from_neo4j(es_id):
+    logger.debug(f"Getting related nodes for es_id: {es_id}")
+    try:
+        with driver.session() as session:
+            result = session.run(
+                """
+                MATCH (n)-[r]-(m) WHERE n.es_id = $es_id
+                RETURN n, r, m
+                """,
+                es_id=es_id,
+            )
+            logger.debug(f"result: {result}")
+            related_nodes = [
+                {
+                    "start_node": element_to_dict(record["n"]),
+                    "relationship": element_to_dict(record["r"]),
+                    "end_node": element_to_dict(record["m"]),
+                    "score": 1,
+                }
+                for record in result
+            ]
+            logger.debug(f"Related nodes: {related_nodes}")
+            return related_nodes
+    except Exception as e:
+        logger.error(f"Error occurred: {e}")
+        raise GraphQLError("An error occurred while retrieving data.")
+
+
+def element_to_dict(element):
+    index = ""  # Set initial value for index
+    element_dict = {
+        "identity": element.id,
+        "properties": getattr(element, "_properties", {}),
+    }
+    print(f"エレメンと1　 {element_dict}")
+    if isinstance(element, Node):
+        # Convert the frozenset to a list
+        element_dict["labels"] = list(element.labels)
+
+        # The index is set to 'people' if 'Person' is in the labels, otherwise it is the first label
+        if "Person" in element.labels:
+            index = "people"
+        elif "Skill" in element.labels:
+            index = "skills"
+        elif element.labels:
+            index = list(element.labels)[0]
+        else:
+            raise ValueError("Element labels should not be empty")
+    elif isinstance(element, Relationship):
+        element_dict["type"] = element.type
+        index = element.type
+    if "es_id" in element_dict["properties"]:
+        try:
+            description = get_description_from_elasticsearch(
+                element_dict["properties"]["es_id"], index=index
+            )
+            if description:
+                element_dict["properties"]["description"] = description
+        except GraphQLError as e:
+            print(f"Failed to get description from Elasticsearch: {e}")
+    print(f"エレメンと2　 {element_dict}")
+    return element_dict
