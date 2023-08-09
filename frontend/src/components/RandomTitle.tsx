@@ -3,7 +3,7 @@ import styles from '../styles/RandomTitle.module.css';
 const titles = [
   { text: "The early bird catches the worm.", image: "/random1.png" },
   { text: "L'habit ne fait pas le moine.", image: "/path/to/image2.jpg" },
-  { text: "石の上にも三年", image: "/path/to/image3.jpg" },
+  { text: "石の上にも三年", image: "/stone.jpg" },
   { text: "No hay mal que por bien no venga.", image: "/path/to/image4.jpg" },
   { text: "Aller Anfang ist schwer.", image: "/path/to/image5.jpg" },
   { text: "Chi dorme non piglia pesci.", image: "/path/to/image6.jpg" },

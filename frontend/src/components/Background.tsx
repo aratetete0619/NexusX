@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from '../styles/Background.module.css';
 
 const Background = () => (
@@ -8,7 +9,9 @@ const Background = () => (
       <h2>AI-powered tool for visualizing complex relationships
         <br />
         And Simplifying web exploration</h2>
-      <button className={styles.customButton}>Try NexusX BETA</button>
+      <Link href="/explore">
+        <button className={styles.customButton}>Try NexusX BETA</button>
+      </Link>
     </div>
   </div>
 );

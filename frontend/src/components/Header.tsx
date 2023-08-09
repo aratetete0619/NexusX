@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from '../styles/Header.module.css';
 
 const Header = () => (
@@ -12,8 +13,12 @@ const Header = () => (
       </nav>
     </div>
     <div className={styles.buttonGroup}>
-      <button className={`${styles.customButton} ${styles.login}`}>Login</button>
-      <button className={styles.customButton}>Try NexusX BETA</button>
+      <Link href="/login">
+        <button className={`${styles.customButton} ${styles.login}`}>Login</button>
+      </Link>
+      <Link href="/explore">
+        <button className={styles.customButton}>Try NexusX BETA</button>
+      </Link>
     </div>
   </header>
 );

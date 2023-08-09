@@ -9,8 +9,8 @@ const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | n
   if (!initialOffset || !currentOffset) {
     return { display: 'none' };
   }
-  const x = currentOffset.x - 880;
-  const y = currentOffset.y;
+  const x = currentOffset.x;
+  const y = currentOffset.y - 50;
   const transform = `translate(${x}px, ${y}px)`;
   return {
     transform,
@@ -55,7 +55,6 @@ const PolarNodeDragLayer: React.FC = () => {
         id={item.id}
         onSelect={() => dispatch(selectPolarNode(item.id))}
         result={result}
-        style={{ position: 'absolute', left: 0, top: 0 }}
       />
     </div>
 

@@ -12,7 +12,7 @@ const Summary1 = () => {
             <img src="/summary1.jpg" alt="summary1" className={styles.img} />
           </div>
           <div className={styles.stepContent}>
-            <h2 className={styles.steps}>Unveil the <span className={styles.pink}>Web</span> Relations</h2>
+            <h2 className={styles.steps}>Unveil the <span className={styles.pink}>World</span> Relations</h2>
             <div className={styles.description}>
               Dive into the myriad of connections.
               <br />NexusX <span className={styles.pink}>visualizes</span> based on your search.

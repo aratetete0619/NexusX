@@ -1,10 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobe, faDiagramProject, faUserCheck } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faDiagramProject, faUserCheck, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/Sidebar.module.css';
 
-const Sidebar = () => {
+const Sidebar = ({ toggleSidebar }) => {
   return (
     <div className={styles.sidebar}>
+      <div className={styles.closeButton} onClick={toggleSidebar}>
+        <FontAwesomeIcon icon={faCaretLeft} />
+      </div>
       <div className={styles.logoContainer}>
         <img src="/images/sidebar_logo.png" alt="App Logo" className={styles.logo} />
       </div>

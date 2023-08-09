@@ -6,7 +6,7 @@ import { updateSearchBarPosition } from '../redux/actions/searchBarPosition';
 import SearchArea from './SearchArea';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-const DraggableSearchArea = () => {
+const DraggableSearchArea = ({ setShowEdges }) => {
   const dispatch = useDispatch();
   const position = useSelector((state) => state.searchBarPosition);
   const isFocused = useSelector((state) => state.searchBarFocus);
@@ -39,8 +39,12 @@ const DraggableSearchArea = () => {
   }, [dispatch]);
 
   return (
-    <div ref={drag} style={{ position: 'absolute', left: position.x, top: position.y, opacity: isDragging ? 0 : 1, width: '100%' }}>
-      <SearchArea />
+    <div
+      ref={drag}
+      style={{ position: 'absolute', left: position.x, top: position.y, opacity: isDragging ? 0 : 1, width: '100%' }}
+      onMouseDown={(event) => event.stopPropagation()} // Stop event propagation
+    >
+      <SearchArea setShowEdges={setShowEdges} />
     </div>
   );
 };

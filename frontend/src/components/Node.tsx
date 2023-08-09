@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import '../styles/Node.css';
 import { useDrag } from 'react-dnd';
 import Handle from './Handle';
@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { Node as NodeType } from '../types/index';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateNodeName, setSelectedNodeId, discardNewNode, deleteNode, showToolbuttonAction, setNodeEditing, setNodeName, setToolbuttonPositionAction, hideNodeSettings, updateHandlePosition } from '../redux/actions';
+import { updateNodeName, setSelectedNodeId, discardNewNode, deleteNode, setNodeEditing, setNodeName, hideNodeSettings, updateHandlePosition } from '../redux/actions';
 
 interface NodeProps {
   node: NodeType;
@@ -20,27 +20,24 @@ const Node: React.FC<NodeProps> = ({ node }) => {
   const name = useSelector(state => state.nodeName[node.id]) || node.name;
   const selected = useSelector((state: RootState) => state.selectedNodeId) === node.id;
   const isEditing = useSelector((state: RootState) => state.nodeEditing[node.id]) || false;
-  const showToolbutton = useSelector((state: RootState) => state.showToolbutton);
+  const [showToolbutton, setShowToolbutton] = useState(false);
   const [toolbuttonPosition, setToolbuttonPosition] = useState({ x: 0, y: 0 });
-  const nodeRef = useRef(null);
-
-  useEffect(() => {
-    if (selected && nodeRef.current) {
-      const rect = nodeRef.current;
-      setToolbuttonPosition({ x: rect.offsetLeft + rect.offsetWidth, y: rect.offsetTop });
-    }
-  }, [selected, node.x, node.y]);
 
   const [{ }, drag] = useDrag({
     type: `Node`,
     item: { id: node.id, left: node.x, top: node.y },
+    end: (item, monitor) => {
+      const newCoords = monitor.getClientOffset();
+      if (item && newCoords) {
+        setToolbuttonPosition({ x: newCoords.x, y: newCoords.y });
+      }
+    }
   });
 
   const handleClick = (e) => {
     e.stopPropagation();
     if (node.id !== selectedNodeId) {
       dispatch(setSelectedNodeId(node.id));
-      dispatch(setToolbuttonPositionAction(node.x, node.y));
     }
   };
 
@@ -64,17 +61,13 @@ const Node: React.FC<NodeProps> = ({ node }) => {
   const handleButtonClick = (e) => {
     e.stopPropagation();
     dispatch(setSelectedNodeId(node.id));
-    dispatch(setToolbuttonPositionAction({ x: node.x, y: node.y }));
-    dispatch(showToolbuttonAction(!showToolbutton));
+    setShowToolbutton(!showToolbutton);
     dispatch(hideNodeSettings());
   };
-
 
   const handlePositionChange = (position: "top" | "bottom" | "left" | "right", coords: { x: number, y: number }) => {
     dispatch(updateHandlePosition(node.id, position, coords));
   };
-
-
 
   return (
     <div
@@ -87,8 +80,8 @@ const Node: React.FC<NodeProps> = ({ node }) => {
         className={`node ${selected ? 'selected' : ''}`}
         style={{
           position: "absolute",
-          color: node.color,  // 文字色の設定
-          backgroundColor: node.backgroundColor,  // 背景色の設定
+          color: node.color,
+          backgroundColor: node.backgroundColor,
         }}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
@@ -123,8 +116,6 @@ const Node: React.FC<NodeProps> = ({ node }) => {
       }
     </div>
   );
-
-
 }
 
 export default Node;

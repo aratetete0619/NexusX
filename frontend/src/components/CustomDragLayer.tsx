@@ -10,11 +10,10 @@ function getItemStyles(initialOffset: XYCoord | null, currentOffset: XYCoord | n
     };
   }
   let { x, y } = currentOffset;
-  const transform = `translate(${x}px, ${y}px)`;
+  const transform = `translate(${x + 750}px, ${y - 50}px)`;
   return {
     transform,
     WebkitTransform: transform,
-    position: 'absolute',
     width: '300px',
   };
 }

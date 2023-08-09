@@ -5,17 +5,21 @@ import ColorPickerPopup from './ColorPickerPopup';
 import ColorButton from './ColorButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/reducers';
-import { addNode, addEdge, hideNodeSettings, showToolbuttonAction, togglePicker, hidePicker } from '../redux/actions';
+import { addNode, addEdge, hideNodeSettings, togglePicker, hidePicker } from '../redux/actions';
 import '../styles/NodeSettings.css';
-import { NODE_WIDTH } from '../constants/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 
 
-const NodeSettings: React.FC = () => {
+interface NodeSettingsProps {
+  toolbuttonPosition: { x: number; y: number };
+  setShowNodeSettings: (show: boolean) => void;
+}
+
+
+const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShowNodeSettings }) => {
   const dispatch = useDispatch();
-  const toolbuttonPosition = useSelector((state: RootState) => state.toolbuttonPosition);
   const popupPosition = useSelector((state: RootState) => state.popupPosition);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -63,9 +67,9 @@ const NodeSettings: React.FC = () => {
     dispatch(hideNodeSettings());
   };
 
-  const handleBack = () => {
-    dispatch(hideNodeSettings());
-    dispatch(showToolbuttonAction(true));
+  const handleBack = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowNodeSettings(false);
   };
 
 
@@ -74,8 +78,9 @@ const NodeSettings: React.FC = () => {
     <div
       className="node-settings"
       style={{
+        position: "absolute",
         top: `${toolbuttonPosition.y}px`,
-        left: `${toolbuttonPosition.x + NODE_WIDTH}px`,
+        left: `${toolbuttonPosition.x}px`,
       }}
       onClick={() => {
         dispatch(hidePicker('color'));
@@ -93,6 +98,7 @@ const NodeSettings: React.FC = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onClick={(e) => e.stopPropagation()}
           placeholder="Enter title here"
         />
       </label>
@@ -103,6 +109,7 @@ const NodeSettings: React.FC = () => {
           className="node-settings-input"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          onClick={(e) => e.stopPropagation()}
           placeholder="Enter description here"
         />
       </label>
@@ -110,7 +117,7 @@ const NodeSettings: React.FC = () => {
       {
         <label>
           Color
-          <div className="color-container" style={{ position: 'relative' }}>
+          <div className="color-container" style={{ position: 'relative' }} onClick={(e) => e.stopPropagation()} >
             <ColorButton color={color} onClick={() => dispatch(togglePicker('color'))} />
             {showColorPicker && <ColorPickerPopup colorType="color" />}
             <ColorPalette paletteType="color" />
@@ -121,7 +128,7 @@ const NodeSettings: React.FC = () => {
       {
         <label>
           Background Color
-          <div className="color-container" style={{ position: 'relative' }}>
+          <div className="color-container" style={{ position: 'relative' }} onClick={(e) => e.stopPropagation()} >
             <ColorButton color={backgroundColor} onClick={() => dispatch(togglePicker('background'))} />
             {showBackgroundColorPicker && <ColorPickerPopup colorType="background" />}
             <ColorPalette paletteType="background" />
@@ -136,6 +143,7 @@ const NodeSettings: React.FC = () => {
           type="checkbox"
           checked={edgeConnection}
           onChange={(e) => setEdgeConnection(e.target.checked)}
+          onClick={(e) => e.stopPropagation()}
         />
       </label>
 

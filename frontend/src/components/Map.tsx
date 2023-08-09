@@ -164,7 +164,7 @@ const Map: React.FC = () => {
           selected={node.id === selectedNodeId}
         />
       ))}
-      {renderedEdges}
+      <Edge />
     </div>
   );
 }
