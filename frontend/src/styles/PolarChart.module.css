@@ -1,4 +1,7 @@
 /* src/styles/PolarChart.module.css */
-.polarChart {
+.circleSearchIcon {
   position: absolute;
+  cursor: pointer;
+  margin-right: 10px;
+
 }

@@ -58,6 +58,14 @@
   top: 45%;
   transform: translateY(-120%);
   cursor: pointer;
+
+}
+
+.circleSearchIcon {
+  position: relative;
+  cursor: pointer;
+  margin-right: 10px;
+
 }
 
 /* styles/SearchArea.module.css */
@@ -76,13 +84,36 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   border: 0.1px solid #DDDDDD;
+  background-color: white;
   animation: fadeIn 0.5s;
   font-family: 'Roboto', sans-serif;
   flex-grow: 1;
   font-weight: 500;
   font-size: 20px;
+}
+
+.resizableTextArea {
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  flex-grow: 1;
+  padding: 1em;
+  padding-right: 30px;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 2em;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.5);
+  width: 100%;
+  outline: none;
+  transition: width 0.5s, height 0.5s, border-radius 0.5s;
+  resize: none;
+  overflow: auto;
+  min-height: 20px;
+  max-height: 300px;
 }
 
 

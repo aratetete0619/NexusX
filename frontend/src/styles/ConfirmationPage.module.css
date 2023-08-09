@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 20vh;
+  font-family: 'Roboto', sans-serif;
+}
+
+.message {
+  font-size: 1.2em;
+  color: #666;
+}

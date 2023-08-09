@@ -13,8 +13,10 @@ body {
 
 .app {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  height: 100%;
+  overflow: auto;
+
 }
 
 /* Add media query for smaller screens */

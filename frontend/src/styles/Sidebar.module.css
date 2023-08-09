@@ -5,7 +5,6 @@
   top: 0;
   height: 100%;
   width: 200px;
-  background-color: #333;
   padding: 20px;
   background-color: #FFFFFF;
   z-index: 3;
@@ -53,4 +52,19 @@
   margin-left: -30px;
   margin-top: -30px;
   margin-bottom: 0;
+}
+
+.closeButton {
+  position: absolute;
+  right: 10px;
+  /* 右側からの距離を調整 */
+  top: 10px;
+  /* 上側からの距離を調整 */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  /* アイコンの色 */
+  font-size: 20px;
+  /* アイコンのサイズ */
 }
