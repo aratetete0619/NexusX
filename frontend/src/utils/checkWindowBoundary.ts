@@ -1,5 +1,3 @@
-// utils.ts
-
 export const checkWindowBoundary = (
   position: { x: number; y: number },
   elementWidth: number,

@@ -17,12 +17,19 @@
   transform: translateY(0);
 }
 
+.section1 {
+  width: 80%;
+}
+
+.section2 {
+  width: 90%;
+}
+
 .section1,
 .section2 {
   display: flex;
   justify-content: center;
   margin: 20px 0;
-  width: 80%;
   flex-wrap: wrap;
 }
 

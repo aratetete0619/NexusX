@@ -25,13 +25,15 @@ const Handle: React.FC<HandleProps> = ({ nodeId, position }) => {
   const { isEdgeCreationMode, startNodeId } = useSelector(state => state.edgeCreation);
   const [ref, bounds] = useMeasure();
 
+
   const [{ isDragging: dragIsDragging }, drag] = useDrag({
     type: `Handle`,
     item: { nodeId, position },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  });
+  }, [dragIsDragging, dispatch, isEdgeCreationMode, nodeId, position, startNodeId.nodeId, startNodeId.position]);
+
 
   const [, drop] = useDrop({
     accept: `Handle`,
@@ -49,7 +51,7 @@ const Handle: React.FC<HandleProps> = ({ nodeId, position }) => {
     const handleX = bounds.left + (position === 'left' ? 0 : bounds.width);
     const handleY = bounds.top + bounds.height / 2;
     dispatch(setHandlePosition({ nodeId, position, x: handleX, y: handleY }));
-  }, [dispatch, nodeId, position, bounds]);  // 依存配列に`bounds`を追加
+  }, [dispatch, nodeId, position, bounds.left, bounds.width, bounds.top, bounds.height]);
 
   useEffect(() => {
     if (dragIsDragging && !isEdgeCreationMode) {
@@ -57,7 +59,7 @@ const Handle: React.FC<HandleProps> = ({ nodeId, position }) => {
     } else if (!dragIsDragging && isEdgeCreationMode && startNodeId.nodeId === nodeId && startNodeId.position === position) {
       dispatch(endEdgeCreation());
     }
-  }, [dragIsDragging]);
+  }, [dragIsDragging, dispatch, isEdgeCreationMode, nodeId, position, startNodeId.nodeId, startNodeId.position]);
 
   return (
     <div className={handleClass} ref={ref => drag(drop(ref))}>

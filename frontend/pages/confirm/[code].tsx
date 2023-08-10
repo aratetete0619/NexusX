@@ -1,23 +1,22 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, FC } from 'react';
 import { useRouter } from 'next/router';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import Loader from '../../src/components/Loader';
 import { ErrorContext } from '../../src/contexts/ErrorContext';
+import { CONFIRM_USER } from '../../src/graphql/mutations'
 import styles from '../../src/styles/ConfirmationPage.module.css';
 
-const CONFIRM_USER = gql`
-  mutation ConfirmUser($confirmationCode: String!) {
-    confirmUser(confirmationCode: $confirmationCode) {
-      success
-      message
-    }
-  }
-`;
+interface ConfirmUserResponse {
+  confirmUser: {
+    success: boolean;
+    message: string;
+  };
+}
 
-const ConfirmationPage = () => {
+const ConfirmationPage: FC = () => {
   const router = useRouter();
   const { code } = router.query;
-  const [confirmUser, { data, loading, error }] = useMutation(CONFIRM_USER);
+  const [confirmUser, { data, loading, error }] = useMutation<ConfirmUserResponse>(CONFIRM_USER);
   const [message, setMessage] = useState('');
   const { showError } = useContext(ErrorContext);
 
@@ -30,7 +29,7 @@ const ConfirmationPage = () => {
         }
         setTimeout(() => {
           router.push('/login');
-        }, 5000); // 5 seconds delay
+        }, 5000);
       } catch (err) {
         showError(`An error occurred: ${err.message}`);
       }
@@ -39,7 +38,7 @@ const ConfirmationPage = () => {
     if (code) {
       confirm();
     }
-  }, [code]);
+  }, [code, confirmUser, router, showError]);
 
   if (loading) return <Loader />;
 

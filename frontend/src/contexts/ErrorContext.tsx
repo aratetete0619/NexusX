@@ -1,13 +1,19 @@
-// src/contexts/ErrorContext.tsx
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, FC } from 'react';
 
-export const ErrorContext = createContext();
+interface ErrorContextProps {
+  showError: (message: string) => void;
+  hideError: () => void;
+  errorMessage: string;
+  isErrorVisible: boolean;
+}
 
-export const ErrorProvider = ({ children }) => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isErrorVisible, setIsErrorVisible] = useState(false);
+export const ErrorContext = createContext<ErrorContextProps | undefined>(undefined);
 
-  const showError = (message) => {
+export const ErrorProvider: FC = ({ children }) => {
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isErrorVisible, setIsErrorVisible] = useState<boolean>(false);
+
+  const showError = (message: string) => {
     setErrorMessage(message);
     setIsErrorVisible(true);
   };

@@ -1,89 +1,51 @@
-// components/PolarNodePopup.tsx
 import React, { useContext } from 'react';
+import { RootState } from '../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPolarNode, updateDraggedPosition, setResults, setCenterPolarNode, addPolarEdgeInfo, clearPolarEdgeInfo, toggleFavoriteNode } from '../redux/actions';
+import { selectPolarNode, updateDraggedPosition, setResults, setCenterPolarNode, addPolarEdgeInfo, clearPolarEdgeInfo } from '../redux/actions';
 import styles from '../styles/PolarNodePopup.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
 import { calculatePolarCoordinates, getColumnNumber } from '../utils/polarCoordinates';
 import GreenButton from './GreenButton';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { NoResultContext } from '../contexts/NoResultContext';
+import { GET_RELATED_NODES_QUERY } from '../graphql/mutations'
 import Loader from './Loader';
+import Image from 'next/image';
 
-
-
-
-const GET_RELATED_NODES_QUERY = gql`
-  query GetRelatedNodes($esId: String!) {
-    getRelatedNodes(esId: $esId) {
-      originalQuery
-      preprocessedQuery
-      startNode {
-        identity
-        labels
-        properties {
-          name
-          esId
-          imagePath
-          description
-        }
-      }
-      relationship {
-        identity
-        type
-        properties {
-          name
-          esId
-          imagePath
-          description
-        }
-      }
-      endNode {
-        identity
-        labels
-        properties {
-          name
-          esId
-          imagePath
-          description
-        }
-      }
-      score
-    }
-  }
-`;
-
-
-const PolarNodePopup = ({ hideDraggableComponents, setShowEdges }) => {
+interface PolarNodePopupProps {
+  hideDraggableComponents: Function;
+  setShowEdges: Function;
+}
+const PolarNodePopup: React.FC<PolarNodePopupProps> = ({ hideDraggableComponents, setShowEdges }) => {
   const dispatch = useDispatch();
-  const selectedPolarNodeId = useSelector((state) => state.selectedPolarNode);
-  const centerPolarNode = useSelector((state) => state.centerPolarNode);
-  const searchResults = useSelector((state) => state.searchResults);
-  const centerPosition = useSelector((state) => state.searchBarPosition);
+  const selectedPolarNodeId = useSelector((state: RootState) => state.selectedPolarNode);
+  const centerPolarNode = useSelector((state: RootState) => state.centerPolarNode);
+  const searchResults = useSelector((state: RootState) => state.searchResults);
+  const centerPosition = useSelector((state: RootState) => state.searchBarPosition);
   const { showError } = useContext(ErrorContext);
   const { showNoResult } = useContext(NoResultContext);
 
 
+  let selectedPolarNode = searchResults.find((node, index: number) => index === selectedPolarNodeId);
 
-
-  let selectedPolarNode = searchResults.find((node, index) => index === selectedPolarNodeId);
 
   if (!selectedPolarNode) {
     selectedPolarNode = centerPolarNode;
   }
 
+
   let labels, properties;
+
 
   if (selectedPolarNode) {
     labels = selectedPolarNode.startNode ? selectedPolarNode.startNode.labels : selectedPolarNode.labels;
     properties = selectedPolarNode.startNode ? selectedPolarNode.startNode.properties : selectedPolarNode.properties;
   }
 
-  const nodeId = properties ? properties.esId : null;
 
+  const nodeId = properties ? properties.esId : null;
   const { loading, error, data: relatedNodesData } = useQuery(GET_RELATED_NODES_QUERY, {
     variables: { esId: nodeId },
     skip: !nodeId,
@@ -91,20 +53,21 @@ const PolarNodePopup = ({ hideDraggableComponents, setShowEdges }) => {
 
 
   if (!selectedPolarNode || !properties) return null;
-
   if (selectedPolarNodeId === null || !selectedPolarNode || !properties) return null;
+
 
   const { name, imagePath, description } = properties;
 
-  const handleClose = (e) => {
+
+  const handleClose = (e: MouseEvent) => {
     e.stopPropagation();
     dispatch(selectPolarNode(null));
   };
 
-  const handleVisualizeRelations = async (event) => {
+
+  const handleVisualizeRelations = async (event: MouseEvent) => {
     event.stopPropagation();
     dispatch(clearPolarEdgeInfo());
-
     try {
       if (!loading &&
         (!relatedNodesData ||
@@ -113,7 +76,6 @@ const PolarNodePopup = ({ hideDraggableComponents, setShowEdges }) => {
         showNoResult("No related nodes were found for the selected node.");
         return;
       }
-
       hideDraggableComponents();
       dispatch(setCenterPolarNode(selectedPolarNode));
       setShowEdges(true)
@@ -123,34 +85,23 @@ const PolarNodePopup = ({ hideDraggableComponents, setShowEdges }) => {
         }
         return;
       }
-
       const relatedNodes = relatedNodesData.getRelatedNodes;
-
       const endNode = relatedNodes.map(node => node.endNode);
-
       dispatch(setResults(endNode));
       relatedNodes.forEach(node => {
         dispatch(addPolarEdgeInfo(node.startNode, node.endNode, node.relationship));
       });
-
       relatedNodes.forEach((node, index) => {
         const column = getColumnNumber(index, relatedNodes.length);
         const { x, y } = calculatePolarCoordinates(center, index, relatedNodes.length, column);
         dispatch(updateDraggedPosition(index, x, y));
       });
-
       dispatch(updateDraggedPosition(selectedPolarNodeId, centerPosition.x, centerPosition.y));
       setShowEdges(true);
-
-
     } catch (error) {
       console.error("Error in handleVisualizeRelations:", error);
     }
   };
-
-
-
-
 
 
   return (
@@ -160,7 +111,7 @@ const PolarNodePopup = ({ hideDraggableComponents, setShowEdges }) => {
         <FontAwesomeIcon icon={faTimes} size="lg" />
       </div>
       <div className={styles.titleSection}>
-        {imagePath && <img src={`/${imagePath}`} alt={name} className={styles.popupImage} />}
+        {imagePath && <Image src={`/${imagePath}`} alt={name} className={styles.popupImage} width="100" height="100" />}
         <h2 className={styles.popupTitle}>{name}</h2>
       </div>
       <p className={styles.popupLabel}>

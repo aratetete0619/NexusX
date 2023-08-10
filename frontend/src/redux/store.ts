@@ -14,7 +14,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(
   persistedReducer,
-  composeWithDevTools(applyMiddleware(thunk /* 他のミドルウェアがある場合はここにカンマを付けて追加します */))
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 const persistor = persistStore(store);

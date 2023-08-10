@@ -29,3 +29,74 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+
+export const CONFIRM_USER = gql`
+  mutation ConfirmUser($confirmationCode: String!) {
+    confirmUser(confirmationCode: $confirmationCode) {
+      success
+      message
+    }
+  }
+`;
+
+
+
+export const SEARCH_QUERY = gql`
+  query Search($query: String!) {
+    search(query: $query) {
+      original_query
+      preprocessed_query
+      search_results {
+        neo4j_data {
+          id
+          labels
+          properties
+        }
+        description
+        score
+      }
+    }
+  }
+`;
+
+
+export const GET_RELATED_NODES_QUERY = gql`
+  query GetRelatedNodes($esId: String!) {
+    getRelatedNodes(esId: $esId) {
+      originalQuery
+      preprocessedQuery
+      startNode {
+        identity
+        labels
+        properties {
+          name
+          esId
+          imagePath
+          description
+        }
+      }
+      relationship {
+        identity
+        type
+        properties {
+          name
+          esId
+          imagePath
+          description
+        }
+      }
+      endNode {
+        identity
+        labels
+        properties {
+          name
+          esId
+          imagePath
+          description
+        }
+      }
+      score
+    }
+  }
+`;

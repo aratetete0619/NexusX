@@ -17,13 +17,11 @@ import {
 } from '../redux/actions';
 
 const Map: React.FC = () => {
-
-
   const dispatch = useDispatch();
-  const nodes = useSelector(state => state.nodes);
-  const edges = useSelector(state => state.edges);
-  const selectedNodeId = useSelector(state => state.selectedNodeId);
-  const mapSize = useSelector(state => state.map);
+  const nodes = useSelector((state: RootState) => state.nodes);
+  const edges = useSelector((state: RootState) => state.edges);
+  const selectedNodeId = useSelector((state: RootState) => state.selectedNodeId);
+  const mapSize = useSelector((state: RootState) => state.map);
   const [startPos, setStartPos] = useState<Position>({ x: 0, y: 0 });
   const [translate, setTranslate] = useState<Position>({ x: 0, y: 0 });
   const [dragging, setDragging] = useState<boolean>(false);
@@ -102,11 +100,10 @@ const Map: React.FC = () => {
     });
   }
 
+
   useEffect(() => {
     setRenderedEdges(renderEdges(edges, nodes, 'map_edges'));
-  }, [edges]);
-
-
+  }, [edges, nodes]);
 
   function calculateInitialCenter(nodes: NodeType[]): Position {
     console.log(nodes);
@@ -135,11 +132,6 @@ const Map: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-
-  useEffect(() => {
-    console.log('Map size updated:', mapSize);
-  }, [mapSize]);
 
 
   return (
