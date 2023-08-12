@@ -14,8 +14,7 @@ https://nexusxsatoshi.com/
 <br>
 
 日本語ドキュメント
-https://github.com/aratetete0619/NexusX/blob/main/Readme.jp.md
-
+https://github.com/aratetete0619/NexusX/blob/main/README.JP.md
 
 
 ## Installation
