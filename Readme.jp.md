@@ -1,3 +1,5 @@
+![NexusX Main Logo 800x600](https://github.com/aratetete0619/NexusX/assets/120061560/a770db3b-e51e-4ff6-843b-f1577fcd7ad3)
+
 
 ## NexusXとは？
 「NexusXは単なるアプリを超えて、あなたのパーソナルな知識探索ツールです。」<br>
