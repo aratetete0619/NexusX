@@ -19,7 +19,7 @@ NexusX is a web-based application and does not require any specific installation
 2. Enter the keyword you want to search in the search bar.
 3. From the search results, select the "connection" you want to visualize.
 4. A diagram visualizing the "connection" is displayed.
-5. You can save the diagram or share it on social media.
+5. You can save the diagram or share it on social media.(In progress)
 
 ## Architecture
 
