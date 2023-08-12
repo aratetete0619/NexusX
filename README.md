@@ -23,10 +23,12 @@ NexusX is a web-based application and does not require any specific installation
 
 3. From the search results, select the "connection" you want to visualize.
 
+[![Image from Gyazo](https://i.gyazo.com/fd3bdc2245b848bb22b5dc0fc640a4f1.gif)](https://gyazo.com/fd3bdc2245b848bb22b5dc0fc640a4f1)
 
-4. 
-6. A diagram visualizing the "connection" is displayed.
-7. You can save the diagram or share it on social media.(In progress)
+4. A diagram visualizing the "connection" is displayed.
+[![Image from Gyazo](https://i.gyazo.com/b8e324d419bbf5f111df09b5ece5706d.gif)](https://gyazo.com/b8e324d419bbf5f111df09b5ece5706d)
+
+5. You can save the diagram or share it on social media.(In progress)
 
 ## Architecture
 
