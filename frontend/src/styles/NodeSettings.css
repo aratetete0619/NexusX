@@ -141,6 +141,8 @@
 .back-button {
   font-size: 24px;
   order: 2;
+  width: 16px;
+  height: 16px;
 }
 
 .back-button+span {
