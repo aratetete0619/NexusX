@@ -16,9 +16,11 @@ NexusX is a web-based application and does not require any specific installation
 ## Usage
 
 1. Access NexusX.
-[![Image from Gyazo](https://i.gyazo.com/0101970389aab6d718fc0191d6befc7d.gif)](https://gyazo.com/0101970389aab6d718fc0191d6befc7d)
+
+[![Image from Gyazo](https://i.gyazo.com/1dd5a746d627f9a92323e6b8afdade44.gif)](https://gyazo.com/1dd5a746d627f9a92323e6b8afdade44)
 
 2. Enter the keyword you want to search in the search bar.
+
 [![Image from Gyazo](https://i.gyazo.com/2f2414786ebbdf2604933e9f2c890fd7.gif)](https://gyazo.com/2f2414786ebbdf2604933e9f2c890fd7)
 
 3. From the search results, select the "connection" you want to visualize.
@@ -26,6 +28,7 @@ NexusX is a web-based application and does not require any specific installation
 [![Image from Gyazo](https://i.gyazo.com/fd3bdc2245b848bb22b5dc0fc640a4f1.gif)](https://gyazo.com/fd3bdc2245b848bb22b5dc0fc640a4f1)
 
 4. A diagram visualizing the "connection" is displayed.
+
 [![Image from Gyazo](https://i.gyazo.com/b8e324d419bbf5f111df09b5ece5706d.gif)](https://gyazo.com/b8e324d419bbf5f111df09b5ece5706d)
 
 5. You can save the diagram or share it on social media.(In progress)
