@@ -41,6 +41,17 @@ export const CONFIRM_USER = gql`
 `;
 
 
+export const LOGIN_USER = gql`
+  mutation LoginUser($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password) {
+      id
+      email
+      token
+    }
+  }
+`;
+
+
 
 export const SEARCH_QUERY = gql`
   query Search($query: String!) {
@@ -100,3 +111,24 @@ export const GET_RELATED_NODES_QUERY = gql`
     }
   }
 `;
+
+
+export const RESIZABLE_SEARCH_QUERY = gql`
+  query Search($query: String!) {
+    search(query: $query) {
+      originalQuery
+      preprocessedQuery
+      startNode {
+        identity
+        labels
+        properties {
+          name
+          esId
+          imagePath
+          description
+        }
+      }
+      score
+    }
+  }
+`

@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateSearchBarPosition } from '../redux/actions/searchBarPosition';
 import SearchArea from './SearchArea';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { RootState } from '../redux/store';
+import { RootState } from '../redux/reducers';
 
 interface DraggableSearchAreaProps {
+  onViewportChange: (dx: number, dy: number) => void;
+  onError: (message: string) => void;
   setShowEdges: (value: boolean) => void;
 }
 

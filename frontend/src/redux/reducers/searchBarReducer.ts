@@ -4,7 +4,7 @@ const initialState = {
   query: ''
 };
 
-const searchBarReducer = (state = initialState, action) => {
+const searchBarReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case UPDATE_QUERY:
       return {

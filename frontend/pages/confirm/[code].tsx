@@ -18,7 +18,11 @@ const ConfirmationPage: FC = () => {
   const { code } = router.query;
   const [confirmUser, { data, loading, error }] = useMutation<ConfirmUserResponse>(CONFIRM_USER);
   const [message, setMessage] = useState('');
-  const { showError } = useContext(ErrorContext);
+  const errorContext = useContext(ErrorContext);
+  if (!errorContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showError } = errorContext;
 
   useEffect(() => {
     const confirm = async () => {
@@ -31,7 +35,11 @@ const ConfirmationPage: FC = () => {
           router.push('/login');
         }, 5000);
       } catch (err) {
-        showError(`An error occurred: ${err.message}`);
+        if (err instanceof Error) {
+          showError(`An error occurred: ${err.message}`);
+        } else {
+          showError(`An unknown error occurred: ${err}`);
+        }
       }
     };
 

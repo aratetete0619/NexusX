@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ColorPalette from './ColorPalette';
 import ColorPickerPopup from './ColorPickerPopup';
 import ColorButton from './ColorButton';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../hooks/hooks';
 import { RootState } from '../redux/reducers';
 import { addNode, addEdge, hideNodeSettings, togglePicker, hidePicker } from '../redux/actions';
 import '../styles/NodeSettings.css';
@@ -28,6 +28,7 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
   const [edgeConnection, setEdgeConnection] = useState(false);
   const selectedNodeId = useSelector((state: RootState) => state.selectedNodeId);
   const selectedNodeName = useSelector((state: RootState) => state.nodes.find(node => node.id === selectedNodeId)?.name);
+  const selectedNode = useSelector((state: RootState) => state.nodes.find(n => n.id === selectedNodeId));
   const [colorInput, setColorInput] = useState('');
   const showColorPicker = useSelector(
     (state: RootState) => state.showPicker.color
@@ -37,7 +38,7 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
   );
 
   useEffect(() => {
-    setColorInput(color.substring(1)); // Update colorInput whenever color changes
+    setColorInput(color.substring(1));
   }, [color]);
 
 
@@ -56,12 +57,22 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
     dispatch(addNode(node));
 
     if (edgeConnection && selectedNodeId !== null) {
+
+      const sourcePosition = node.x > selectedNode.x ? 'right' : 'left';
+      const targetPosition = node.x > selectedNode.x ? 'left' : 'right';
+
       const edge = {
         id: uuidv4(),
-        source: selectedNodeId,
-        target: node.id,
+        source: {
+          nodeId: selectedNodeId,
+          position: sourcePosition
+        },
+        target: {
+          nodeId: node.id,
+          position: targetPosition
+        }
       };
-      dispatch(addEdge(edge));
+      dispatch(addEdge(edge.source.nodeId, edge.source.position, edge.target.nodeId, edge.target.position));
     }
 
     dispatch(hideNodeSettings());

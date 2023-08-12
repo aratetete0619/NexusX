@@ -14,7 +14,7 @@ const UserInfo = () => {
   const userIcon = "/gorilla.png";
 
   const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useRef();
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -23,8 +23,8 @@ const UserInfo = () => {
     };
   }, []);
 
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
       setShowMenu(false);
     }
   };

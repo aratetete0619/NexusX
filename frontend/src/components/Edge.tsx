@@ -1,13 +1,19 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import * as d3 from 'd3';
+import { RootState } from '../redux/reducers';
+import { Node as NodeType } from '../types/index';
 
-interface EdgeProps { }
+interface EdgeProps {
+  fromNode: NodeType;
+  toNode: NodeType;
+  color?: string;
+}
 
 const Edge: React.FC<EdgeProps> = () => {
   const svgRef = useRef(null);
-  const edges = useSelector((state) => state.edges);
-  const nodes = useSelector((state) => state.nodes);
+  const edges = useSelector((state: RootState) => state.edges);
+  const nodes = useSelector((state: RootState) => state.nodes);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -23,17 +29,13 @@ const Edge: React.FC<EdgeProps> = () => {
       const targetX = targetNode.x + 85.5;
       const targetY = targetNode.y + 85.5;
 
-      // Direction vector from source to target
       const dirX = targetX - sourceX;
       const dirY = targetY - sourceY;
 
-      // Length of the direction vector (distance between source and target)
       const length = Math.sqrt(dirX * dirX + dirY * dirY);
 
-      // Length of the new segment to be subtracted from the ends of the edge
-      const offsetLength = 85.5; // For example, subtract 85.5px from each end
+      const offsetLength = 85.5;
 
-      // Compute the new source and target points
       const newSourceX = sourceX + offsetLength * dirX / length;
       const newSourceY = sourceY + offsetLength * dirY / length;
       const newTargetX = targetX - offsetLength * dirX / length;
@@ -49,7 +51,7 @@ const Edge: React.FC<EdgeProps> = () => {
     });
 
     return () => {
-      svg.selectAll("*").remove(); // Clear the contents of the SVG
+      svg.selectAll("*").remove();
     };
   }, [edges, nodes]);
 

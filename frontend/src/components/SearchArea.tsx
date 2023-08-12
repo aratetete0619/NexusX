@@ -14,8 +14,8 @@ const SearchArea: React.FC<SearchAreaProps> = ({ setShowEdges }) => {
   const dispatch = useDispatch();
   const [isCircle, setIsCircle] = useState(false);
   const [query, setQuery] = useState('');
-  const searchBarRef = useRef(null);
-  const textAreaRef = useRef(null);
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
 
   const handleCircleClick = () => {
@@ -29,7 +29,7 @@ const SearchArea: React.FC<SearchAreaProps> = ({ setShowEdges }) => {
   };
 
 
-  const handleClickOutside = (event: React.MouseEvent) => {
+  const handleClickOutside = (event: MouseEvent) => {
     const isOutsideClick = searchBarRef.current && !searchBarRef.current.contains(event.target as Node) && !isCircle;
 
     if (isOutsideClick) {

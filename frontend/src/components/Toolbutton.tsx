@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../hooks/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { deleteNode, deleteAllNodes, showToolbuttonAction } from '../redux/actions';
@@ -36,7 +36,7 @@ const Toolbutton: React.FC<ToolbuttonProps> = ({ deleteNode, selectedNodeId, sho
 
   const handleDeleteAllNodes = (e: MouseEvent) => {
     e.stopPropagation();
-    dispatch(deleteAllNodes());
+    // dispatch(deleteAllNodes());
   };
 
   return (
@@ -45,14 +45,14 @@ const Toolbutton: React.FC<ToolbuttonProps> = ({ deleteNode, selectedNodeId, sho
       style={{
         position: "absolute",
         top: `${toolbuttonPosition.y}px`,
-        left: `${toolbuttonPosition.x + NODE_WIDTH}px`, // ノードの右端に配置
+        left: `${toolbuttonPosition.x + NODE_WIDTH}px`,
         visibility: showToolbutton ? 'visible' : 'hidden',
       }}
     >
       <button className={styles.button} onClick={handleAddNode}><FontAwesomeIcon icon={faPlus} /> Add Node</button>
       <button className={styles.button} onClick={handleDeleteNode}><FontAwesomeIcon icon={faTrash} /> Delete Node</button>
       <button className={styles.button} onClick={handleDeleteAllNodes}><FontAwesomeIcon icon={faTrashAlt} /> Delete All Nodes</button>
-      {showNodeSettings && <NodeSettings toolbuttonPosition={toolbuttonPosition} showNodeSettings={showNodeSettings} setShowNodeSettings={setShowNodeSettings} />}
+      {showNodeSettings && <NodeSettings toolbuttonPosition={toolbuttonPosition} setShowNodeSettings={setShowNodeSettings} />}
     </div>
   );
 }

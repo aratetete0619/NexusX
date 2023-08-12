@@ -1,5 +1,3 @@
-// pages/_document.tsx
-
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react'
 
@@ -13,10 +11,10 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&display=swap"
           />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&family=Work+Sans:ital,wght@0,100;0,700;1,700&display=swap" rel="stylesheet" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
           <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@800&family=Work+Sans:ital,wght@0,100;0,700;1,200;1,700&display=swap" rel="stylesheet" />
         </Head>
         <body>

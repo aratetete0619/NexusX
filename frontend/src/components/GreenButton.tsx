@@ -1,4 +1,3 @@
-// components/GreenButton.tsx
 import React from 'react';
 import styles from '../styles/GreenButton.module.css';
 
@@ -9,8 +8,8 @@ const GreenButton = ({
   className,
 }: {
   text: string;
-  onClick: () => void;
-  onMouseDown: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
   className?: string;
 }) => (
   <button className={`${styles.customButton} ${className}`} onClick={onClick} onMouseDown={onMouseDown}>

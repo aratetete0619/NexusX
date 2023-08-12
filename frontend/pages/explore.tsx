@@ -1,4 +1,3 @@
-// explore.tsx
 import React, { useState, useContext } from 'react';
 import DraggableSearchArea from '../src/components/DraggableSearchArea';
 import PolarChart from '../src/components/PolarChart';
@@ -15,18 +14,17 @@ import { ErrorContext } from '../src/contexts/ErrorContext';
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = parseCookies(context);
   const token = cookies.token;
+  const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET;
 
-  try {
-    jwt.verify(token, process.env.JWT_SECRET);
-  } catch (error) {
-    // If the token is not valid, redirect to the login page
-    context.res.setHeader('location', '/login');
-    context.res.statusCode = 302;
-    context.res.end();
-    return { props: {} };
+  if (typeof jwtSecret == 'string') {
+    try {
+      jwt.verify(token, jwtSecret);
+    } catch (error) {
+      context.res.setHeader('location', '/login');
+      context.res.statusCode = 302;
+    }
   }
 
-  // If the token is valid, render the page
   return { props: { token } };
 };
 
@@ -34,17 +32,20 @@ const ExplorePage: React.FC = () => {
   const [viewport, setViewport] = useState({ x: 0, y: 0 });
   const [showDraggableComponents, setShowDraggableComponents] = useState(true);
   const [showEdges, setShowEdges] = useState(false);
-  const { showError } = useContext(ErrorContext);
+  const errorContext = useContext(ErrorContext);
+  if (!errorContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showError } = errorContext;
 
-
-  const handleViewportChange = (dx, dy) => {
+  const handleViewportChange = (dx: number, dy: number) => {
     setViewport(prevViewport => ({
       x: prevViewport.x + dx,
       y: prevViewport.y + dy
     }));
   };
 
-  const handleError = (message) => {
+  const handleError = (message: string) => {
     showError(message);
   };
 
@@ -59,18 +60,16 @@ const ExplorePage: React.FC = () => {
   return (
     <MainLayout>
       <div className="app">
-        <PolarNodeDragLayer viewport={viewport} />
-        {showDraggableComponents && <CustomDragLayer />}
+        <PolarNodeDragLayer />
+        {showDraggableComponents && <CustomDragLayer setShowEdges={setShowEdges} />}
         {showDraggableComponents &&
           <DraggableSearchArea
-            viewport={viewport}
             onViewportChange={handleViewportChange}
             onError={handleError}
             setShowEdges={setShowEdges}
           />
         }
         <PolarChart
-          viewport={viewport}
           showDraggableComponents={showDraggableComponents}
           displayDraggableComponents={displayDraggableComponents}
           hideDraggableComponents={hideDraggableComponents}

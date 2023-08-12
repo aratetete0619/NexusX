@@ -1,15 +1,20 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 
 type SuccessContextType = {
   successMessage: string;
   showSuccess: (message: string) => void;
 };
+
 export const SuccessContext = createContext<SuccessContextType | undefined>(undefined);
 
-export const SuccessProvider = ({ children }) => {
+interface SuccessProviderProps {
+  children: ReactNode;
+}
+
+export const SuccessProvider: React.FC<SuccessProviderProps> = ({ children }) => {
   const [successMessage, setSuccessMessage] = useState('');
 
-  const showSuccess = (message) => {
+  const showSuccess = (message: string) => {
     setSuccessMessage(message);
     setTimeout(() => {
       setSuccessMessage('');

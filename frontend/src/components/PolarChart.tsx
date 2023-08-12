@@ -1,14 +1,14 @@
 // components/PolarChart.tsx
 import React, { useEffect, useState } from 'react';
 import { RootState } from '../redux/reducers';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../hooks/hooks';
 import { selectPolarNode, updateDraggedPosition } from '../redux/actions';
 import PolarNode from './PolarNode';
 import { calculatePolarCoordinates } from '../utils/polarCoordinates';
 import { useDrop } from 'react-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { ResultType } from '../types/result'
+import { ResultType } from '../types'
 
 interface PolarChartProps {
   showDraggableComponents: boolean;
@@ -55,11 +55,10 @@ const PolarChart: React.FC<PolarChartProps> = ({ showDraggableComponents, displa
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!event.target.closest('.polar-chart') && isTextAreaOpen) {
-        if (searchBarQuery === '') {
+      if (!(event.target as HTMLElement)?.closest('.polar-chart') && isTextAreaOpen) {
+        if (searchBarQuery.query === '') {
           setTextAreaOpen(false);
           hideDraggableComponents();
-          dispatch(resetCenterPolarNode());
         }
       }
     };
@@ -83,7 +82,7 @@ const PolarChart: React.FC<PolarChartProps> = ({ showDraggableComponents, displa
             onSelect={() => dispatch(selectPolarNode(index))}
             result={result}
             style={nodeStyle}
-            updatePosition={(x, y) => {
+            updatePosition={(x: number, y: number) => {
               dispatch(updateDraggedPosition(index, x, y));
             }}
           />

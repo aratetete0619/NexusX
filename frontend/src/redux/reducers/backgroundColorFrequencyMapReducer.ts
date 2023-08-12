@@ -1,8 +1,15 @@
-// src/redux/reducers/backgroundColorFrequencyMapReducer.ts
-
 import { INCREMENT_BACKGROUND_COLOR_FREQUENCY } from '../actions/actionTypes';
 
-const backgroundColorFrequencyMapReducer = (state = {}, action) => {
+type Action = {
+  type: typeof INCREMENT_BACKGROUND_COLOR_FREQUENCY;
+  payload: string;
+};
+
+type State = Record<string, number>;
+
+const initialState: State = {};
+
+const backgroundColorFrequencyMapReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case INCREMENT_BACKGROUND_COLOR_FREQUENCY:
       return {

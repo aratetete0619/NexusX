@@ -53,8 +53,8 @@ const PolarNodeEdge: React.FC = () => {
     });
 
 
-    results.forEach((_, i: number) => {
-      const endNodePosition = draggedPositions[i.toString()];
+    results.forEach((_: any, i: number) => {
+      const endNodePosition = draggedPositions[i];
       if (!endNodePosition) return;
 
       const adjustedEndNodeX = endNodePosition.x + 250;

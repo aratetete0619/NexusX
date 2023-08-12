@@ -4,28 +4,31 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from '@react-oauth/google';
 import styles from '../styles/LoginForm.module.css';
 import GreenButton from '../components/GreenButton';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { AuthContext } from '../contexts/AuthContext';
 import { setCookie } from 'nookies';
+import { LOGIN_USER } from '../graphql/mutations'
 
-const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!) {
-    loginUser(email: $email, password: $password) {
-      id
-      email
-      token
-    }
-  }
-`;
+
 
 const LoginForm = () => {
   const [loginUser, { error }] = useMutation(LOGIN_USER);
-  const { showError } = useContext(ErrorContext);
   const router = useRouter();
   const { login } = useContext(AuthContext);
+  const errorContext = useContext(ErrorContext);
+  if (!errorContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showError } = errorContext;
+  const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
-  const validateForm = (email, password) => {
+  if (!recaptchaKey) {
+    throw new Error('RECAPTCHA_SITE_KEY is not defined in environment variables');
+  }
+
+
+  const validateForm = (email: string, password: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!email || !emailRegex.test(email)) {
@@ -41,11 +44,12 @@ const LoginForm = () => {
     return true;
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const email = event.target.elements.email.value;
-    const password = event.target.elements.password.value;
+    const email = (event.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
+    const password = (event.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
+
 
     if (!validateForm(email, password)) {
       return;
@@ -53,30 +57,33 @@ const LoginForm = () => {
 
     try {
       const response = await loginUser({ variables: { email: email, password: password } });
+      const token = response.data.loginUser.token;
 
 
       setCookie(null, 'token', response.data.loginUser.token, {
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        maxAge: 30 * 24 * 60 * 60,
         path: '/',
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
       });
 
       setCookie(null, 'email', response.data.loginUser.email, {
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        maxAge: 30 * 24 * 60 * 60,
         path: '/',
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
       });
 
-      login();
+      login(token);
       router.push('/explore');
-    } catch (error) {
-      // ログインが失敗したときのエラーメッセージを表示
-      showError(`Login Failed: ${error.message}`);
-      // ユーザーをログインページにリダイレクトせず、エラーメッセージを表示したままにします
+    } catch (error: any) {
+      if (error instanceof Error) {
+        showError(`Login Failed: ${error.message}`);
+      } else {
+        showError(`Login Failed`);
+      }
     }
-  };
+  }
 
 
 
@@ -99,8 +106,12 @@ const LoginForm = () => {
       <form className={styles.inputForm} onSubmit={handleSubmit}>
         <input type="email" name="email" className={styles.inputField} placeholder="Email" />
         <input type="password" name="password" className={styles.inputField} placeholder="Password" />
-        <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} />
-        <GreenButton text="Log in" />
+        <ReCAPTCHA sitekey={recaptchaKey} />
+        <GreenButton
+          text="Log in"
+          onClick={() => { }}
+          onMouseDown={() => { }}
+        />
       </form>
     </div>
   );

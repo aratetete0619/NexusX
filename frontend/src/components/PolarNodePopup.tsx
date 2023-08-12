@@ -24,11 +24,22 @@ const PolarNodePopup: React.FC<PolarNodePopupProps> = ({ hideDraggableComponents
   const centerPolarNode = useSelector((state: RootState) => state.centerPolarNode);
   const searchResults = useSelector((state: RootState) => state.searchResults);
   const centerPosition = useSelector((state: RootState) => state.searchBarPosition);
-  const { showError } = useContext(ErrorContext);
-  const { showNoResult } = useContext(NoResultContext);
+  const errorContext = useContext(ErrorContext);
+  if (!errorContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showError } = errorContext;
+
+  const noResultContext = useContext(NoResultContext);
+  if (!noResultContext) {
+    throw new Error('NoResultrContext not provided');
+  }
+  const { showNoResult } = noResultContext;
 
 
-  let selectedPolarNode = searchResults.find((node, index: number) => index === selectedPolarNodeId);
+
+
+  let selectedPolarNode = searchResults.find((node: any, index: number) => index === selectedPolarNodeId);
 
 
   if (!selectedPolarNode) {
@@ -59,13 +70,13 @@ const PolarNodePopup: React.FC<PolarNodePopupProps> = ({ hideDraggableComponents
   const { name, imagePath, description } = properties;
 
 
-  const handleClose = (e: MouseEvent) => {
+  const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(selectPolarNode(null));
   };
 
 
-  const handleVisualizeRelations = async (event: MouseEvent) => {
+  const handleVisualizeRelations = async (event: React.MouseEvent) => {
     event.stopPropagation();
     dispatch(clearPolarEdgeInfo());
     try {
@@ -86,14 +97,14 @@ const PolarNodePopup: React.FC<PolarNodePopupProps> = ({ hideDraggableComponents
         return;
       }
       const relatedNodes = relatedNodesData.getRelatedNodes;
-      const endNode = relatedNodes.map(node => node.endNode);
+      const endNode = relatedNodes.map((node: any) => node.endNode);
       dispatch(setResults(endNode));
-      relatedNodes.forEach(node => {
+      relatedNodes.forEach((node: any) => {
         dispatch(addPolarEdgeInfo(node.startNode, node.endNode, node.relationship));
       });
-      relatedNodes.forEach((node, index) => {
+      relatedNodes.forEach((node: any, index: number) => {
         const column = getColumnNumber(index, relatedNodes.length);
-        const { x, y } = calculatePolarCoordinates(center, index, relatedNodes.length, column);
+        const { x, y } = calculatePolarCoordinates(centerPosition, index, relatedNodes.length, column);
         dispatch(updateDraggedPosition(index, x, y));
       });
       dispatch(updateDraggedPosition(selectedPolarNodeId, centerPosition.x, centerPosition.y));

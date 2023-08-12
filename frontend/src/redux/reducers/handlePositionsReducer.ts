@@ -1,9 +1,17 @@
-import { UPDATE_HANDLE_POSITION } from '../actions/actionTypes'
+import { UPDATE_HANDLE_POSITION } from '../actions/actionTypes';
 
 const initialHandlePositionsState = {};
 
-// 新しいリデューサーを作成
-const handlePositions = (state = initialHandlePositionsState, action) => {
+interface UpdateHandlePositionAction {
+  type: typeof UPDATE_HANDLE_POSITION;
+  nodeId: string;
+  handleType: string;
+  position: { x: number; y: number };
+}
+
+type HandlePositionsActionTypes = UpdateHandlePositionAction;
+
+const handlePositions = (state = initialHandlePositionsState, action: HandlePositionsActionTypes) => {
   switch (action.type) {
     case UPDATE_HANDLE_POSITION:
       return {
@@ -15,4 +23,4 @@ const handlePositions = (state = initialHandlePositionsState, action) => {
   }
 };
 
-export default handlePositions
+export default handlePositions;

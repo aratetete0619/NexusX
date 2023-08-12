@@ -1,44 +1,52 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDrag, useDrop, DragObjectWithType } from 'react-dnd';
+import { useDispatch, useSelector } from '../hooks/hooks';
+import { useDrag, useDrop } from 'react-dnd';
 import { startEdgeCreation, endEdgeCreation, addEdge } from '../redux/actions';
 import '../styles/Handle.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { setHandlePosition } from '../redux/reducers/handles';
+import { RootState } from '../redux/reducers';
 import { useMeasure } from 'react-use';
 
 interface HandleProps {
   nodeId: string;
   position: "top" | "bottom" | "left" | "right";
+  onPositionChange: (coords: { x: number; y: number }) => void;
 }
 
-interface DragItem extends DragObjectWithType {
+interface DragItem {
+  type: string;
   nodeId: string;
   position: "top" | "bottom" | "left" | "right";
 }
 
+
 const Handle: React.FC<HandleProps> = ({ nodeId, position }) => {
   const dispatch = useDispatch();
-  const node = useSelector(state => state.nodes[nodeId]);
   const handleClass = `handle handle-${position}`;
-  const { isEdgeCreationMode, startNodeId } = useSelector(state => state.edgeCreation);
+  const { isEdgeCreationMode, startNodeId } = useSelector((state: RootState) => state.edgeCreation);
+  const startNodeIdValue = startNodeId || { nodeId: '', position: '' };
   const [ref, bounds] = useMeasure();
 
 
-  const [{ isDragging: dragIsDragging }, drag] = useDrag({
+
+  const [{ isDragging }, drag] = useDrag({
     type: `Handle`,
     item: { nodeId, position },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  }, [dragIsDragging, dispatch, isEdgeCreationMode, nodeId, position, startNodeId.nodeId, startNodeId.position]);
-
+  }, [dispatch, isEdgeCreationMode, nodeId, position, startNodeIdValue.nodeId, startNodeIdValue.position]);
+  const dragIsDragging = isDragging as boolean;
 
   const [, drop] = useDrop({
     accept: `Handle`,
     drop: (item: DragItem, monitor) => {
       if (monitor.didDrop()) {
+        return;
+      }
+      if (!startNodeId) {
         return;
       }
       dispatch(addEdge(startNodeId.nodeId, startNodeId.position, nodeId, position));
@@ -56,10 +64,10 @@ const Handle: React.FC<HandleProps> = ({ nodeId, position }) => {
   useEffect(() => {
     if (dragIsDragging && !isEdgeCreationMode) {
       dispatch(startEdgeCreation(nodeId, position));
-    } else if (!dragIsDragging && isEdgeCreationMode && startNodeId.nodeId === nodeId && startNodeId.position === position) {
+    } else if (!dragIsDragging && isEdgeCreationMode && startNodeId && startNodeId.nodeId === nodeId && startNodeId.position === position) {
       dispatch(endEdgeCreation());
     }
-  }, [dragIsDragging, dispatch, isEdgeCreationMode, nodeId, position, startNodeId.nodeId, startNodeId.position]);
+  }, [dragIsDragging, dispatch, isEdgeCreationMode, nodeId, position, startNodeIdValue.nodeId, startNodeIdValue.position]);
 
   return (
     <div className={handleClass} ref={ref => drag(drop(ref))}>

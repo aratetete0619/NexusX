@@ -28,7 +28,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         <SuccessProvider>
           <ErrorProvider>
             <NoResultProvider>
-              <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+              <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}>
                 <ApolloProvider client={apolloClient}>
                   <Provider store={store}>
                     <DndProvider backend={HTML5Backend}>

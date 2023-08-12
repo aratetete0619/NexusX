@@ -1,7 +1,6 @@
 // src/redux/actions/setSelectedNode.ts
 import { Action } from 'redux';
-
-export const SET_SELECTED_NODE = 'SET_SELECTED_NODE';
+import { SET_SELECTED_NODE } from './actionTypes'
 
 export interface SetSelectedNodeAction extends Action<typeof SET_SELECTED_NODE> {
   node: Node | null;

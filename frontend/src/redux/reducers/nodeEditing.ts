@@ -1,9 +1,20 @@
-// src/redux/reducers/nodeEditing.ts
 import { SET_NODE_EDITING } from '../actions/actionTypes';
 
-const initialNodeEditingState = {};
+type NodeEditingState = { [key: string]: boolean };
 
-const nodeEditing = (state = initialNodeEditingState, action) => {
+const initialNodeEditingState: NodeEditingState = {};
+
+interface SetNodeEditingAction {
+  type: typeof SET_NODE_EDITING;
+  payload: {
+    nodeId: string;
+    isEditing: boolean;
+  };
+}
+
+type NodeEditingActionTypes = SetNodeEditingAction;
+
+const nodeEditing = (state = initialNodeEditingState, action: NodeEditingActionTypes): NodeEditingState => {
   switch (action.type) {
     case SET_NODE_EDITING:
       return {

@@ -3,7 +3,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from '@react-oauth/google';
 import styles from '../styles/UserCreationForm.module.css';
 import GreenButton from '../components/GreenButton';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { ErrorContext } from '../contexts/ErrorContext';
 import SuccessPopup from '../components/SuccessPopup';
 import { useRouter } from 'next/router';
@@ -12,15 +12,28 @@ import Loader from './Loader';
 import { CREATE_USER } from '../graphql/mutations';
 
 
-const UserCreationForm = ({ onLoading }) => {
+
+const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => void }) => {
   const [createUser, { error, loading }] = useMutation(CREATE_USER);
-  const { showError } = useContext(ErrorContext);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const { showSuccess } = useContext(SuccessContext);
+  const errorContext = useContext(ErrorContext);
+  if (!errorContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showError } = errorContext;
+  const successContext = useContext(SuccessContext);
+  if (!successContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showSuccess } = successContext;
 
-  const validateForm = (email, password, confirmPassword) => {
+
+
+  const validateForm = (email: string, password: string, confirmPassword: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!email || !emailRegex.test(email)) {
@@ -42,18 +55,25 @@ const UserCreationForm = ({ onLoading }) => {
   };
 
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const email = event.target.elements.email.value;
-    const password = event.target.elements.password.value;
-    const confirmPassword = event.target.elements.confirm_password.value;
+    const form = event.target as HTMLFormElement;
+
+    const emailElement = form.elements.namedItem('email') as HTMLInputElement;
+    const passwordElement = form.elements.namedItem('password') as HTMLInputElement;
+    const confirmPasswordElement = form.elements.namedItem('confirm_password') as HTMLInputElement;
+
+    const email = emailElement.value;
+    const password = passwordElement.value;
+    const confirmPassword = confirmPasswordElement.value;
 
     if (!validateForm(email, password, confirmPassword)) {
       return;
     }
 
     try {
+      setIsLoading(true);
       onLoading(true);
       const response = await createUser({ variables: { email: email, password: password } });
       if (response.errors) {
@@ -62,24 +82,18 @@ const UserCreationForm = ({ onLoading }) => {
         showError("Failed to receive response from server. Please try again.");
       } else if (response.data.createUser.message) {
         showSuccess(response.data.createUser.message);
-        // Display the success popup when user creation is successful
         setSuccessMessage(response.data.createUser.message);
         setShowSuccessPopup(true);
       }
 
     } catch (error) {
-      // リクエストレベルのエラーをハンドリングします
-      showError(error.message);
+      const errorMessage = (error as { message?: string }).message;
+      showError(errorMessage || 'An error occurred');
     } finally {
+      setIsLoading(false);
       onLoading(false);
     }
   };
-
-
-
-
-
-
 
   return (
     <div className={styles.container}>
@@ -96,14 +110,14 @@ const UserCreationForm = ({ onLoading }) => {
       </div>
       <p>Or sign up with your email</p>
       <form className={styles.inputForm} onSubmit={handleSubmit}>
-        <input type="email" name="email" className={styles.inputField} placeholder="Email" disabled={onLoading} />
-        <input type="password" name="password" className={styles.inputField} placeholder="Password" disabled={onLoading} />
-        <input type="password" name="confirm_password" className={styles.inputField} placeholder="Confirm Password" disabled={onLoading} />
-        <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} disabled={onLoading} />
-        <GreenButton text="Sign up" disabled={onLoading} />
+        <input type="email" name="email" className={styles.inputField} placeholder="Email" disabled={isLoading} />
+        <input type="password" name="password" className={styles.inputField} placeholder="Password" disabled={isLoading} />
+        <input type="password" name="confirm_password" className={styles.inputField} placeholder="Confirm Password" disabled={isLoading} />
+        {!isLoading && <ReCAPTCHA sitekey={siteKey} />}
+        {!isLoading && <GreenButton text="Sign up" />}
       </form>
       {loading && <Loader />}
-      {showSuccessPopup && <SuccessPopup message={successMessage} />}
+      {showSuccessPopup && <SuccessPopup />}
     </div>
   );
 };

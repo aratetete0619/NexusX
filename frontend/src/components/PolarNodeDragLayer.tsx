@@ -1,11 +1,12 @@
-// components/PolarNodeDragLayer.tsx
 import React from 'react';
+import { RootState } from '../redux/reducers';
 import { useDragLayer } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPolarNode } from '../redux/actions';
 import PolarNode from './PolarNode';
+import { XYCoord } from 'react-dnd';
 
-const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null) => {
+const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null): React.CSSProperties => {
   if (!initialOffset || !currentOffset) {
     return { display: 'none' };
   }
@@ -20,10 +21,11 @@ const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | n
 };
 
 
-const PolarNodeDragLayer: React.FC = () => {
+
+const PolarNodeDragLayer: React.FC = ({ }) => {
   const dispatch = useDispatch();
-  const results = useSelector((state) => state.searchResults);
-  const draggedPositions = useSelector((state) => state.draggedPositions);  // Select the dragged positions from the store
+  const results = useSelector((state: RootState) => state.searchResults);
+  const draggedPositions = useSelector((state: RootState) => state.draggedPositions);
 
   const {
     itemType,
@@ -44,9 +46,7 @@ const PolarNodeDragLayer: React.FC = () => {
     return null;
   }
 
-  // Get the result for this node
   const result = results[item.id];
-  // Get the dragged position for this node
   const dragPosition = draggedPositions[item.id];
 
   return (
@@ -55,6 +55,8 @@ const PolarNodeDragLayer: React.FC = () => {
         id={item.id}
         onSelect={() => dispatch(selectPolarNode(item.id))}
         result={result}
+        style={{ x: 0, y: 0 }}
+        updatePosition={() => { }}
       />
     </div>
 

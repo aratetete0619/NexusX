@@ -3,13 +3,19 @@ import styles from '../styles/NoResultPopup.module.css';
 import { NoResultContext } from '../contexts/NoResultContext';
 
 const NoResultPopup = () => {
-  const { hideNoResult, noResultMessage, isNoResultVisible } = useContext(NoResultContext);
+  const context = useContext(NoResultContext);
+
+  if (!context) {
+    throw new Error("NoResultPopup must be used within a NoResultProvider");
+  }
+
+  const { hideNoResult, noResultMessage, isNoResultVisible } = context;
 
   const handleContainerClick = () => {
     hideNoResult();
   };
 
-  const handleContentClick = (event) => {
+  const handleContentClick = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
 
@@ -25,6 +31,5 @@ const NoResultPopup = () => {
     </div>
   );
 };
-
 
 export default NoResultPopup;

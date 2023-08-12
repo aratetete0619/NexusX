@@ -1,12 +1,28 @@
-// src/redux/reducers/colorReducer.ts
 import { SET_COLOR, SET_BACKGROUND_COLOR } from '../actions/actionTypes';
 
-const initialState = {
+interface ColorState {
+  color: string;
+  backgroundColor: string;
+}
+
+const initialState: ColorState = {
   color: '#FFFFFF',
   backgroundColor: '#FFFFFF',
 };
 
-const colorReducer = (state = initialState, action) => {
+interface SetColorAction {
+  type: typeof SET_COLOR;
+  payload: string;
+}
+
+interface SetBackgroundColorAction {
+  type: typeof SET_BACKGROUND_COLOR;
+  payload: string;
+}
+
+type ColorActionTypes = SetColorAction | SetBackgroundColorAction;
+
+const colorReducer = (state = initialState, action: ColorActionTypes): ColorState => {
   switch (action.type) {
     case SET_COLOR:
       return { ...state, color: action.payload };

@@ -1,5 +1,6 @@
 // components/PolarNode.tsx
 import React, { useEffect, useState, useContext } from 'react';
+import { RootState } from '../redux/reducers';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,13 +13,26 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { parseCookies } from 'nookies';
 import { ADD_FAVORITE, REMOVE_FAVORITE } from '../graphql/mutations';
 import { ErrorContext } from '../contexts/ErrorContext';
+import { ResultType } from '../types'
 
-const PolarNode = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePosition }) => {
-  const selectedNodeId = useSelector((state) => state.selectedPolarNode);
+interface PolarNodeProps {
+  id: number;
+  onSelect: () => void;
+  result: ResultType;
+  style: { x: number, y: number };
+  updatePosition: (x: number, y: number) => void;
+}
+
+const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePosition }) => {
+  const selectedNodeId = useSelector((state: RootState) => state.selectedPolarNode);
   const dispatch = useDispatch();
   const cookies = parseCookies();
   const email = cookies.email;
-  const { showError } = useContext(ErrorContext);
+  const errorContext = useContext(ErrorContext);
+  if (!errorContext) {
+    throw new Error('ErrorContext not provided');
+  }
+  const { showError } = errorContext;
 
   const [isFavorited, setIsFavorited] = useState(false);
 
@@ -27,7 +41,7 @@ const PolarNode = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePositio
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: 'POLAR_NODE',
-    item: () => ({ id, x: style.left, y: style.top }),
+    item: () => ({ id, x: style.x, y: style.y }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -39,7 +53,7 @@ const PolarNode = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePositio
     },
   });
 
-  const handleDoubleClick = async (e) => {
+  const handleDoubleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
       if (!isFavorited) {
@@ -48,12 +62,16 @@ const PolarNode = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePositio
         await addFavorite({ variables: { email, nodeId: esId } });
       }
     } catch (error) {
-      showError(error.message);
+      if (error instanceof Error) {
+        showError(error.message);
+      } else {
+        showError("An unexpected error occurred.");
+      }
     }
   };
 
 
-  const handleFavoriteIconClick = async (e) => {
+  const handleFavoriteIconClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
       if (isFavorited) {
@@ -62,7 +80,11 @@ const PolarNode = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePositio
         await removeFavorite({ variables: { email, nodeId: esId } });
       }
     } catch (error) {
-      showError(error.message);
+      if (error instanceof Error) {
+        showError(error.message);
+      } else {
+        showError("An unexpected error occurred.");
+      }
     }
   };
 
@@ -77,8 +99,14 @@ const PolarNode = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePositio
   }
 
   const properties = result.startNode ? result.startNode.properties : result.properties;
-  const { name, imagePath } = properties
-  const esId = properties.esId
+
+  if (!properties) {
+    return null;
+  }
+
+  const { name, imagePath } = properties;
+  const esId = properties.esId;
+
 
   return (
     <div ref={drag} style={{ position: 'absolute', left: style.x, top: style.y }}>
