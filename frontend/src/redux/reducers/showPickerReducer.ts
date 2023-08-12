@@ -6,7 +6,12 @@ const initialState = {
   background: false,
 };
 
-const showPickerReducer = (state = initialState, action) => {
+type ShowPickerAction = {
+  type: typeof SHOW_PICKER | typeof HIDE_PICKER | typeof TOGGLE_PICKER;
+  payload: 'color' | 'background';
+};
+
+const showPickerReducer = (state = initialState, action: ShowPickerAction) => {
   switch (action.type) {
     case SHOW_PICKER:
       return { ...state, [action.payload]: true };

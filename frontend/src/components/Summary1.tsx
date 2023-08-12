@@ -1,5 +1,6 @@
 import React from 'react';
 import { Slide } from 'react-awesome-reveal';
+import Image from 'next/image';
 import styles from '../styles/Summary1.module.css';
 
 const Summary1 = () => {
@@ -9,7 +10,7 @@ const Summary1 = () => {
         <h2 className={styles.title}>STEPS TO DISCOVER</h2>
         <div className={styles.step}>
           <div className={styles.stepImage}>
-            <img src="/summary1.jpg" alt="summary1" className={styles.img} />
+            <Image src="/summary1.jpg" alt="summary1" className={styles.img} width="1000" height="1000" />
           </div>
           <div className={styles.stepContent}>
             <h2 className={styles.steps}>Unveil the <span className={styles.pink}>World</span> Relations</h2>

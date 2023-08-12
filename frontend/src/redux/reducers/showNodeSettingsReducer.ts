@@ -1,7 +1,7 @@
 // src/redux/reducers/showNodeSettingsReducer.ts
 import { SHOW_NODE_SETTINGS, HIDE_NODE_SETTINGS } from '../actions/actionTypes';
 
-const showNodeSettingsReducer = (state = false, action) => {
+const showNodeSettingsReducer = (state = false, action: any) => {
   switch (action.type) {
     case SHOW_NODE_SETTINGS:
       return true;

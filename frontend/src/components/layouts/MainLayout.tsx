@@ -3,8 +3,11 @@ import LoginHeader from '../LoginHeader';
 import Sidebar from '../Sidebar';
 import ClosedSidebar from '../ClosedSidebar';
 
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
 
-const MainLayout: React.FC = ({ children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {

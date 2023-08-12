@@ -1,8 +1,26 @@
 import { UPDATE_DRAGGED_POSITION } from '../actions/actionTypes';
 
-const initialState = {};
+interface DraggedPositionsState {
+  [id: number]: {
+    x: number;
+    y: number;
+  };
+}
 
-const draggedPositions = (state = initialState, action) => {
+const initialState: DraggedPositionsState = {};
+
+interface UpdateDraggedPositionAction {
+  type: typeof UPDATE_DRAGGED_POSITION;
+  payload: {
+    id: number;
+    x: number;
+    y: number;
+  };
+}
+
+type DraggedPositionsActionTypes = UpdateDraggedPositionAction;
+
+const draggedPositions = (state: DraggedPositionsState = initialState, action: DraggedPositionsActionTypes): DraggedPositionsState => {
   switch (action.type) {
     case UPDATE_DRAGGED_POSITION:
       return {

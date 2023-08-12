@@ -1,6 +1,11 @@
 import { UPDATE_HANDLE_POSITION } from './actionTypes'
 
-export const updateHandlePosition = (nodeId, handleType, position) => ({
+type Position = {
+  x: number;
+  y: number;
+};
+
+export const updateHandlePosition = (nodeId: string, handleType: string, position: Position) => ({
   type: UPDATE_HANDLE_POSITION,
   nodeId,
   handleType,

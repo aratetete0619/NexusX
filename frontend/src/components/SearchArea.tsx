@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../styles/SearchArea.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,27 +6,22 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { setFocus } from '../redux/actions';
 import ResizableTextArea from './ResizableTextArea';
 
+interface SearchAreaProps {
+  setShowEdges: (showEdges: boolean) => void;
+}
 
-
-
-
-
-
-
-const SearchArea = ({ setShowEdges }) => {
+const SearchArea: React.FC<SearchAreaProps> = ({ setShowEdges }) => {
   const dispatch = useDispatch();
   const [isCircle, setIsCircle] = useState(false);
   const [query, setQuery] = useState('');
-  const searchBarRef = useRef(null);
-  const textAreaRef = useRef(null);
-
-
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
 
   const handleCircleClick = () => {
     setIsCircle(false);
     setTimeout(() => {
-      if (textAreaRef.current) { // Check if textAreaRef.current is not null
+      if (textAreaRef.current) {
         textAreaRef.current.style.height = 'inherit';
         textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
       }
@@ -34,13 +29,14 @@ const SearchArea = ({ setShowEdges }) => {
   };
 
 
-  const handleClickOutside = (event) => {
-    if (searchBarRef.current && !searchBarRef.current.contains(event.target) && !isCircle) {
+  const handleClickOutside = (event: MouseEvent) => {
+    const isOutsideClick = searchBarRef.current && !searchBarRef.current.contains(event.target as Node) && !isCircle;
+
+    if (isOutsideClick) {
       setIsCircle(true);
       dispatch(setFocus(false));
     }
   };
-
 
 
   useEffect(() => {
@@ -49,11 +45,6 @@ const SearchArea = ({ setShowEdges }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-
-
-
-
 
 
   return (

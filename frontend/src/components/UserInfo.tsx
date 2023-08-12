@@ -4,6 +4,7 @@ import styles from '../styles/UserInfo.module.css';
 import { parseCookies, destroyCookie } from 'nookies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 
 const UserInfo = () => {
@@ -13,7 +14,7 @@ const UserInfo = () => {
   const userIcon = "/gorilla.png";
 
   const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useRef();
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -22,8 +23,8 @@ const UserInfo = () => {
     };
   }, []);
 
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
       setShowMenu(false);
     }
   };
@@ -37,7 +38,7 @@ const UserInfo = () => {
 
   return (
     <div className={styles.userInfo}>
-      <img src={userIcon} className={styles.userIcon} />
+      <Image src={userIcon} alt="User Icon" className={styles.userIcon} width="50" height="50" />
       <span className={styles.username}>
         {username}
         <FontAwesomeIcon icon={faChevronDown} className={styles.toggle} onClick={() => setShowMenu(!showMenu)} />

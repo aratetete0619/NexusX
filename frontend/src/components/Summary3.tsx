@@ -1,6 +1,6 @@
-// components/Summary3.tsx
 import React from 'react';
 import { Slide } from 'react-awesome-reveal';
+import Image from 'next/image';
 import styles from '../styles/Summary3.module.css';
 
 const Summary3 = () => {
@@ -9,7 +9,7 @@ const Summary3 = () => {
       <div className={styles.container}>
         <div className={styles.step}>
           <div className={styles.stepImage}>
-            <img src="/summary3.jpg" alt="summary3" className={styles.img} />
+            <Image src="/summary3.jpg" alt="summary3" className={styles.img} width="1000" height="1000" />
           </div>
           <div className={styles.stepContent}>
             <h2 className={styles.steps}>Your <span className={styles.blue}>Personal</span> Relationship Map</h2>

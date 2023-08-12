@@ -5,33 +5,22 @@ import { setFocus, setResults, updateQuery, selectPolarNode } from '../redux/act
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
 import styles from '../styles/SearchArea.module.css';
+import { RESIZABLE_SEARCH_QUERY } from '../graphql/mutations'
 
-const SEARCH_QUERY = gql`
-  query Search($query: String!) {
-    search(query: $query) {
-      originalQuery
-      preprocessedQuery
-      startNode {
-        identity
-        labels
-        properties {
-          name
-          esId
-          imagePath
-          description
-        }
-      }
-      score
-    }
-  }
-`
 
-const ResizableTextArea = ({ setIsCircle, query, setQuery, setShowEdges }) => {
-  const textAreaRef = useRef(null);
+
+interface ResizableTextAreaProps {
+  setIsCircle: (value: boolean) => void;
+  query: string;
+  setQuery: (query: string) => void;
+  setShowEdges: (value: boolean) => void;
+}
+
+const ResizableTextArea: React.FC<ResizableTextAreaProps> = ({ setIsCircle, query, setQuery, setShowEdges }) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useDispatch();
-  const { data, refetch } = useQuery(SEARCH_QUERY, { skip: true });
+  const { data, refetch } = useQuery(RESIZABLE_SEARCH_QUERY, { skip: true });
 
   const handleFocus = () => {
     dispatch(setFocus(true));
@@ -41,17 +30,17 @@ const ResizableTextArea = ({ setIsCircle, query, setQuery, setShowEdges }) => {
     dispatch(setFocus(false));
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
     dispatch(updateQuery(newQuery));
-    dispatch(selectPolarNode(null))
+    dispatch(selectPolarNode(null));
     if (textAreaRef.current) {
       textAreaRef.current.style.height = 'inherit';
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
@@ -72,8 +61,10 @@ const ResizableTextArea = ({ setIsCircle, query, setQuery, setShowEdges }) => {
   };
 
   useEffect(() => {
-    textAreaRef.current.style.height = 'inherit';
-    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = 'inherit';
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
   }, [query]);
 
   return (
@@ -86,7 +77,6 @@ const ResizableTextArea = ({ setIsCircle, query, setQuery, setShowEdges }) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        setIsCircle={setIsCircle()}
       />
       <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} onClick={handleSearch} size="lg" />
     </div>

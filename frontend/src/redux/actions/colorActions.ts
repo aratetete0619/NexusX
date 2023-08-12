@@ -1,4 +1,3 @@
-// src/redux/actions/colorActions.ts
 import {
   SET_COLOR,
   SET_BACKGROUND_COLOR,
@@ -11,76 +10,70 @@ import {
   HIDE_PICKER,
   TOGGLE_PICKER,
 } from './actionTypes';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../reducers';
+import { AnyAction } from 'redux';
 
 
-// src/redux/actions/colorActions.ts
+
 const FREQUENCY_THRESHOLD = 10;
 
-// 新しい showPicker アクション
 export const showPicker = (pickerType: 'color' | 'background') => ({
   type: SHOW_PICKER,
   payload: pickerType,
 });
 
-// 新しい hidePicker アクション
 export const hidePicker = (pickerType: 'color' | 'background') => ({
   type: HIDE_PICKER,
   payload: pickerType,
 });
 
 
-export const setColor = (color) => {
+export const setColor = (color: string): ThunkAction<void, RootState, unknown, AnyAction> => {
   return (dispatch) => {
-    // Dispatch the regular setColor action
     dispatch({
       type: SET_COLOR,
       payload: color,
     });
 
-    // Dispatch the INCREMENT_COLOR_FREQUENCY action to update color frequency
     dispatch(incrementColorFrequency(color));
 
-    // Dispatch the UPDATE_PRIMARY_COLORS action to update primary colors if necessary
     dispatch(updatePrimaryColors());
   };
 };
 
 
-export const incrementColorFrequency = (color) => ({
+export const incrementColorFrequency = (color: string) => ({
   type: INCREMENT_COLOR_FREQUENCY,
   payload: color
 });
 
-export const updatePrimaryColors = () => (dispatch, getState) => {
-  const colorFrequencyMap = getState().colorFrequencyMap;
+export const updatePrimaryColors = (): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch: ThunkDispatch<RootState, unknown, AnyAction>, getState: () => RootState) => {
+    const colorFrequencyMap = getState().colorFrequencyMap;
 
-  // Convert the frequency map to an array of [color, frequency] pairs
-  const colorFrequencyPairs = Object.entries(colorFrequencyMap);
+    const colorFrequencyPairs = Object.entries(colorFrequencyMap) as [string, number][];
 
-  // Sort the array by frequency in descending order
-  colorFrequencyPairs.sort((a, b) => b[1] - a[1]);
+    colorFrequencyPairs.sort((a, b) => b[1] - a[1]);
 
-  // Retrieve the colors of the top N pairs
-  const primaryColors = colorFrequencyPairs
-    .filter(([_, frequency]) => frequency > FREQUENCY_THRESHOLD)
-    .map(([color, _]) => color);
+    const primaryColors = colorFrequencyPairs
+      .filter(([_, frequency]) => frequency > FREQUENCY_THRESHOLD)
+      .map(([color, _]) => color);
 
-  // If there are more than 6 primary colors, remove the ones with the lowest frequency
-  while (primaryColors.length > 6) {
-    primaryColors.pop();
-  }
+    while (primaryColors.length > 6) {
+      primaryColors.pop();
+    }
 
-  // Only update the primary colors if there are any colors that exceeded the frequency threshold
-  if (primaryColors.length > 0) {
-    dispatch({
-      type: UPDATE_PRIMARY_COLORS,
-      payload: primaryColors,
-    });
-  }
-};
+    if (primaryColors.length > 0) {
+      dispatch({
+        type: UPDATE_PRIMARY_COLORS,
+        payload: primaryColors,
+      });
+    }
+  };
 
 
-export const setBackgroundColor = (color) => {
+export const setBackgroundColor = (color: string): ThunkAction<void, RootState, unknown, AnyAction> => {
   return (dispatch) => {
     dispatch({
       type: SET_BACKGROUND_COLOR,
@@ -93,15 +86,16 @@ export const setBackgroundColor = (color) => {
   };
 };
 
-export const incrementBackgroundColorFrequency = (color) => ({
+export const incrementBackgroundColorFrequency = (color: string) => ({
   type: INCREMENT_BACKGROUND_COLOR_FREQUENCY,
   payload: color
 });
 
-export const updateBackgroundPrimaryColors = () => (dispatch, getState) => {
+export const updateBackgroundPrimaryColors = (): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch, getState) => {
   const backgroundColorFrequencyMap = getState().backgroundColorFrequencyMap;
 
-  const backgroundColorFrequencyPairs = Object.entries(backgroundColorFrequencyMap);
+  const backgroundColorFrequencyPairs: [string, number][] = Object.entries(backgroundColorFrequencyMap) as [string, number][];
+
 
   backgroundColorFrequencyPairs.sort((a, b) => b[1] - a[1]);
 
@@ -121,7 +115,7 @@ export const updateBackgroundPrimaryColors = () => (dispatch, getState) => {
   }
 };
 
-export const setPrimaryColors = (colors) => ({
+export const setPrimaryColors = (colors: string[]) => ({
   type: SET_PRIMARY_COLORS,
   payload: colors
 });

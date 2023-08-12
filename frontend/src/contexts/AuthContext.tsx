@@ -1,5 +1,5 @@
 // AuthContext.tsx
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { setCookie, destroyCookie, parseCookies } from 'nookies';
 import jwt from 'jsonwebtoken';
@@ -12,9 +12,18 @@ interface AuthContextProps {
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
-export const AuthProvider: React.FC = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const secretKey = process.env.NEXT_PUBLIC_JWT_SECRET;
+
+  if (!secretKey) {
+    throw new Error('JWT_SECRET is not defined in the environment variables');
+  }
 
   const login = (token: string) => {
     // Save the token in a secure cookie
@@ -34,13 +43,12 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    // Check the session or local storage and restore the login state
     const cookies = parseCookies();
     const token = cookies.token;
 
     if (token) {
       try {
-        jwt.verify(token, process.env.JWT_SECRET);
+        jwt.verify(token, secretKey);
         setIsLoggedIn(true);
       } catch (error) {
         console.error('Invalid token', error);

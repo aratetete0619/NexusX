@@ -1,12 +1,12 @@
 /* src/styles/ColorPalette.css */
 
-.palette-container {
+.paletteContainer {
   display: flex;
   justify-content: space-between;
   margin-left: 20px;
 }
 
-.palette-color {
+.paletteColor {
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -15,6 +15,6 @@
   transition: border 0.3s ease;
 }
 
-.palette-color:hover {
+.paletteColor:hover {
   border: 2px solid blue;
 }

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { SuccessContext } from '../contexts/SuccessContext';
 import styles from '../styles/SuccessPopup.module.css';
 
-const SuccessPopup = () => {
+const SuccessPopup: React.FC = () => {
   const context = useContext(SuccessContext);
 
   if (context === undefined) {
@@ -20,7 +20,5 @@ const SuccessPopup = () => {
     )
   );
 };
-
-
 
 export default SuccessPopup;

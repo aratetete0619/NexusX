@@ -1,16 +1,18 @@
 import styles from '../styles/RandomTitle.module.css';
+import Image from 'next/image';
 
 const titles = [
-  { text: "The early bird catches the worm.", image: "/random1.png" },
-  { text: "L'habit ne fait pas le moine.", image: "/path/to/image2.jpg" },
-  { text: "石の上にも三年", image: "/stone.jpg" },
-  { text: "No hay mal que por bien no venga.", image: "/path/to/image4.jpg" },
-  { text: "Aller Anfang ist schwer.", image: "/path/to/image5.jpg" },
-  { text: "Chi dorme non piglia pesci.", image: "/path/to/image6.jpg" },
-  { text: "Rome wasn't built in a day.", image: "/path/to/image7.jpg" },
-  { text: "Après la pluie, le beau temps.", image: "/path/to/image8.jpg" },
-  { text: "七転び八起き", image: "/path/to/image9.jpg" },
-  { text: "Más vale tarde que nunca.", image: "/path/to/image10.jpg" }
+  { text: "A journey of a thousand miles begins with a single step.", image: "/random2.png" }, // Chinese proverb
+  { text: "Chassez le naturel, il revient au galop.", image: "/random1.png" }, // French proverb
+  { text: "石の上にも三年", image: "/stone.jpg" }, // Japanese proverb
+  { text: "Dime con quién andas, y te diré quién eres.", image: "/path/to/image4.jpg" }, // Spanish proverb
+  { text: "Wer rastet, der rostet.", image: "/path/to/image5.jpg" }, // German proverb
+  { text: "Chi dorme non piglia pesci.", image: "/path/to/image6.jpg" }, // Italian proverb
+  { text: "Rome wasn't built in a day.", image: "/path/to/image7.jpg" }, // English proverb
+  { text: "Après la pluie, le beau temps.", image: "/path/to/image8.jpg" }, // French proverb
+  { text: "한 오리에 두 번 놀아나지 않는다", image: "/path/to/image9.jpg" }, // Korean proverb
+  { text: "De grão em grão a galinha enche o papo.", image: "/path/to/image10.jpg" },// Portuguese proverb
+  { text: "千里之行，始於足下", image: "/random2.png" }　//Chinese proverb
 ];
 
 const RandomTitle = () => {
@@ -19,7 +21,6 @@ const RandomTitle = () => {
 
   return (
     <div className={styles.titleContainer}>
-      <img src={image} alt={text} className={styles.titleImage} />
       <h1 className={styles.titleText}>{text}</h1>
     </div>
   );

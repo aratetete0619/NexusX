@@ -1,15 +1,21 @@
-// components/DraggableSearchArea.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateSearchBarPosition } from '../redux/actions/searchBarPosition';
 import SearchArea from './SearchArea';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import { RootState } from '../redux/reducers';
 
-const DraggableSearchArea = ({ setShowEdges }) => {
+interface DraggableSearchAreaProps {
+  onViewportChange: (dx: number, dy: number) => void;
+  onError: (message: string) => void;
+  setShowEdges: (value: boolean) => void;
+}
+
+const DraggableSearchArea: FC<DraggableSearchAreaProps> = ({ setShowEdges }) => {
   const dispatch = useDispatch();
-  const position = useSelector((state) => state.searchBarPosition);
-  const isFocused = useSelector((state) => state.searchBarFocus);
+  const position = useSelector((state: RootState) => state.searchBarPosition);
+  const isFocused = useSelector((state: RootState) => state.searchBarFocus);
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: 'SEARCH_BAR',
@@ -30,7 +36,7 @@ const DraggableSearchArea = ({ setShowEdges }) => {
 
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
-  }, []);
+  }, [preview]);
 
   useEffect(() => {
     const windowWidth = window.innerWidth / 2;
@@ -42,7 +48,7 @@ const DraggableSearchArea = ({ setShowEdges }) => {
     <div
       ref={drag}
       style={{ position: 'absolute', left: position.x, top: position.y, opacity: isDragging ? 0 : 1, width: '100%' }}
-      onMouseDown={(event) => event.stopPropagation()} // Stop event propagation
+      onMouseDown={(event) => event.stopPropagation()}
     >
       <SearchArea setShowEdges={setShowEdges} />
     </div>

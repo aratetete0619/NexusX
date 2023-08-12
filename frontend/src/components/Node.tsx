@@ -7,7 +7,8 @@ import IconButton from './IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { Node as NodeType } from '../types/index';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../hooks/hooks';
+import { RootState } from '../redux/reducers';
 import { updateNodeName, setSelectedNodeId, discardNewNode, deleteNode, setNodeEditing, setNodeName, hideNodeSettings, updateHandlePosition } from '../redux/actions';
 
 interface NodeProps {
@@ -16,14 +17,13 @@ interface NodeProps {
 
 const Node: React.FC<NodeProps> = ({ node }) => {
   const dispatch = useDispatch();
-  const selectedNodeId = useSelector((state: RootState) => state.nodes.selectedNodeId);
-  const name = useSelector(state => state.nodeName[node.id]) || node.name;
+  const selectedNodeId = useSelector((state: RootState) => state.selectedNodeId);
   const selected = useSelector((state: RootState) => state.selectedNodeId) === node.id;
   const isEditing = useSelector((state: RootState) => state.nodeEditing[node.id]) || false;
   const [showToolbutton, setShowToolbutton] = useState(false);
   const [toolbuttonPosition, setToolbuttonPosition] = useState({ x: 0, y: 0 });
 
-  const [{ }, drag] = useDrag({
+  const [{ }, drag] = useDrag<any, any, any>({
     type: `Node`,
     item: { id: node.id, left: node.x, top: node.y },
     end: (item, monitor) => {
@@ -34,7 +34,7 @@ const Node: React.FC<NodeProps> = ({ node }) => {
     }
   });
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (node.id !== selectedNodeId) {
       dispatch(setSelectedNodeId(node.id));
@@ -45,20 +45,20 @@ const Node: React.FC<NodeProps> = ({ node }) => {
     dispatch(setNodeEditing(node.id, true));
   }
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setNodeName(node.id, event.target.value));
   };
 
   const handleInputBlur = () => {
-    if (name.trim() === "") {
+    if (node.name.trim() === "") {
       dispatch(discardNewNode(node.id));
     } else {
-      dispatch(updateNodeName(node.id, name));
+      dispatch(updateNodeName(node.id, node.name));
     }
     dispatch(setNodeEditing(node.id, false));
   };
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     dispatch(setSelectedNodeId(node.id));
     setShowToolbutton(!showToolbutton);
@@ -88,7 +88,7 @@ const Node: React.FC<NodeProps> = ({ node }) => {
         ref={drag}
       >
         {isEditing
-          ? <input type="text" autoFocus value={name} onChange={handleInputChange} onBlur={handleInputBlur} />
+          ? <input type="text" autoFocus value={node.name} onChange={handleInputChange} onBlur={handleInputBlur} />
           : <>
             {node.name}
             <Handle nodeId={node.id} position="top" onPositionChange={(coords) => handlePositionChange('top', coords)} />

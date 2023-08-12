@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/ColorButton.css';
+import styles from '../styles/ColorButton.module.css';
 
 interface ColorButtonProps {
   color: string;
@@ -9,13 +9,13 @@ interface ColorButtonProps {
 const ColorButton: React.FC<ColorButtonProps> = ({ color, onClick }) => {
 
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the event from bubbling up to the document
+    e.stopPropagation();
     onClick();
   };
 
   return (
-    <div className="color-button-container" onClick={handleClick}>
-      <div className="color-button" style={{ backgroundColor: color }}></div>
+    <div className={styles.colorButtonContainer} onClick={handleClick} data-testid="color-button-container">
+      <div className={styles.colorButton} style={{ backgroundColor: color }} data-testid="color-button"></div>
     </div>
   );
 };

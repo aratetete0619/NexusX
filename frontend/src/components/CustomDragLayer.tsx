@@ -1,5 +1,5 @@
 // components/CustomDragLayer.tsx
-import React from 'react';
+import React, { FC } from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 import SearchArea from './SearchArea';
 
@@ -18,7 +18,11 @@ function getItemStyles(initialOffset: XYCoord | null, currentOffset: XYCoord | n
   };
 }
 
-const CustomDragLayer: React.FC = () => {
+interface CustomDragLayerProps {
+  setShowEdges: (value: boolean) => void;
+}
+
+const CustomDragLayer: FC<CustomDragLayerProps> = ({ setShowEdges }) => {
   const {
     itemType,
     isDragging,
@@ -39,7 +43,7 @@ const CustomDragLayer: React.FC = () => {
 
   return (
     <div style={getItemStyles(initialOffset, currentOffset)}>
-      <SearchArea />
+      <SearchArea setShowEdges={setShowEdges} />
     </div>
   );
 };

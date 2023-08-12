@@ -1,12 +1,17 @@
 // src/components/ErrorPopup.tsx
 import React, { useContext } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ErrorContext } from '../contexts/ErrorContext';
 import styles from '../styles/ErrorPopup.module.css';
 
 const ErrorPopup = () => {
-  const { isErrorVisible, errorMessage, hideError } = useContext(ErrorContext);
+
+  const context = useContext(ErrorContext);
+
+  if (!context) {
+    return null;
+  }
+
+  const { isErrorVisible, errorMessage, hideError } = context;
 
   if (!isErrorVisible) {
     return null;

@@ -1,29 +1,12 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, Ref } from 'react';
 import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/SearchArea.module.css';
+import { SEARCH_QUERY } from '../graphql/mutations'
 
-const SEARCH_QUERY = gql`
-  query Search($query: String!) {
-    search(query: $query) {
-      original_query
-      preprocessed_query
-      search_results {
-        neo4j_data {
-          id
-          labels
-          properties
-        }
-        description
-        score
-      }
-    }
-  }
-`;
 
-const SearchArea = forwardRef((props, ref) => {
+const StaticSearchBar = forwardRef<HTMLDivElement>((props, ref) => {
   const [query, setQuery] = useState('');
   const { data, refetch } = useQuery(SEARCH_QUERY, { skip: true });
 
@@ -48,4 +31,6 @@ const SearchArea = forwardRef((props, ref) => {
   );
 });
 
-export default SearchArea;
+StaticSearchBar.displayName = 'StaticSearchBar';
+
+export default StaticSearchBar;

@@ -1,6 +1,6 @@
-// components/Summary2.tsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Slide } from 'react-awesome-reveal';
+import Image from 'next/image';
 import styles from '../styles/Summary2.module.css';
 
 const Summary2 = () => {
@@ -18,7 +18,7 @@ const Summary2 = () => {
             </div>
           </div>
           <div className={styles.stepImage}>
-            <img src="/summary2-3.jpg" alt="summary1" className={styles.img} />
+            <Image src="/summary2-3.jpg" alt="summary1" className={styles.img} width="1000" height="1000" />
           </div>
         </div>
       </div>

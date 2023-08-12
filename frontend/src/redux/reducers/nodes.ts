@@ -16,7 +16,7 @@ const initialNodesState = [{
   isNew: false,
 }];
 
-const nodes = (state = initialNodesState, action) => {
+const nodes = (state = initialNodesState, action: any) => {
   switch (action.type) {
     case ADD_NODE:
       return [...state, action.payload];

@@ -1,30 +1,38 @@
 // components/PolarChart.tsx
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../redux/reducers';
+import { useSelector, useDispatch } from '../hooks/hooks';
 import { selectPolarNode, updateDraggedPosition } from '../redux/actions';
 import PolarNode from './PolarNode';
 import { calculatePolarCoordinates } from '../utils/polarCoordinates';
 import { useDrop } from 'react-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { ResultType } from '../types'
 
-const PolarChart = ({ showDraggableComponents, displayDraggableComponents, hideDraggableComponents }) => {
+interface PolarChartProps {
+  showDraggableComponents: boolean;
+  displayDraggableComponents: () => void;
+  hideDraggableComponents: () => void;
+}
+
+const PolarChart: React.FC<PolarChartProps> = ({ showDraggableComponents, displayDraggableComponents, hideDraggableComponents }) => {
   const dispatch = useDispatch();
 
-  const position = useSelector((state) => state.searchBarPosition);
-  const results = useSelector((state) => state.searchResults);
-  const draggedPositions = useSelector((state) => state.draggedPositions);
-  const centerPolarNode = useSelector((state) => state.centerPolarNode);
+  const position = useSelector((state: RootState) => state.searchBarPosition);
+  const results = useSelector((state: RootState) => state.searchResults);
+  const draggedPositions = useSelector((state: RootState) => state.draggedPositions);
+  const centerPolarNode = useSelector((state: RootState) => state.centerPolarNode);
   const CenterPolarNodePosition = { x: position.x + 650, y: position.y - 100 };
   const nodesPerColumn = 6;
   const [isTextAreaOpen, setTextAreaOpen] = useState(false);
-  const searchBarQuery = useSelector((state) => state.searchBarReducer);
+  const searchBarQuery = useSelector((state: RootState) => state.searchBarReducer);
 
   const [, drop] = useDrop({
     accept: 'POLAR_NODE',
   });
 
-  const handleIconClick = (event) => {
+  const handleIconClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     setTextAreaOpen(!isTextAreaOpen);
     if (!isTextAreaOpen) {
@@ -32,26 +40,25 @@ const PolarChart = ({ showDraggableComponents, displayDraggableComponents, hideD
     }
   };
 
-  // Add a new useEffect that runs when the results change
   useEffect(() => {
-    results.forEach((result, index) => {
+    results.forEach((result: ResultType, index: number) => {
       const column = Math.floor(index / nodesPerColumn);
       const indexInColumn = index % nodesPerColumn;
       const totalInColumn = Math.min(nodesPerColumn, results.length - column * nodesPerColumn);
       const { x, y } = calculatePolarCoordinates(position, indexInColumn, totalInColumn, column);
-
+      console.log(result)
       dispatch(updateDraggedPosition(-1, position.x, position.y));
       dispatch(updateDraggedPosition(index, x, y));
     });
-  }, [results]);
+  }, [results, dispatch, position]);
+
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.polar-chart') && isTextAreaOpen) {
-        if (searchBarQuery === '') {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement)?.closest('.polar-chart') && isTextAreaOpen) {
+        if (searchBarQuery.query === '') {
           setTextAreaOpen(false);
           hideDraggableComponents();
-          dispatch(resetCenterPolarNode());
         }
       }
     };
@@ -60,11 +67,12 @@ const PolarChart = ({ showDraggableComponents, displayDraggableComponents, hideD
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [dispatch, isTextAreaOpen, searchBarQuery]);
+  }, [dispatch, isTextAreaOpen, searchBarQuery, hideDraggableComponents]);
+
 
   return (
     <div ref={drop} style={{ position: 'absolute', left: 150, top: 15 }}>
-      {results.map((result, index) => {
+      {results.map((result: ResultType, index: number) => {
         const nodeStyle = draggedPositions[index];
 
         return (
@@ -74,7 +82,7 @@ const PolarChart = ({ showDraggableComponents, displayDraggableComponents, hideD
             onSelect={() => dispatch(selectPolarNode(index))}
             result={result}
             style={nodeStyle}
-            updatePosition={(x, y) => {
+            updatePosition={(x: number, y: number) => {
               dispatch(updateDraggedPosition(index, x, y));
             }}
           />
@@ -109,7 +117,7 @@ const PolarChart = ({ showDraggableComponents, displayDraggableComponents, hideD
           onSelect={() => dispatch(selectPolarNode(-1))}
           result={centerPolarNode}
           style={CenterPolarNodePosition}
-          updatePosition={(x, y) => {
+          updatePosition={(x: number, y: number) => {
             dispatch(updateDraggedPosition(-1, x, y));
           }}
         />
