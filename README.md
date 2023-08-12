@@ -13,6 +13,8 @@ Navigate through intricate connections, unravel the mysteries behind relationshi
 
 NexusX is a web-based application and does not require any specific installation process.
 
+[https://nexusxsatoshi.com/]
+
 ## Usage
 
 1. Access NexusX.
