@@ -13,7 +13,8 @@ https://nexusxsatoshi.com/
 
 <br>
 
-[日本語ドキュメント](https://github.com/aratetete0619/NexusX/blob/main/Readme.jp.md)
+日本語ドキュメント
+https://github.com/aratetete0619/NexusX/blob/main/Readme.jp.md
 
 
 
