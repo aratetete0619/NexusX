@@ -11,7 +11,6 @@ const SuccessPopup: React.FC = () => {
 
   const { successMessage } = context;
 
-  console.log('Rendering SuccessMessage with:', successMessage);
   return (
     successMessage && (
       <div className={styles.successMessage}>

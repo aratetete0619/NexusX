@@ -62,14 +62,12 @@ const Map: React.FC = () => {
       const delta = monitor.getDifferenceFromInitialOffset();
       const left = Math.round(item.left + delta.x);
       const top = Math.round(item.top + delta.y);
-      console.log("Moving node with id:", item.id, "to:", left, top);
       const newMapWidth = Math.max(left, mapSize.width);
       const newMapHeight = Math.max(top, mapSize.height);
       dispatch(moveNode(item.id, left, top, newMapWidth, newMapHeight));
       dispatch(setMapSize(newMapWidth, newMapHeight));
       dispatch(showToolbuttonAction(false));
       dispatch(setSelectedNodeId(item.id));
-      console.log("Action dispatched");
       return undefined;
     },
   });
