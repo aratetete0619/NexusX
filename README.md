@@ -11,6 +11,11 @@ You can search here.
 
 https://nexusxsatoshi.com/
 
+<br>
+日本語ドキュメント
+
+
+
 
 ## Installation
 
