@@ -22,7 +22,7 @@ NexusX is a web-based application and does not require any specific installation
 
 1. Access NexusX.
 
-[![Image from Gyazo](https://i.gyazo.com/660266b88f81fd01b0294c3da34af5e1.gif)](https://gyazo.com/660266b88f81fd01b0294c3da34af5e1)
+[![Image from Gyazo](https://i.gyazo.com/b5fe523ab649ce90e08e3699e5ec4ccf.gif)](https://gyazo.com/b5fe523ab649ce90e08e3699e5ec4ccf)
 
 
 <br>
