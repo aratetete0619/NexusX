@@ -6,14 +6,15 @@
 <br>
 Navigate through intricate connections, unravel the mysteries behind relationships, and unearth fascinating insights like never before. Whether you're examining the bonds between your favorite movie characters, investigating interactions between tech giants, or discovering hidden links on websites, NexusX opens a world of understanding at your fingertips. Share your findings with others or use the detailed visualizations to augment your presentations. Embrace the joy of discovery and see the world through a whole new lens with NexusX.
 
+<br>
 
+[→ You can search here ←](https://nexusxsatoshi.com/)
 
 
 ## Installation
 
 NexusX is a web-based application and does not require any specific installation process.
 
-[You can search here. ⇨ ⇨　　⇨](https://nexusxsatoshi.com/)
 
 ## Usage
 
