@@ -56,6 +56,12 @@
   margin-right: 5px;
 }
 
+.icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
 .dropdownMenu div:not(:first-child) {
   border-top: 1px solid #eee;
   /* 細いグレーに近い白い線 */

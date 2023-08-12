@@ -49,6 +49,11 @@
   animation: fadeIn 1s;
 }
 
+.icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
 
 @keyframes fadeIn {
   from {

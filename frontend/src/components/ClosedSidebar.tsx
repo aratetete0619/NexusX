@@ -1,6 +1,6 @@
+import styles from '../styles/ClosedSidebar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
-import styles from '../styles/ClosedSidebar.module.css';
 
 interface ClosedSidebarProps {
   toggleSidebar: () => void;

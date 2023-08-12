@@ -1,8 +1,8 @@
 // components/ResizableTextArea.tsx
-import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { setFocus, setResults, updateQuery, selectPolarNode } from '../redux/actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@apollo/client';
 import styles from '../styles/SearchArea.module.css';

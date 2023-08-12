@@ -49,9 +49,9 @@ const Toolbutton: React.FC<ToolbuttonProps> = ({ deleteNode, selectedNodeId, sho
         visibility: showToolbutton ? 'visible' : 'hidden',
       }}
     >
-      <button className={styles.button} onClick={handleAddNode}><FontAwesomeIcon icon={faPlus} /> Add Node</button>
-      <button className={styles.button} onClick={handleDeleteNode}><FontAwesomeIcon icon={faTrash} /> Delete Node</button>
-      <button className={styles.button} onClick={handleDeleteAllNodes}><FontAwesomeIcon icon={faTrashAlt} /> Delete All Nodes</button>
+      <button className={styles.button} onClick={handleAddNode}><FontAwesomeIcon icon={faPlus} className={styles.icon} /> Add Node</button>
+      <button className={styles.button} onClick={handleDeleteNode}><FontAwesomeIcon icon={faTrash} className={styles.icon} /> Delete Node</button>
+      <button className={styles.button} onClick={handleDeleteAllNodes}><FontAwesomeIcon icon={faTrashAlt} className={styles.icon} /> Delete All Nodes</button>
       {showNodeSettings && <NodeSettings toolbuttonPosition={toolbuttonPosition} setShowNodeSettings={setShowNodeSettings} />}
     </div>
   );

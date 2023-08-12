@@ -99,7 +99,7 @@ const Node: React.FC<NodeProps> = ({ node }) => {
               <div
                 style={{ position: "absolute", right: 0, top: 0 }}>
                 <IconButton aria-label="Example" onClick={handleButtonClick}>
-                  <FontAwesomeIcon icon={faEllipsisV} />
+                  <FontAwesomeIcon icon={faEllipsisV} className="icon" />
                 </IconButton>
               </div>
             }
