@@ -29,19 +29,19 @@ The workflow of the application is as follows:
 
 2. **Data Retrieval and Analysis**: An Amazon EC2 instance crawls the specified web pages. It uses spaCy and GINZA to extract entities and their relationships from the text.
 
-3. **Data Storage and Indexing**: The extracted information is stored in Neo4j and DynamoDB, and Elasticsearch indexes the newly extracted information.
+3. **Data Storage and Indexing**: The extracted information is stored in Neo4j and Elasticsearch indexes the newly extracted information.
 
 4. **Data Searching and Retrieval**: When a user searches for a specific entity or relationship, the GraphQL API sends the appropriate search query to Elasticsearch.
 
-5. **Graph Generation**: Relationships between entities are dynamically drawn using Three.js and React.js.
+5. **Graph Generation**: Relationships between entities are dynamically drawn using React.js.
 
-6. **Predicting with Machine Learning**: Amazon SageMaker is used to predict new relationships between entities.
+6. **Predicting with Machine Learning**: Amazon SageMaker is used to predict new relationships between entities.(In progress)
 
-7. **Feedback and Improvement**: User feedback is stored in DynamoDB and used to improve the system.
+7. **Feedback and Improvement**: User feedback is stored in Mysql and used to improve the system.
 
-8. **Monitoring**: The operation of Elasticsearch is monitored with Kibana.
+8. **Monitoring**: The operation of Elasticsearch is monitored with Kibana.(In progress)
 
-9. **Sharing**: Users can share search results on social media.
+9. **Sharing**: Users can share search results on social media.(In progress)
 
 ## Feedback
 
