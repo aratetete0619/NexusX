@@ -13,7 +13,7 @@ Navigate through intricate connections, unravel the mysteries behind relationshi
 
 NexusX is a web-based application and does not require any specific installation process.
 
-[https://nexusxsatoshi.com/](You can search here)
+[You can search here. ⇨ ⇨　　⇨](https://nexusxsatoshi.com/)
 
 ## Usage
 
