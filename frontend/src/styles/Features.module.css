@@ -37,6 +37,11 @@
   width: 80%;
 }
 
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
 @media screen and (max-width: 768px) {
   .feature {
     flex: 0 1 calc(100% - 40px);

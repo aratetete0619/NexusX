@@ -20,7 +20,7 @@ const Features = () => {
       <div className={styles.container}>
         {features.map((feature, index) => (
           <div className={styles.feature} key={index}>
-            <h2 className={styles.title}><FontAwesomeIcon icon={feature.icon} /> {feature.title}</h2>
+            <h2 className={styles.title}><FontAwesomeIcon icon={feature.icon} className={styles.icon} /> {feature.title}</h2>
             <p className={styles.description}>{feature.description}</p>
           </div>
         ))}
