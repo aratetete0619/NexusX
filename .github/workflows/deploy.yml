@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Backend via Frontend (Bastion) EC2
+      env:
+        FRONTEND_HOST: ${{ secrets.FRONTEND_EC2_HOST }}
+        BACKEND_HOST: ${{ secrets.BACKEND_EC2_HOST }}
+        FRONTEND_SSH_KEY: ${{ secrets.FRONTEND_SSH_PRIVATE_KEY }}
+      run: |
+        echo "$FRONTEND_SSH_KEY" > frontend_key.pem
+        chmod 600 frontend_key.pem
+        
+        ssh -i frontend_key.pem -f -o ExitOnForwardFailure=yes -L 2222:${BACKEND_HOST}:22 ec2-user@${FRONTEND_HOST} -N
+        
+        scp -P 2222 -o StrictHostKeyChecking=no -i frontend_key.pem ./path-to-backend-dir ec2-user@localhost:/path-to-backend-on-server
+        ssh -P 2222 -o StrictHostKeyChecking=no -i frontend_key.pem ec2-user@localhost 'commands to restart backend service if needed'
+
+    - name: Cleanup SSH Key
+      run: rm -f frontend_key.pem
