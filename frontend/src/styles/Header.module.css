@@ -38,6 +38,7 @@
   width: 150px;
 }
 
+
 .customButton {
   font-family: 'Roboto', sans-serif;
   color: #FFFFFF;
@@ -48,6 +49,7 @@
   height: 60px;
   border-radius: 10px;
   padding: 0px 20px;
+  cursor: pointer;
 }
 
 .login {
