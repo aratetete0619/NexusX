@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+*.png
 # testing
 /coverage
 
@@ -36,3 +36,5 @@ next-env.d.ts
 
 public/demo_images
 public/demo_images2
+
+package-lock.json
