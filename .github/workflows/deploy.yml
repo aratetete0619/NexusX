@@ -6,11 +6,21 @@ on:
       - main
 
 jobs:
-  deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        cd NexusX/frontend
+        npm install
+
+    - name: Run Jest Tests
+      run: |
+        cd NexusX/frontend
+        npm test
 
     - name: Deploy to Frontend EC2
       env:
