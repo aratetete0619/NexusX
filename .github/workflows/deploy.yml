@@ -14,12 +14,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd NexusX/frontend
+        cd frontend
         npm install
 
     - name: Run Jest Tests
       run: |
-        cd NexusX/frontend
+        cd frontend
         npm test
 
     - name: Deploy to Frontend EC2
