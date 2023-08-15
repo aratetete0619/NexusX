@@ -1,4 +1,3 @@
-// components/CustomDragLayer.tsx
 import React, { FC } from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 import SearchArea from './SearchArea';
