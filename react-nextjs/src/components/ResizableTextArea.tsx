@@ -1,4 +1,3 @@
-// components/ResizableTextArea.tsx
 import { setFocus, setResults, updateQuery, selectPolarNode } from '../redux/actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useEffect } from 'react';
@@ -7,6 +6,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@apollo/client';
 import styles from '../styles/SearchArea.module.css';
 import { RESIZABLE_SEARCH_QUERY } from '../graphql/mutations'
+import Loader from './Loader';
+import { ErrorContext } from '../contexts/ErrorContext';
 
 
 

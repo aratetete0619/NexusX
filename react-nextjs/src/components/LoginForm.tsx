@@ -94,6 +94,8 @@ const LoginForm = () => {
       <p>Sign in using your account</p>
       <div className={styles.oauthButtons}>
         <GoogleLogin
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+          redirectUri="https://nexusxsatoshi.com/explore"
           onSuccess={credentialResponse => {
             console.log(credentialResponse);
           }}
