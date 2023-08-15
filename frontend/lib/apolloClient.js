@@ -2,11 +2,13 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { useMemo } from 'react';
 
+
 let apolloClient;
 
 function createApolloClient() {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:8000/graphql', // Server URL (must be absolute)
+    uri: 'https://api.nexusxsatoshi.com/graphql',
+    credentials: 'include',
   });
 
   const authLink = setContext((_, { headers }) => {

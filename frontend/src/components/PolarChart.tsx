@@ -107,7 +107,7 @@ const PolarChart: React.FC<PolarChartProps> = ({ showDraggableComponents, displa
           }}
           onClick={handleIconClick}
         >
-          <FontAwesomeIcon icon={faSearch} size="lg" style={{ cursor: "pointer" }} />
+          <FontAwesomeIcon icon={faSearch} size="lg" style={{ cursor: "pointer" }} width="15" height="15" />
         </div>
       }
       {!showDraggableComponents && centerPolarNode &&

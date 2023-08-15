@@ -1,5 +1,6 @@
 // _app.tsx
 import React from 'react';
+import Head from 'next/head';
 import { ErrorProvider } from '../src/contexts/ErrorContext';
 import { SuccessProvider } from "../src/contexts/SuccessContext";
 import { NoResultProvider } from '../src/contexts/NoResultContext';
@@ -24,6 +25,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <div className="app">
+      <Head>
+        <link rel="icon" href="/nexusxLogo.png" type="image/png" />
+      </Head>
       <AuthProvider>
         <SuccessProvider>
           <ErrorProvider>

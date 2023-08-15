@@ -35,6 +35,8 @@
 
 .toggle {
   margin-left: 20px;
+  width: 15px;
+  height: 15px;
 }
 
 .dropdownToggle {
@@ -86,4 +88,9 @@
 
 .dropdownMenu .dropdown-item {
   display: block;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
 }

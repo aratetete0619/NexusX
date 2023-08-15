@@ -119,7 +119,7 @@ const PolarNodePopup: React.FC<PolarNodePopupProps> = ({ hideDraggableComponents
     <div className={styles.popupContainer}>
       {loading && <Loader />}
       <div className={styles.closeButton} onClick={handleClose}>
-        <FontAwesomeIcon icon={faTimes} size="lg" />
+        <FontAwesomeIcon icon={faTimes} size="lg" className={styles.icon} />
       </div>
       <div className={styles.titleSection}>
         {imagePath && <Image src={`/${imagePath}`} alt={name} className={styles.popupImage} width="100" height="100" />}

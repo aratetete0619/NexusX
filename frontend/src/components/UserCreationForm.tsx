@@ -87,6 +87,7 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
       }
 
     } catch (error) {
+      console.error(error);
       const errorMessage = (error as { message?: string }).message;
       showError(errorMessage || 'An error occurred');
     } finally {
