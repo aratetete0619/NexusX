@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import Link from 'next/link';
 import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from '@react-oauth/google';
 import styles from '../styles/UserCreationForm.module.css';
@@ -148,6 +149,10 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
       </form>
       {loading && <Loader />}
       {showSuccessPopup && <SuccessPopup />}
+
+      <div className={styles.redirectLink}>
+        <p>Already a user? <Link href="/login">Sign in here</Link></p>
+      </div>
     </div>
   );
 };

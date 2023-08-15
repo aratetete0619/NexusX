@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from '@react-oauth/google';
@@ -95,7 +96,6 @@ const LoginForm = () => {
       if (response.data && response.data.authenticateWithGoogle) {
         const { token, email } = response.data.authenticateWithGoogle;
 
-        // トークンをクッキーに保存
         setCookie(null, 'token', token, {
           maxAge: 30 * 24 * 60 * 60,
           path: '/',
@@ -154,6 +154,11 @@ const LoginForm = () => {
           onMouseDown={() => { }}
         />
       </form>
+
+      <div className={styles.redirectLinks}>
+        <p>Not a member yet? <Link href="/signup">Sign up here</Link></p>
+        <p><Link href="/forgot-password">Forgot your password?</Link></p>
+      </div>
     </div>
   );
 };
