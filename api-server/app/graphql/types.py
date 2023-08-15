@@ -94,3 +94,10 @@ class RelatedNode(ObjectType):
 class Favorite(ObjectType):
     email = String()
     nodeId = String()
+
+
+class AuthResponse(ObjectType):
+    id = String()
+    email = String()
+    token = String()
+    message = String()

@@ -1,5 +1,3 @@
-# app/utils/auth.py
-
 import re
 from fastapi import HTTPException
 from passlib.context import CryptContext
@@ -8,6 +6,11 @@ from datetime import datetime, timedelta
 import uuid
 import logging
 import redis
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import os
+from dotenv import load_dotenv
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -78,3 +81,26 @@ def track_account_creation(ip_address):
         raise Exception(
             "Too many account creations from this IP address. Please try again later."
         )
+
+
+def verify_google_token(token: str):
+    load_dotenv()
+
+    GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+
+    if GOOGLE_CLIENT_ID is None:
+        raise ValueError("GOOGLE_CLIENT_ID must be set in .env file")
+
+    try:
+        idinfo = id_token.verify_oauth2_token(
+            token, requests.Request(), GOOGLE_CLIENT_ID
+        )
+
+        if idinfo["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
+            raise ValueError("Wrong issuer.")
+
+        return idinfo
+
+    except ValueError as e:
+        print(e)
+        raise e

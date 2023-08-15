@@ -41,15 +41,15 @@ def close_connection(connection):
         print("MySQL connection is closed")
 
 
-def create_user(connection, email, password_hash, confirmed=False):
+def create_user(connection, email, password_hash, confirmed=False, username=None):
     cursor = connection.cursor()
     existing_user = get_user_by_email(connection, email)
     if existing_user is not None:
         raise UserAlreadyExistsError(email)
     try:
         cursor.execute(
-            "INSERT INTO Users (email, password_hash, confirmed) VALUES (%s, %s, %s)",
-            (email, password_hash, confirmed),
+            "INSERT INTO Users (email, password_hash, confirmed, username) VALUES (%s, %s, %s, %s)",
+            (email, password_hash, confirmed, username),
         )
         connection.commit()
         user_id = cursor.lastrowid
@@ -64,11 +64,8 @@ def create_user(connection, email, password_hash, confirmed=False):
 
 def get_user_by_email(connection, email):
     with connection.cursor() as cursor:
-        # SQLステートメントの作成
         sql = "SELECT * FROM users WHERE email = %s"
-        # SQLステートメントの実行
         cursor.execute(sql, (email,))
-        # 結果の取得
         result = cursor.fetchone()
     return result
 

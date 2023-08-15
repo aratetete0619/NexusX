@@ -132,3 +132,15 @@ export const RESIZABLE_SEARCH_QUERY = gql`
     }
   }
 `
+
+
+export const AUTHENTICATE_WITH_GOOGLE = gql`
+  mutation AuthenticateWithGoogle($tokenId: String!) {
+    authenticateWithGoogle(tokenId: $tokenId) {
+      id
+      email
+      token
+      message
+    }
+  }
+`;

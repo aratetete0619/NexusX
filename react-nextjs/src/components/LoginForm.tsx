@@ -8,12 +8,13 @@ import { useMutation } from '@apollo/client';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { AuthContext } from '../contexts/AuthContext';
 import { setCookie } from 'nookies';
-import { LOGIN_USER } from '../graphql/mutations'
+import { LOGIN_USER, AUTHENTICATE_WITH_GOOGLE } from '../graphql/mutations'
 
 
 
 const LoginForm = () => {
   const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const [googleLogin, { error: googleLoginError, loading: googleLoginLoading }] = useMutation(AUTHENTICATE_WITH_GOOGLE);
   const router = useRouter();
   const { login } = useContext(AuthContext);
   const errorContext = useContext(ErrorContext);
@@ -85,6 +86,46 @@ const LoginForm = () => {
     }
   }
 
+  const handleGoogleLogin = async (credentialResponse: any) => {
+    try {
+      const tokenId = credentialResponse.getAuthResponse().id_token;
+
+      const response = await googleLogin({ variables: { tokenId } });
+
+      if (response.data && response.data.authenticateWithGoogle) {
+        const { token, email } = response.data.authenticateWithGoogle;
+
+        // トークンをクッキーに保存
+        setCookie(null, 'token', token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+
+        setCookie(null, 'email', email, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+
+        login(token);
+
+        router.push('/explore');
+
+      } else {
+        showError('Failed to authenticate with Google.');
+      }
+    } catch (error: any) {
+      if (error instanceof Error) {
+        showError(`Google Login Failed: ${error.message}`);
+      } else {
+        showError(`Google Login Failed`);
+      }
+    }
+  };
+
 
 
 
@@ -96,9 +137,7 @@ const LoginForm = () => {
         <GoogleLogin
           clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
           redirectUri="https://nexusxsatoshi.com/explore"
-          onSuccess={credentialResponse => {
-            console.log(credentialResponse);
-          }}
+          onSuccess={handleGoogleLogin}
           onError={() => {
             showError('Login Failed');
           }}
