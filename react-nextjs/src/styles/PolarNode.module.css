@@ -83,7 +83,10 @@
 
 .favoriteIcon {
   color: red;
+  width: 20px;
+  height: 20px;
 }
+
 
 .favoriteIconContainer {
   padding: 2px;
