@@ -1,4 +1,3 @@
-// components/PolarNode.tsx
 import React, { useEffect, useState, useContext } from 'react';
 import { RootState } from '../redux/reducers';
 import { useDrag } from 'react-dnd';
@@ -24,6 +23,7 @@ interface PolarNodeProps {
 }
 
 const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x: 0, y: 0 }, updatePosition }) => {
+  const MAX_CHAR_COUNT = 25;
   const selectedNodeId = useSelector((state: RootState) => state.selectedPolarNode);
   const dispatch = useDispatch();
   const cookies = parseCookies();
@@ -38,6 +38,7 @@ const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x
 
   const [addFavorite] = useMutation(ADD_FAVORITE);
   const [removeFavorite] = useMutation(REMOVE_FAVORITE);
+
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: 'POLAR_NODE',
@@ -106,6 +107,10 @@ const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x
 
   const { name, imagePath } = properties;
   const esId = properties.esId;
+  let displayName = name;
+  if (name.length > MAX_CHAR_COUNT) {
+    displayName = `${name.substring(0, MAX_CHAR_COUNT)}...`;
+  }
 
 
   return (
@@ -119,7 +124,7 @@ const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x
         onDoubleClick={handleDoubleClick}
       >
         {!imagePath && <div className={styles.content}>
-          <span className={styles.nodeName}>{name}</span>
+          <span className={styles.nodeName}>{displayName}</span>
           {isFavorited && <FontAwesomeIcon
             icon={faHeart}
             onClick={handleFavoriteIconClick}

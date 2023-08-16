@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from '@react-oauth/google';
@@ -8,12 +9,13 @@ import { useMutation } from '@apollo/client';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { AuthContext } from '../contexts/AuthContext';
 import { setCookie } from 'nookies';
-import { LOGIN_USER } from '../graphql/mutations'
+import { LOGIN_USER, AUTHENTICATE_WITH_GOOGLE } from '../graphql/mutations'
 
 
 
 const LoginForm = () => {
   const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const [googleLogin, { error: googleLoginError, loading: googleLoginLoading }] = useMutation(AUTHENTICATE_WITH_GOOGLE);
   const router = useRouter();
   const { login } = useContext(AuthContext);
   const errorContext = useContext(ErrorContext);
@@ -85,6 +87,45 @@ const LoginForm = () => {
     }
   }
 
+  const handleGoogleLogin = async (credentialResponse: any) => {
+    try {
+      const tokenId = credentialResponse.getAuthResponse().id_token;
+
+      const response = await googleLogin({ variables: { tokenId } });
+
+      if (response.data && response.data.authenticateWithGoogle) {
+        const { token, email } = response.data.authenticateWithGoogle;
+
+        setCookie(null, 'token', token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+
+        setCookie(null, 'email', email, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+
+        login(token);
+
+        router.push('/explore');
+
+      } else {
+        showError('Failed to authenticate with Google.');
+      }
+    } catch (error: any) {
+      if (error instanceof Error) {
+        showError(`Google Login Failed: ${error.message}`);
+      } else {
+        showError(`Google Login Failed`);
+      }
+    }
+  };
+
 
 
 
@@ -94,9 +135,9 @@ const LoginForm = () => {
       <p>Sign in using your account</p>
       <div className={styles.oauthButtons}>
         <GoogleLogin
-          onSuccess={credentialResponse => {
-            console.log(credentialResponse);
-          }}
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+          redirectUri="https://nexusxsatoshi.com/explore"
+          onSuccess={handleGoogleLogin}
           onError={() => {
             showError('Login Failed');
           }}
@@ -113,6 +154,11 @@ const LoginForm = () => {
           onMouseDown={() => { }}
         />
       </form>
+
+      <div className={styles.redirectLinks}>
+        <p>Not a member yet? <Link href="/signup">Sign up here</Link></p>
+        <p><Link href="/forgot-password">Forgot your password?</Link></p>
+      </div>
     </div>
   );
 };

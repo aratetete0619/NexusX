@@ -29,6 +29,7 @@ from ..utils.auth import (
     verify_password,
     generate_auth_token,
     generate_confirmation_code,
+    verify_google_token,
 )
 import os
 from ..utils.email import send_confirmation_email
@@ -70,10 +71,9 @@ def resolve_create_user(email, password):
             raise GraphQLError("Failed to create user. Please try again.")
         else:
             logging.info(f"User created with ID: {user_id}")
-    except ValueError:  # Or your custom exception
+    except ValueError:
         raise GraphQLError("User already exists")
 
-    # Generate a confirmation code for the new user
     confirmation_code = generate_confirmation_code()
 
     try:
@@ -164,6 +164,29 @@ def resolve_login_user(email: str, password: str):
     return response
 
 
+def resolve_google_login(google_token: str):
+    google_user_info = verify_google_token(google_token)
+
+    connection = create_connection()
+    user = get_user_by_email(connection, google_user_info["email"])
+
+    if user is None:
+        user = create_user(connection, google_user_info["email"])
+
+    connection.close()
+
+    secret_key = os.getenv("JWT_SECRET")
+    token = generate_auth_token(user[0], secret_key)
+
+    response = {
+        "id": user[0],
+        "email": user[2],
+        "token": token,
+    }
+
+    return response
+
+
 def resolve_get_related_nodes(root, info, es_id):
     try:
         related_nodes_data = get_related_nodes_from_neo4j(es_id)
@@ -227,3 +250,53 @@ def resolve_get_favorites(email: str):
         return [Favorite(email=email, nodeId=nodeId) for nodeId in favorite_nodes]
     except Exception as e:
         raise GraphQLError(f"Failed to get favorites: {str(e)}")
+
+
+def resolve_google_login(tokenId: str):
+    google_user_info = verify_google_token(tokenId)
+
+    if not google_user_info:
+        raise GraphQLError("Invalid or expired Google token.")
+
+    email = google_user_info["email"]
+    username_from_google = google_user_info.get("name")
+
+    try:
+        connection = create_connection()
+        user = get_user_by_email(connection, email)
+
+        if user is None:
+            dummy_password_hash = hash_password("google_authenticated")
+            user = create_user(
+                connection,
+                email,
+                dummy_password_hash,
+                confirmed=True,
+                username=username_from_google,
+            )
+
+        connection.close()
+
+    except Exception as e:
+        raise GraphQLError(f"Database error: {str(e)}")
+
+    if not user:
+        raise GraphQLError("Failed to authenticate with Google.")
+
+    secret_key = os.getenv("JWT_SECRET")
+    if not secret_key:
+        raise GraphQLError("Server configuration error.")
+
+    token = generate_auth_token(user[0], secret_key)
+
+    if not token:
+        raise GraphQLError("Failed to generate authentication token.")
+
+    response = {
+        "id": str(user[0]),
+        "email": user[2],
+        "token": token,
+        "message": "Successfully authenticated with Google.",
+    }
+
+    return response

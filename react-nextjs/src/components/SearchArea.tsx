@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../styles/SearchArea.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

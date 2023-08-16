@@ -92,6 +92,10 @@
 
 .nodeName {
   margin-right: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
 }
 
 @keyframes fadeIn {

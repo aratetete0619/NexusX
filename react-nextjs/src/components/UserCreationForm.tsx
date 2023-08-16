@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import Link from 'next/link';
 import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from '@react-oauth/google';
 import styles from '../styles/UserCreationForm.module.css';
@@ -9,12 +10,13 @@ import SuccessPopup from '../components/SuccessPopup';
 import { useRouter } from 'next/router';
 import { SuccessContext } from '../contexts/SuccessContext';
 import Loader from './Loader';
-import { CREATE_USER } from '../graphql/mutations';
+import { CREATE_USER, AUTHENTICATE_WITH_GOOGLE } from '../graphql/mutations';
 
 
 
 const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => void }) => {
   const [createUser, { error, loading }] = useMutation(CREATE_USER);
+  const [googleLogin, { error: googleLoginError, loading: googleLoginLoading }] = useMutation(AUTHENTICATE_WITH_GOOGLE);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
@@ -87,8 +89,39 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
       }
 
     } catch (error) {
+      console.error(error);
       const errorMessage = (error as { message?: string }).message;
       showError(errorMessage || 'An error occurred');
+    } finally {
+      setIsLoading(false);
+      onLoading(false);
+    }
+  };
+
+
+  const handleGoogleLogin = async (credentialResponse: any) => {
+    try {
+      setIsLoading(true);
+      onLoading(true);
+
+      const tokenId = credentialResponse.getAuthResponse().id_token;
+
+      const response = await googleLogin({ variables: { tokenId } });
+
+      if (response.errors) {
+        showError(response.errors[0].message);
+      } else if (!response.data || !response.data.googleLogin) {
+        showError("Failed to receive response from server. Please try again.");
+      } else if (response.data.googleLogin.message) {
+        showSuccess(response.data.googleLogin.message);
+        setSuccessMessage(response.data.googleLogin.message);
+        setShowSuccessPopup(true);
+      }
+
+    } catch (error) {
+      console.error(error);
+      const errorMessage = (error as { message?: string }).message;
+      showError(errorMessage || 'An error occurred with Google login');
     } finally {
       setIsLoading(false);
       onLoading(false);
@@ -100,9 +133,7 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
       <p>Sign up using your account</p>
       <div className={styles.oauthButtons}>
         <GoogleLogin
-          onSuccess={credentialResponse => {
-            console.log(credentialResponse);
-          }}
+          onSuccess={handleGoogleLogin}
           onError={() => {
             showError('Login Failed');
           }}
@@ -118,6 +149,10 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
       </form>
       {loading && <Loader />}
       {showSuccessPopup && <SuccessPopup />}
+
+      <div className={styles.redirectLink}>
+        <p>Already a user? <Link href="/login">Sign in here</Link></p>
+      </div>
     </div>
   );
 };

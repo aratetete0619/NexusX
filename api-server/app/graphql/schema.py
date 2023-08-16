@@ -8,8 +8,9 @@ from .resolvers import (
     resolve_add_favorite,
     resolve_remove_favorite,
     resolve_get_favorites,
+    resolve_google_login,
 )
-from .types import Result, User, CreateUserOutput, RelatedNode, Favorite
+from .types import Result, User, CreateUserOutput, RelatedNode, Favorite, AuthResponse
 import graphene
 
 
@@ -81,12 +82,23 @@ class RemoveFavorite(Mutation):
         return resolve_remove_favorite(email, nodeId)
 
 
+class AuthenticateWithGoogle(Mutation):
+    class Arguments:
+        tokenId = String(required=True)
+
+    Output = AuthResponse
+
+    def mutate(root, info, tokenId):
+        return resolve_google_login(tokenId)
+
+
 class Mutation(ObjectType):
     create_user = CreateUser.Field()
     login_user = LoginUser.Field()
     confirm_user = ConfirmUser.Field()
     add_favorite = AddFavorite.Field()
     remove_favorite = RemoveFavorite.Field()
+    authenticate_with_google = AuthenticateWithGoogle.Field()
 
 
 schema = Schema(query=Query, mutation=Mutation)
