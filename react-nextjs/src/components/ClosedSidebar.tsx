@@ -10,7 +10,7 @@ const ClosedSidebar: React.FC<ClosedSidebarProps> = ({ toggleSidebar }) => {
   return (
     <div className={styles.closedSidebar}>
       <div className={styles.openButton} onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faCaretRight} />
+        <FontAwesomeIcon icon={faCaretRight} className={styles.icon} />
       </div>
     </div>
   );
