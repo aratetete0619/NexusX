@@ -70,6 +70,7 @@ def resolve_create_user(email, password):
         if user_id is None:
             raise GraphQLError("Failed to create user. Please try again.")
         else:
+            user_id = user[0]
             logging.info(f"User created with ID: {user_id}")
     except ValueError:
         raise GraphQLError("User already exists")
