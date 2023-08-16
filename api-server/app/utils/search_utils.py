@@ -9,7 +9,9 @@ from typing import Dict
 from neo4j.exceptions import ServiceUnavailable
 import logging
 from neo4j.graph import Node, Relationship
+from dotenv import load_dotenv
 
+load_dotenv()
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -20,9 +22,11 @@ nlp_en = spacy.load("en_core_web_sm")
 indices = ["people", "concepts", "events"]
 
 # Neo4jへの接続を作成
-uri = "bolt://localhost:7687"
+uri = os.getenv("NEO4J_URI")
 password = os.getenv("NEO4J_PASSWORD")
 driver = GraphDatabase.driver(uri, auth=("neo4j", password))
+
+es_uri = os.getenv("NEXT_PUBLIC_ELASTICSEARCH_URI")
 
 
 def node_to_dict(node):
@@ -90,7 +94,7 @@ def calculate_score_based_on_neo4j_data(neo4j_data):
 
 def search_in_elasticsearch(preprocessed_query):
     try:
-        es = Elasticsearch(["localhost:9200"])
+        es = Elasticsearch([es_uri])
     except ConnectionError as e:
         return {"error": "An error occurred while connecting to the search service."}
 
@@ -171,7 +175,7 @@ def search_in_elasticsearch(preprocessed_query):
 
 def get_description_from_elasticsearch(es_id, index):
     try:
-        es = Elasticsearch(["localhost:9200"])
+        es = Elasticsearch([es_uri])
     except ConnectionError as e:
         raise GraphQLError("An error occurred while connecting to the search service.")
 

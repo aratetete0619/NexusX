@@ -11,7 +11,8 @@ import { useRouter } from 'next/router';
 import { SuccessContext } from '../contexts/SuccessContext';
 import Loader from './Loader';
 import { CREATE_USER, AUTHENTICATE_WITH_GOOGLE } from '../graphql/mutations';
-
+import { setCookie } from 'nookies';
+import { AuthContext } from '../contexts/AuthContext';
 
 
 const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => void }) => {
@@ -22,6 +23,7 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const { login } = useContext(AuthContext);
   const errorContext = useContext(ErrorContext);
   if (!errorContext) {
     throw new Error('ErrorContext not provided');
@@ -101,30 +103,41 @@ const UserCreationForm = ({ onLoading }: { onLoading: (isLoading: boolean) => vo
 
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
-      setIsLoading(true);
-      onLoading(true);
+      const tokenId = credentialResponse.credential;
 
-      const tokenId = credentialResponse.getAuthResponse().id_token;
 
       const response = await googleLogin({ variables: { tokenId } });
 
-      if (response.errors) {
-        showError(response.errors[0].message);
-      } else if (!response.data || !response.data.googleLogin) {
-        showError("Failed to receive response from server. Please try again.");
-      } else if (response.data.googleLogin.message) {
-        showSuccess(response.data.googleLogin.message);
-        setSuccessMessage(response.data.googleLogin.message);
-        setShowSuccessPopup(true);
-      }
+      if (response.data && response.data.authenticateWithGoogle) {
+        const { token, email } = response.data.authenticateWithGoogle;
 
-    } catch (error) {
-      console.error(error);
-      const errorMessage = (error as { message?: string }).message;
-      showError(errorMessage || 'An error occurred with Google login');
-    } finally {
-      setIsLoading(false);
-      onLoading(false);
+        setCookie(null, 'token', token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+
+        setCookie(null, 'email', email, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+        });
+
+        login(token);
+
+        router.push('/explore');
+
+      } else {
+        showError('Failed to authenticate with Google.');
+      }
+    } catch (error: any) {
+      if (error instanceof Error) {
+        showError(`Google Login Failed: ${error.message}`);
+      } else {
+        showError(`Google Login Failed`);
+      }
     }
   };
 

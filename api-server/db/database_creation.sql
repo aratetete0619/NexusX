@@ -42,7 +42,7 @@ CREATE TABLE Messages (
   FOREIGN KEY (receiver_id) REFERENCES Users(user_id)
 );
 CREATE TABLE NodeMedia (
-  node_id INT NOT NULL,
+  node_id VARCHAR(255) NOT NULL,
   media_id INT AUTO_INCREMENT PRIMARY KEY,
   media_type VARCHAR(255) NOT NULL,
   media_path VARCHAR(255) NOT NULL
@@ -121,9 +121,9 @@ CREATE TABLE NodeEvaluationScores (
 );
 CREATE TABLE UserFavorites (
   user_id INT NOT NULL,
-  node_id INT NOT NULL,
+  media_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (node_id) REFERENCES NodeMedia(node_id)
+  FOREIGN KEY (media_id) REFERENCES NodeMedia(media_id)
 );
 CREATE INDEX idx_users_email ON Users(email);
 CREATE INDEX idx_usergroups_user_id ON UserGroups(user_id);
@@ -151,4 +151,4 @@ CREATE INDEX idx_modelperformance_model_id ON ModelPerformance(model_id);
 CREATE INDEX idx_biasmonitoring_model_id ON BiasMonitoring(model_id);
 CREATE INDEX idx_nodeevaluationscores_node_id ON NodeEvaluationScores(node_id);
 CREATE INDEX idx_userfavorites_user_id ON UserFavorites(user_id);
-CREATE INDEX idx_userfavorites_node_id ON UserFavorites(node_id);
+CREATE INDEX idx_userfavorites_media_id ON UserFavorites(media_id);

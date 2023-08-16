@@ -5,8 +5,9 @@ import { useMemo } from 'react';
 let apolloClient;
 
 function createApolloClient() {
+  const uri = process.env.NEXT_PUBLIC_GRAPHQL_URI
   const httpLink = new HttpLink({
-    uri: 'http://localhost:8000/graphql',
+    uri,
   });
 
   const authLink = setContext((_, { headers }) => {

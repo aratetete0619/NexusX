@@ -89,7 +89,8 @@ const LoginForm = () => {
 
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
-      const tokenId = credentialResponse.getAuthResponse().id_token;
+      const tokenId = credentialResponse.credential;
+
 
       const response = await googleLogin({ variables: { tokenId } });
 
@@ -135,8 +136,6 @@ const LoginForm = () => {
       <p>Sign in using your account</p>
       <div className={styles.oauthButtons}>
         <GoogleLogin
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-          redirectUri="https://nexusxsatoshi.com/explore"
           onSuccess={handleGoogleLogin}
           onError={() => {
             showError('Login Failed');

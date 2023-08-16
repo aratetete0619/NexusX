@@ -19,6 +19,7 @@ import { AuthProvider } from '../src/contexts/AuthContext';
 import 'typeface-roboto';
 import '../src/styles/App.css';
 
+
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
