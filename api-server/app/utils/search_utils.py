@@ -9,7 +9,9 @@ from typing import Dict
 from neo4j.exceptions import ServiceUnavailable
 import logging
 from neo4j.graph import Node, Relationship
+from dotenv import load_dotenv
 
+load_dotenv()
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
