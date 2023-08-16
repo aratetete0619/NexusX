@@ -66,7 +66,7 @@ NexusXはウェブベースのアプリケーションであり、特定のイ�
 9. **共有**: ユーザーはソーシャルメディアで検索結果を共有できます。(進行中)
 
 ## インフラ構成図
-[![Image from Gyazo](https://i.gyazo.com/b9f7e9443143014fbb217f087ef565f3.png)](https://gyazo.com/b9f7e9443143014fbb217f087ef565f3)
+[![Image from Gyazo](https://i.gyazo.com/3a3287c3840bca8369c44435e086f015.png)](https://gyazo.com/3a3287c3840bca8369c44435e086f015)
 
 ## 機能
 - 検索機能<br>
