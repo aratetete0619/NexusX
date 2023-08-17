@@ -1,0 +1,80 @@
+.container {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.searchContainer {
+  display: flex;
+  width: 80%;
+  background-color: #f0f0f0;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.icon {
+  padding: 10px;
+  color: gray;
+}
+
+.searchBar {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  outline: none;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  width: 80%;
+}
+
+.subTitle {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.addButton,
+.deleteButton {
+  padding: 10px 20px;
+  background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.diagramList {
+  list-style: none;
+  padding: 0;
+}
+
+.diagramItem {
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+
+.noDiagrams {
+  padding: 10px;
+  font-style: italic;
+  color: gray;
+}
+
+.icon {
+  width: 15px;
+  height: 15px
+}

@@ -6,26 +6,16 @@ import CustomDragLayer from '@/src/components/CustomDragLayer';
 import PolarNodeDragLayer from '@/src/components/PolarNodeDragLayer';
 import PolarNodePopup from '../src/components/PolarNodePopup';
 import { GetServerSideProps } from 'next';
-import jwt from 'jsonwebtoken';
-import { parseCookies } from 'nookies';
 import PolarNodeEdge from '../src/components/PolarNodeEdge';
 import { ErrorContext } from '../src/contexts/ErrorContext';
+import { authenticateUser } from '../src//utils/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = parseCookies(context);
-  const token = cookies.token;
-  const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET;
-
-  if (typeof jwtSecret == 'string') {
-    try {
-      jwt.verify(token, jwtSecret);
-    } catch (error) {
-      context.res.setHeader('location', '/login');
-      context.res.statusCode = 302;
-    }
+  const authResult = await authenticateUser(context);
+  if (!authResult.authenticated) {
+    return { props: {} };
   }
-
-  return { props: { token } };
+  return { props: { token: authResult.token } };
 };
 
 const ExplorePage: React.FC = () => {

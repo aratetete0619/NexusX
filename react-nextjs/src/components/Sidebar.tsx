@@ -15,7 +15,9 @@ const Sidebar: React.FC<Props> = ({ toggleSidebar }) => {
         <FontAwesomeIcon icon={faCaretLeft} className={styles.icon} />
       </div>
       <div className={styles.logoContainer}>
-        <Image src="/images/sidebar_logo.png" alt="App Logo" className={styles.logo} width="300" height="150" />
+        <Link href="/">
+          <Image src="/images/sidebar_logo.png" alt="App Logo" className={styles.logo} width="300" height="150" />
+        </Link>
       </div>
       <nav>
         <ul className={styles.sidebarList}>
