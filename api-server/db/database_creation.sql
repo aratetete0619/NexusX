@@ -125,6 +125,13 @@ CREATE TABLE UserFavorites (
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
   FOREIGN KEY (media_id) REFERENCES NodeMedia(media_id)
 );
+CREATE TABLE UserPages (
+  user_page_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  page_id VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
 CREATE INDEX idx_users_email ON Users(email);
 CREATE INDEX idx_usergroups_user_id ON UserGroups(user_id);
 CREATE INDEX idx_usergroups_group_id ON UserGroups(group_id);
@@ -152,3 +159,4 @@ CREATE INDEX idx_biasmonitoring_model_id ON BiasMonitoring(model_id);
 CREATE INDEX idx_nodeevaluationscores_node_id ON NodeEvaluationScores(node_id);
 CREATE INDEX idx_userfavorites_user_id ON UserFavorites(user_id);
 CREATE INDEX idx_userfavorites_media_id ON UserFavorites(media_id);
+CREATE INDEX idx_userpages_user_id ON UserPages(user_id);

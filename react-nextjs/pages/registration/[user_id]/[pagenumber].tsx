@@ -5,12 +5,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 
 const RegistrationPage: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   return (
     <ThemeProvider theme={createTheme()}>
       <MainLayout>

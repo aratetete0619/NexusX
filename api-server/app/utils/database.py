@@ -69,14 +69,12 @@ def create_user(connection, email, password_hash, confirmed=False):
         cursor.close()
 
 
-def get_user_by_email(connection, email):
-    with connection.cursor() as cursor:
-        # SQLステートメントの作成
-        sql = "SELECT * FROM users WHERE email = %s"
-        # SQLステートメントの実行
-        cursor.execute(sql, (email,))
-        # 結果の取得
-        result = cursor.fetchone()
+def get_user_by_email(connection, email, as_dict=False):
+    cursor = connection.cursor(dictionary=as_dict)
+    sql = "SELECT * FROM users WHERE email = %s"
+    cursor.execute(sql, (email,))
+    result = cursor.fetchone()
+    cursor.close()
     return result
 
 
@@ -153,6 +151,38 @@ def delete_confirmation_code(connection, user_id):
         connection.commit()
     except Exception as e:
         print(f"Failed to delete confirmation code: {e}")
+        connection.rollback()
+    finally:
+        cursor.close()
+
+
+def save_user_page_to_db(connection, user_id, page_id):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO UserPages (user_id, page_id) VALUES (%s, %s)",
+            (user_id, page_id),
+        )
+        connection.commit()
+        print(f"User page saved for user ID {user_id} and page ID {page_id}")
+    except Exception as e:
+        print(f"Failed to save user page: {e}")
+        connection.rollback()
+    finally:
+        cursor.close()
+
+
+def delete_user_page_from_db(connection, user_id, page_id):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            "DELETE FROM UserPages WHERE user_id=%s AND page_id=%s",
+            (user_id, page_id),
+        )
+        connection.commit()
+        print(f"User page deleted for user ID {user_id} and page ID {page_id}")
+    except Exception as e:
+        print(f"Failed to delete user page: {e}")
         connection.rollback()
     finally:
         cursor.close()

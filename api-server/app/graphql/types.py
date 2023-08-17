@@ -101,3 +101,9 @@ class AuthResponse(ObjectType):
     email = String()
     token = String()
     message = String()
+
+
+class UserPage(ObjectType):
+    page_id = String()
+    email = String()
+    created_at = String()
