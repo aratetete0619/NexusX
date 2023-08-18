@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,12 +13,10 @@ import { parseCookies } from 'nookies';
 import { useMutation } from '@apollo/client';
 import { SAVE_USER_PAGE } from '../src/graphql/mutations';
 import { DELETE_USER_PAGE } from '../src/graphql/mutations';
+import Fuse from 'fuse.js';
+import ReactPaginate from 'react-paginate';
 
 
-type RelationshipDiagram = {
-  id: string;
-  name: string;
-};
 
 type Props = {
   authenticated: boolean;
@@ -29,22 +27,29 @@ type Props = {
 const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) => {
   const userIdOrUsername = username || email;
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [diagrams, setDiagrams] = useState<RelationshipDiagram[]>([
-    // ダミーデータまたはAPIからのデータ
-  ]);
   const router = useRouter();
   const [pageUUIDs, setPageUUIDs] = useState<string[]>([]);
+  const [filteredUUIDs, setFilteredUUIDs] = useState<string[]>([]);
   const [selectedUUIDs, setSelectedUUIDs] = useState<string[]>([]);
   const [saveUserPage, { error }] = useMutation(SAVE_USER_PAGE);
   const [deleteUserPage, { error: deleteError }] = useMutation(DELETE_USER_PAGE);
+  const ITEMS_PER_PAGE = 9;
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  // ページネーションの処理
+  const handlePageClick = (data: { selected: number }) => {
+    setCurrentPage(data.selected);
+  };
+
+  const paginatedUUIDs = useMemo(() => {
+    return filteredUUIDs.slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE);
+  }, [filteredUUIDs, currentPage]);
 
 
-
-
+  // 新しいページを追加
   const handleAddClick = async () => {
     if (authenticated) {
       const uuidForPage = uuidv4();
-
       try {
         await saveUserPage({
           variables: {
@@ -70,7 +75,7 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
     }
   };
 
-
+  // チェックボックスの処理
   const handleCheckboxChange = (uuid: string, checked: boolean) => {
     if (checked) {
       setSelectedUUIDs([...selectedUUIDs, uuid]);
@@ -79,6 +84,7 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
     }
   };
 
+  // 選択したページを削除
   const handleDeleteClick = async () => {
     if (window.confirm('Are you sure you want to delete the selected pages?')) {
       try {
@@ -102,11 +108,12 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
     }
   };
 
-
+  // 検索入力の変更を処理
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
+  // ローカルストレージからページUUIDsを取得
   useEffect(() => {
     const storedPageUUIDs = localStorage.getItem('pageUUIDs');
     if (storedPageUUIDs) {
@@ -118,6 +125,17 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
     console.error("An error occurred:", error.message);
     return <p>An error occurred while loading the page. Please try again later.</p>;
   }
+
+  // Fuse.jsを使用して検索
+  useEffect(() => {
+    if (searchTerm) {
+      const fuse = new Fuse(pageUUIDs.map((uuid) => ({ id: uuid })), { keys: ['id'], includeScore: true });
+      const results = fuse.search(searchTerm);
+      setFilteredUUIDs(results.map((result) => result.item.id));
+    } else {
+      setFilteredUUIDs(pageUUIDs);
+    }
+  }, [searchTerm, pageUUIDs]);
 
 
   return (
@@ -143,10 +161,10 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
             </div>
           </div>
           <ul className={styles.diagramList}>
-            {pageUUIDs.length === 0 ? (
+            {paginatedUUIDs.length === 0 ? (
               <p className={styles.noDiagrams}>No registrations have been made yet.</p>
             ) : (
-              pageUUIDs.map((uuid) => (
+              paginatedUUIDs.map((uuid) => (
                 <li className={styles.diagramItem} key={uuid}>
                   <input
                     type="checkbox"
@@ -160,6 +178,17 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
               ))
             )}
           </ul>
+          <ReactPaginate
+            previousLabel={'previous'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            pageCount={Math.ceil(filteredUUIDs.length / ITEMS_PER_PAGE)}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={styles.pagination}
+            activeClassName={styles.activePage}
+          />
         </div>
       </MainLayout>
     </ThemeProvider>
@@ -174,6 +203,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return { props: { authenticated: authResult.authenticated, username, email } };
 };
-
 
 export default RegistrationPage;

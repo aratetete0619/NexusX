@@ -61,20 +61,68 @@
 .diagramList {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: start;
 }
 
 .diagramItem {
-  padding: 10px;
-  border-bottom: 1px solid black;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.diagramItem:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 .noDiagrams {
   padding: 10px;
   font-style: italic;
   color: gray;
+  text-align: center;
+  width: 100%;
 }
 
 .icon {
   width: 15px;
   height: 15px
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 80%;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.pagination li.activePage,
+.pagination li:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination li.disabled {
+  cursor: not-allowed;
+  color: gray;
 }
