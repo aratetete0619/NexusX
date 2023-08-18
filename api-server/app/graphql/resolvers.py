@@ -7,12 +7,15 @@ from ..utils.search_utils import (
 )
 from ..utils.database import (
     create_connection,
+    close_connection,
     create_user,
     get_user_by_email,
     save_confirmation_code_to_db,
     get_user_by_confirmation_code,
     update_user_confirmation_status,
     delete_confirmation_code,
+    save_user_page_to_db,
+    delete_user_page_from_db,
 )
 from ..utils.favorite_utils import add_favorite, remove_favorite, get_favorites
 from .types import (
@@ -300,3 +303,40 @@ def resolve_google_login(tokenId: str):
     }
 
     return response
+
+
+def resolve_save_user_page(email, page_id):
+    connection = create_connection()
+    try:
+        user = get_user_by_email(connection, email, as_dict=True)
+        if user is None:
+            raise GraphQLError(f"No user found with email: {email}")
+
+        # userオブジェクトからuser_idを取得
+        user_id = user["user_id"]
+        save_user_page_to_db(connection, user_id, page_id)
+        return {
+            "page_id": page_id,
+            "user_id": user_id,
+            "created_at": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        raise GraphQLError(f"Failed to save user page: {str(e)}")
+    finally:
+        close_connection(connection)
+
+
+def resolve_delete_user_page(root, info, email, page_id):
+    connection = create_connection()
+    try:
+        user = get_user_by_email(connection, email, as_dict=True)
+        if user is None:
+            raise GraphQLError(f"No user found with email: {email}")
+
+        user_id = user["user_id"]
+        delete_user_page_from_db(connection, user_id, page_id)
+        return {"success": True, "message": "User page deleted successfully"}
+    except Exception as e:
+        raise GraphQLError(f"Failed to delete user page: {str(e)}")
+    finally:
+        close_connection(connection)

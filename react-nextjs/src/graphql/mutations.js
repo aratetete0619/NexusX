@@ -144,3 +144,23 @@ export const AUTHENTICATE_WITH_GOOGLE = gql`
     }
   }
 `;
+
+
+export const SAVE_USER_PAGE = gql`
+  mutation SaveUserPage($email: String!, $pageId: String!) {
+    saveUserPage(email: $email, pageId: $pageId) {
+      email
+      pageId
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_USER_PAGE = gql`
+  mutation DeleteUserPage($email: String!, $pageId: String!) {
+    deleteUserPage(email: $email, pageId: $pageId) {
+      success
+      message
+    }
+  }
+`;

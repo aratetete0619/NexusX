@@ -1,0 +1,128 @@
+.container {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.searchContainer {
+  display: flex;
+  width: 80%;
+  background-color: #f0f0f0;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.icon {
+  padding: 10px;
+  color: gray;
+}
+
+.searchBar {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  outline: none;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  width: 80%;
+}
+
+.subTitle {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.addButton,
+.deleteButton {
+  padding: 10px 20px;
+  background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.diagramList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: start;
+}
+
+.diagramItem {
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.diagramItem:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.noDiagrams {
+  padding: 10px;
+  font-style: italic;
+  color: gray;
+  text-align: center;
+  width: 100%;
+}
+
+.icon {
+  width: 15px;
+  height: 15px
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 80%;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.pagination li.activePage,
+.pagination li:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination li.disabled {
+  cursor: not-allowed;
+  color: gray;
+}

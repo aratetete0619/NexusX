@@ -9,8 +9,18 @@ from .resolvers import (
     resolve_remove_favorite,
     resolve_get_favorites,
     resolve_google_login,
+    resolve_save_user_page,
+    resolve_delete_user_page,
 )
-from .types import Result, User, CreateUserOutput, RelatedNode, Favorite, AuthResponse
+from .types import (
+    Result,
+    User,
+    CreateUserOutput,
+    RelatedNode,
+    Favorite,
+    AuthResponse,
+    UserPage,
+)
 import graphene
 
 
@@ -18,7 +28,6 @@ class Query(ObjectType):
     search = Field(List(Result), query=String(required=True))
     get_related_nodes = Field(List(RelatedNode), es_id=String(required=True))
 
-    # リゾルバーは外部モジュールからインポートします
     resolve_search = resolve_search
     resolve_get_related_nodes = resolve_get_related_nodes
 
@@ -92,6 +101,29 @@ class AuthenticateWithGoogle(Mutation):
         return resolve_google_login(tokenId)
 
 
+class SaveUserPage(Mutation):
+    class Arguments:
+        email = String(required=True)
+        page_id = String(required=True)
+
+    Output = UserPage
+
+    def mutate(root, info, email, page_id):
+        return resolve_save_user_page(email, page_id)
+
+
+class DeleteUserPage(Mutation):
+    class Arguments:
+        email = String(required=True)
+        page_id = String(required=True)
+
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(root, info, email, page_id):
+        return resolve_delete_user_page(root, info, email, page_id)
+
+
 class Mutation(ObjectType):
     create_user = CreateUser.Field()
     login_user = LoginUser.Field()
@@ -99,6 +131,8 @@ class Mutation(ObjectType):
     add_favorite = AddFavorite.Field()
     remove_favorite = RemoveFavorite.Field()
     authenticate_with_google = AuthenticateWithGoogle.Field()
+    save_user_page = SaveUserPage.Field()
+    delete_user_page = DeleteUserPage.Field()
 
 
 schema = Schema(query=Query, mutation=Mutation)
