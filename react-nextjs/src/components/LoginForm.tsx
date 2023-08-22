@@ -91,6 +91,7 @@ const LoginForm = () => {
   }
 
   const handleGoogleLogin = async (credentialResponse: any) => {
+    setIsLoading(true);
     try {
       const tokenId = credentialResponse.credential;
 
@@ -128,6 +129,7 @@ const LoginForm = () => {
         showError(`Google Login Failed`);
       }
     }
+    setIsLoading(false);
   };
 
 
