@@ -1,0 +1,4 @@
+{
+  "title": "Your <span className={styles.blue}>Personal</span> Relationship Map",
+  "description": "The power to create is in your hands. NexusX enables you to build your very own <span className={styles.blue}>relationship map</span>, tailored to your unique interests and questions, giving you a <span className={styles.blue}>personalized</span> exploration experience."
+}

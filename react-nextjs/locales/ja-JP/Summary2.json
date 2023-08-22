@@ -1,0 +1,4 @@
+{
+  "title": "<span className={styles.green}>アルゴリズム</span>の視覚化",
+  "description": "結果だけでなく、<br /><span className={styles.green}>プロセス</span>も透明にします。<br />NexusXは、裏側で動作する<span className={styles.green}>アルゴリズム</span>を視覚化し、バイアスに左右されない信頼と理解を提供します。"
+}

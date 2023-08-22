@@ -1,6 +1,7 @@
 import spacy
 import re
 import os
+from dotenv import load_dotenv
 from langdetect import detect
 from elasticsearch import Elasticsearch, TransportError, NotFoundError, ConnectionError
 from neo4j import GraphDatabase
@@ -9,7 +10,7 @@ from typing import Dict
 from neo4j.exceptions import ServiceUnavailable
 import logging
 from neo4j.graph import Node, Relationship
-from dotenv import load_dotenv
+
 
 load_dotenv()
 

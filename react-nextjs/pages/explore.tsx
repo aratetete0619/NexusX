@@ -9,13 +9,23 @@ import { GetServerSideProps } from 'next';
 import PolarNodeEdge from '../src/components/PolarNodeEdge';
 import { ErrorContext } from '../src/contexts/ErrorContext';
 import { authenticateUser } from '../src//utils/auth';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const authResult = await authenticateUser(context);
   if (!authResult.authenticated) {
     return { props: {} };
   }
-  return { props: { token: authResult.token } };
+
+  const translations = await serverSideTranslations(context.locale!, ['Sidebar']);
+
+  return {
+    props: {
+      token: authResult.token,
+      ...translations,
+    },
+  };
 };
 
 const ExplorePage: React.FC = () => {
@@ -73,5 +83,7 @@ const ExplorePage: React.FC = () => {
     </MainLayout>
   );
 };
+
+
 
 export default ExplorePage;

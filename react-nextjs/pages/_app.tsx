@@ -16,6 +16,7 @@ import { useApollo } from '../lib/apolloClient';
 import { store, persistor } from '../src/redux/store';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from '../src/contexts/AuthContext';
+import { appWithTranslation } from 'next-i18next'
 import 'typeface-roboto';
 import '../src/styles/App.css';
 
@@ -54,4 +55,4 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
-export default App;
+export default appWithTranslation(App);

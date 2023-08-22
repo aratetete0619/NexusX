@@ -19,24 +19,25 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
-  const secretKey = process.env.NEXT_PUBLIC_JWT_SECRET;
+  const secretKey = process.env.NEXT_PUBLIC_JWT_SECRET as string;
 
   if (!secretKey) {
     throw new Error('JWT_SECRET is not defined in the environment variables');
   }
 
   const login = (token: string) => {
-    // Save the token in a secure cookie
     setCookie(null, 'token', token, {
       maxAge: 30 * 24 * 60 * 60,
       path: '/',
     });
     setIsLoggedIn(true);
-    router.push('/explore');
+    const browserLocale = navigator.language.split('-')[0] || 'en-US';
+    const supportedLocales = ['en', 'ja'];
+    const locale = supportedLocales.includes(browserLocale) ? browserLocale : 'en';
+    router.push(`/${locale === 'en' ? 'en-US' : 'ja-JP'}/explore`);
   };
 
   const logout = () => {
-    // Destroy the cookie
     destroyCookie(null, 'token');
     setIsLoggedIn(false);
     router.push('/login');
@@ -55,6 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   }, []);
+
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
