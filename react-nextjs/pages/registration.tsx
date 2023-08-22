@@ -123,11 +123,6 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
     }
   }, []);
 
-  if (error) {
-    console.error("An error occurred:", error.message);
-    return <p>An error occurred while loading the page. Please try again later.</p>;
-  }
-
   // Fuse.jsを使用して検索
   useEffect(() => {
     if (searchTerm) {
@@ -138,6 +133,11 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
       setFilteredUUIDs(pageUUIDs);
     }
   }, [searchTerm, pageUUIDs]);
+
+  if (error) {
+    console.error("An error occurred:", error.message);
+    return <p>An error occurred while loading the page. Please try again later.</p>;
+  }
 
 
   return (
