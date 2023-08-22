@@ -20,10 +20,10 @@ const Summary1 = () => {
         return null;
       }
       if (part === '<br />') {
-        return <br />;
+        return <br key={index} />;
       }
       if (isPink) {
-        return <span className={styles.pink}>{part}</span>;
+        return <span className={styles.pink} key={index}>{part}</span>;
       }
       return part;
     });
