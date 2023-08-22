@@ -11,6 +11,8 @@ import Recruitment from '../src/components/Recruitment';
 import Participation from '../src/components/Participation';
 import Footer from '../src/components/Footer'
 import styles from '../src/styles/index.module.css'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 
 const Home = () => (
   <div className={styles.container}>
@@ -28,5 +30,11 @@ const Home = () => (
     <Footer />
   </div>
 );
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale!, ['common', 'Summary1', 'Summary2', 'Summary3', 'Background', 'Features', 'Recruitment', 'Participation', 'Footer']),
+  },
+});
 
 export default Home;

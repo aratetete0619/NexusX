@@ -1,31 +1,35 @@
-// components/Footer.tsx
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 import styles from '../styles/Footer.module.css';
 
-const Footer = () => (
-  <div className={styles.container}>
-    <div className={styles.column}>
-      <p className={styles.paragraph}>Connect</p>
-      <p className={styles.paragraph}>Twitter</p>
-      <p className={styles.paragraph}>Instagram</p>
-      <p className={styles.paragraph}>Facebook</p>
-      <p className={styles.paragraph}>YouTube</p>
+const Footer = () => {
+  const { t } = useTranslation('Footer');
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.column}>
+        <p className={styles.paragraph}>{t('connect')}</p>
+        <p className={styles.paragraph}>{t('twitter')}</p>
+        <p className={styles.paragraph}>{t('instagram')}</p>
+        <p className={styles.paragraph}>{t('facebook')}</p>
+        <p className={styles.paragraph}>{t('youtube')}</p>
+      </div>
+      <div className={styles.column}>
+        <p className={styles.paragraph}>{t('resources')}</p>
+        <p className={styles.paragraph}>{t('returnPolicy')}</p>
+        <p className={styles.paragraph}>{t('faqs')}</p>
+        <p className={styles.paragraph}>{t('privacyPolicy')}</p>
+        <p className={styles.paragraph}>{t('customerSupport')}</p>
+      </div>
+      <div className={styles.column}>
+        <p className={styles.paragraph}>{t('about')}</p>
+        <p className={styles.paragraph}>{t('ourStory')}</p>
+        <p className={styles.paragraph}>{t('press')}</p>
+        <p className={styles.paragraph}>{t('careers')}</p>
+      </div>
+      <p className={styles.copyRight}>2023 ©︎ nexusx</p>
     </div>
-    <div className={styles.column}>
-      <p className={styles.paragraph}>Resources</p>
-      <p className={styles.paragraph}>Return Policy</p>
-      <p className={styles.paragraph}>FAQs</p>
-      <p className={styles.paragraph}>Privacy Policy</p>
-      <p className={styles.paragraph}>Customer Support</p>
-    </div>
-    <div className={styles.column}>
-      <p className={styles.paragraph}>About</p>
-      <p className={styles.paragraph}>Our Story</p>
-      <p className={styles.paragraph}>Press</p>
-      <p className={styles.paragraph}>Careers</p>
-    </div>
-    <p className={styles.copyRight}>2023 ©︎ nexusx</p>
-  </div>
-);
+  );
+};
 
 export default Footer;

@@ -3,12 +3,15 @@ import Image from 'next/image';
 import styles from '../styles/Sidebar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faDiagramProject, faUserCheck, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
   toggleSidebar: () => void;
 };
 
 const Sidebar: React.FC<Props> = ({ toggleSidebar }) => {
+  const { t } = useTranslation('Sidebar');
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.closeButton} onClick={toggleSidebar}>
@@ -23,15 +26,15 @@ const Sidebar: React.FC<Props> = ({ toggleSidebar }) => {
         <ul className={styles.sidebarList}>
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faGlobe} className={styles.icon} />
-            <Link href="/explore"><span className={styles.linkText}>Explore</span></Link>
+            <Link href="/explore"><span className={styles.linkText}>{t('explore')}</span></Link>
           </li>
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faDiagramProject} className={styles.icon} />
-            <Link href="/about"><span className={styles.linkText}>Optimization</span></Link>
+            <Link href="/about"><span className={styles.linkText}>{t('optimization')}</span></Link>
           </li>
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faUserCheck} className={styles.icon} />
-            <Link href="/registration"><span className={styles.linkText}>Registration</span></Link>
+            <Link href="/registration"><span className={styles.linkText}>{t('registration')}</span></Link>
             <span className={styles.premiumIcon}>🌟</span>
           </li>
         </ul>

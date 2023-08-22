@@ -15,6 +15,8 @@ import { SAVE_USER_PAGE } from '../src/graphql/mutations';
 import { DELETE_USER_PAGE } from '../src/graphql/mutations';
 import Fuse from 'fuse.js';
 import ReactPaginate from 'react-paginate';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 
 
@@ -35,8 +37,8 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   const [deleteUserPage, { error: deleteError }] = useMutation(DELETE_USER_PAGE);
   const ITEMS_PER_PAGE = 9;
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const { t } = useTranslation('Registration');
 
-  // ページネーションの処理
   const handlePageClick = (data: { selected: number }) => {
     setCurrentPage(data.selected);
   };
@@ -142,22 +144,22 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
     <ThemeProvider theme={createTheme()}>
       <MainLayout>
         <div className={styles.container}>
-          <h1 className={styles.title}>Registration</h1>
+          <h1 className={styles.title}>{t('Registration')}</h1>
           <div className={styles.searchContainer}>
             <FontAwesomeIcon icon={faSearch} className={styles.icon} />
             <input
               className={styles.searchBar}
               type="text"
-              placeholder="Search"
+              placeholder={t('Search')}
               value={searchTerm}
               onChange={handleSearchChange}
             />
           </div>
           <div className={styles.toolbar}>
-            <h2 className={styles.subTitle}>Your Relationship</h2>
+            <h2 className={styles.subTitle}>{t('YourRelationship')}</h2>
             <div className={styles.buttons}>
-              <button className={styles.addButton} onClick={handleAddClick}>Add</button>
-              <button className={styles.deleteButton} onClick={handleDeleteClick}>Delete</button>
+              <button className={styles.addButton} onClick={handleAddClick}>{t('Add')}</button>
+              <button className={styles.deleteButton} onClick={handleDeleteClick}>{t('Delete')}</button>
             </div>
           </div>
           <ul className={styles.diagramList}>
@@ -179,8 +181,8 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
             )}
           </ul>
           <ReactPaginate
-            previousLabel={'previous'}
-            nextLabel={'next'}
+            previousLabel={t('Previous')}
+            nextLabel={t('Next')}
             breakLabel={'...'}
             pageCount={Math.ceil(filteredUUIDs.length / ITEMS_PER_PAGE)}
             marginPagesDisplayed={2}
@@ -201,7 +203,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const email = cookies.email;
   const username = cookies.username || null;
 
-  return { props: { authenticated: authResult.authenticated, username, email } };
+  const translations = await serverSideTranslations(context.locale!, ['Sidebar', 'Registration']);
+
+  return { props: { ...translations, authenticated: authResult.authenticated, username, email } };
 };
 
 export default RegistrationPage;
