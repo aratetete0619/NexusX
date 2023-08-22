@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ReCAPTCHA from "react-google-recaptcha";
@@ -10,11 +10,13 @@ import { ErrorContext } from '../contexts/ErrorContext';
 import { AuthContext } from '../contexts/AuthContext';
 import { setCookie } from 'nookies';
 import { LOGIN_USER, AUTHENTICATE_WITH_GOOGLE } from '../graphql/mutations'
+import Loader from './Loader'
 
 
 
 const LoginForm = () => {
   const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const [isLoading, setIsLoading] = useState(false);
   const [googleLogin, { error: googleLoginError, loading: googleLoginLoading }] = useMutation(AUTHENTICATE_WITH_GOOGLE);
   const router = useRouter();
   const { login } = useContext(AuthContext);
@@ -48,7 +50,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setIsLoading(true);
     const email = (event.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
     const password = (event.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
 
@@ -85,6 +87,7 @@ const LoginForm = () => {
         showError(`Login Failed`);
       }
     }
+    setIsLoading(false);
   }
 
   const handleGoogleLogin = async (credentialResponse: any) => {
@@ -133,6 +136,7 @@ const LoginForm = () => {
 
   return (
     <div className={styles.container}>
+      {isLoading && <Loader />}
       <p>Sign in using your account</p>
       <div className={styles.oauthButtons}>
         <GoogleLogin

@@ -164,7 +164,7 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
           </div>
           <ul className={styles.diagramList}>
             {paginatedUUIDs.length === 0 ? (
-              <p className={styles.noDiagrams}>No registrations have been made yet.</p>
+              <p className={styles.noDiagrams}>{t('noDiagrams')}</p>
             ) : (
               paginatedUUIDs.map((uuid) => (
                 <li className={styles.diagramItem} key={uuid}>

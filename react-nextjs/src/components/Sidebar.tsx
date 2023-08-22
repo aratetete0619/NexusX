@@ -28,10 +28,10 @@ const Sidebar: React.FC<Props> = ({ toggleSidebar }) => {
             <FontAwesomeIcon icon={faGlobe} className={styles.icon} />
             <Link href="/explore"><span className={styles.linkText}>{t('explore')}</span></Link>
           </li>
-          <li className={styles.linkItem}>
+          {/* <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faDiagramProject} className={styles.icon} />
             <Link href="/about"><span className={styles.linkText}>{t('optimization')}</span></Link>
-          </li>
+          </li> */}
           <li className={styles.linkItem}>
             <FontAwesomeIcon icon={faUserCheck} className={styles.icon} />
             <Link href="/registration"><span className={styles.linkText}>{t('registration')}</span></Link>
