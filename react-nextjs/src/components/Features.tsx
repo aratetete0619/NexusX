@@ -5,9 +5,14 @@ import styles from '../styles/Features.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faNetworkWired, faUserCheck, faCloudArrowUp, faHeart, faCoins } from '@fortawesome/free-solid-svg-icons';
 
+type Feature = {
+  title: string;
+  description: string;
+};
+
 const Features = () => {
   const { t } = useTranslation('Features');
-  const featuresData = t('features', { returnObjects: true });
+  const featuresData: Feature[] = t('features', { returnObjects: true }) as Feature[];
 
   const icons = [faGlobe, faNetworkWired, faUserCheck, faCloudArrowUp, faHeart, faCoins];
 
