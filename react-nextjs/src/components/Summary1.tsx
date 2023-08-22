@@ -25,9 +25,10 @@ const Summary1 = () => {
       if (isPink) {
         return <span className={styles.pink} key={index}>{part}</span>;
       }
-      return part;
+      return <span key={index}>{part}</span>;
     });
   };
+
 
   return (
     <Slide direction="right" triggerOnce >
