@@ -4,16 +4,21 @@ import { RootState } from '../reducers';
 import { AnyAction } from 'redux';
 import { setSelectedNodeId } from './setSelectedNodeId';
 
-export const deleteAllNodes = (): ThunkAction<void, RootState, null, AnyAction> =>
-  (dispatch: ThunkDispatch<RootState, null, AnyAction>, getState) => {
+export const deleteAllNodes = (): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch: ThunkDispatch<RootState, unknown, AnyAction>, getState) => {
     const state = getState();
+
+    if (!state.nodes || state.nodes.length === 0) {
+      console.error("No nodes available");
+      return;
+    }
+
     const initialNode = state.nodes[0];
     const relatedEdges = state.edges.filter(edge => edge.source.nodeId === initialNode.id || edge.target.nodeId === initialNode.id);
 
     dispatch({
       type: DELETE_ALL_NODES,
       payload: {
-        nodes: [initialNode],
         edges: relatedEdges
       }
     });

@@ -164,3 +164,47 @@ export const DELETE_USER_PAGE = gql`
     }
   }
 `;
+
+export const SAVE_PAGE_DATA = gql`
+  mutation SavePageData($email: String!, $pageId: String!, $data: PageNodeInput!) {
+    savePageData(email: $email, pageId: $pageId, data: $data) {
+      success
+      message
+    }
+  }
+`;
+
+export const DELETE_NODE = gql`
+  mutation DeleteNode($nodeId: String!) {
+    deleteNode(nodeId: $nodeId) {
+      success
+      message
+    }
+  }
+`;
+
+
+export const GET_NODES_BY_PAGE_ID = gql`
+  query GetNodesByPageId($pageId: String!) {
+    getNodesByPageId(pageId: $pageId) {
+      id
+      name
+      description
+      color
+      backgroundColor
+      x
+      y
+      isNew
+    }
+  }
+`;
+
+
+export const UPDATE_NODE_POSITION_MUTATION = gql`
+  mutation UpdateNodePosition($nodeId: String!, $x: Int!, $y: Int!) {
+    updateNodePosition(nodeId: $nodeId, x: $x, y: $y) {
+      success
+      message
+    }
+  }
+`;

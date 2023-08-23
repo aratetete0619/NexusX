@@ -27,7 +27,7 @@ def add_favorite(email, esId):
     connection = create_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO UserFavorites (user_id, node_id) VALUES (%s, %s)",
+        "INSERT INTO UserFavorites (user_id, media_id) VALUES (%s, %s)",
         (user_id, node_id),
     )
     connection.commit()
@@ -42,7 +42,7 @@ def remove_favorite(email, esId):
     connection = create_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "DELETE FROM UserFavorites WHERE user_id = %s AND node_id = %s",
+        "DELETE FROM UserFavorites WHERE user_id = %s AND media_id = %s",
         (user_id, node_id),
     )
     connection.commit()
@@ -55,7 +55,7 @@ def get_favorites(email):
         return []
     connection = create_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT node_id FROM UserFavorites WHERE user_id = %s", (user_id,))
+    cursor.execute("SELECT media_id FROM UserFavorites WHERE user_id = %s", (user_id,))
     results = cursor.fetchall()
     cursor.close()
     return [result[0] for result in results]

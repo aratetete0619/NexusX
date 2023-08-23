@@ -59,8 +59,8 @@ const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x
     try {
       if (!isFavorited) {
         setIsFavorited(true);
-        dispatch(addToFavorites({ email, nodeId: esId }));
-        await addFavorite({ variables: { email, nodeId: esId } });
+        dispatch(addToFavorites({ email: email, nodeId: esId }));
+        await addFavorite({ variables: { email: email, nodeId: esId } });
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -78,7 +78,7 @@ const PolarNode: React.FC<PolarNodeProps> = ({ id, onSelect, result, style = { x
       if (isFavorited) {
         setIsFavorited(false);
         dispatch(removeFromFavorites({ email: email, nodeId: esId }));
-        await removeFavorite({ variables: { email, nodeId: esId } });
+        await removeFavorite({ variables: { email: email, nodeId: esId } });
       }
     } catch (error) {
       if (error instanceof Error) {

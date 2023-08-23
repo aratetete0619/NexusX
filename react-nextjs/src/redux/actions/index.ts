@@ -27,6 +27,7 @@ export * from './updateQuery'
 export * from './addPolarEdge'
 export * from './clearPolarEdgeInfo'
 export * from './favoriteNode'
+export * from './markNodesAsOld'
 export { updateDraggedPosition } from './updateDraggedPosition';
 export { default as hideNodeSettings } from './hideNodeSettings';
 export { default as showNodeSettings } from './showNodeSettings';

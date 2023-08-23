@@ -11,13 +11,14 @@ import { authenticateUser } from '../src/utils/auth';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import { useMutation } from '@apollo/client';
-import { SAVE_USER_PAGE } from '../src/graphql/mutations';
+import { SAVE_USER_PAGE, SAVE_PAGE_DATA } from '../src/graphql/mutations';
 import { DELETE_USER_PAGE } from '../src/graphql/mutations';
 import Fuse from 'fuse.js';
 import ReactPaginate from 'react-paginate';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-
+import { useDispatch } from 'react-redux';
+import { ADD_NODE, DELETE_ALL_NODES } from '../src/redux/actions';
 
 
 type Props = {
@@ -27,6 +28,7 @@ type Props = {
 };
 
 const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) => {
+  const dispatch = useDispatch();
   const userIdOrUsername = username || email;
   const [searchTerm, setSearchTerm] = useState<string>('');
   const router = useRouter();
@@ -34,10 +36,20 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   const [filteredUUIDs, setFilteredUUIDs] = useState<string[]>([]);
   const [selectedUUIDs, setSelectedUUIDs] = useState<string[]>([]);
   const [saveUserPage, { error }] = useMutation(SAVE_USER_PAGE);
+  const [savePageData, { error: saveError }] = useMutation(SAVE_PAGE_DATA);
   const [deleteUserPage, { error: deleteError }] = useMutation(DELETE_USER_PAGE);
   const ITEMS_PER_PAGE = 9;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const { t } = useTranslation('Registration');
+
+
+  const initialNodesState = [{
+    id: uuidv4(),
+    name: 'Initial Node',
+    x: 800,
+    y: 300,
+    isNew: false,
+  }];
 
   const handlePageClick = (data: { selected: number }) => {
     setCurrentPage(data.selected);
@@ -52,11 +64,21 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   const handleAddClick = async () => {
     if (authenticated) {
       const uuidForPage = uuidv4();
+      dispatch({ type: DELETE_ALL_NODES });
+      dispatch({ type: ADD_NODE, payload: initialNodesState[0] });
       try {
         await saveUserPage({
           variables: {
             email: email,
             pageId: uuidForPage,
+          },
+        });
+
+        await savePageData({
+          variables: {
+            email: email,
+            pageId: uuidForPage,
+            data: { nodes: [initialNodesState[0]] },
           },
         });
 
@@ -114,6 +136,13 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+    e.preventDefault();
+    dispatch({ type: DELETE_ALL_NODES });
+    router.push(link);
+  };
+
 
   // ローカルストレージからページUUIDsを取得
   useEffect(() => {
@@ -173,9 +202,12 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
                     checked={selectedUUIDs.includes(uuid)}
                     onChange={(e) => handleCheckboxChange(uuid, e.target.checked)}
                   />
-                  <Link href={`/registration/${userIdOrUsername}/${uuid}`}>
+                  <a
+                    href={`/registration/${userIdOrUsername}/${uuid}`}
+                    onClick={(e) => handleLinkClick(e, `/registration/${userIdOrUsername}/${uuid}`)}
+                  >
                     Page ID: {uuid}
-                  </Link>
+                  </a>
                 </li>
               ))
             )}

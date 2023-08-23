@@ -6,6 +6,9 @@ import { deleteNode, deleteAllNodes, showToolbuttonAction } from '../redux/actio
 import styles from '../styles/Toolbutton.module.css';
 import { NODE_WIDTH } from '../constants/constants';
 import NodeSettings from './NodeSettings';
+import { DELETE_NODE } from '../../src/graphql/mutations';
+import { useMutation } from '@apollo/client';
+
 
 interface ToolbuttonProps {
   deleteNode: Function;
@@ -17,6 +20,7 @@ interface ToolbuttonProps {
 const Toolbutton: React.FC<ToolbuttonProps> = ({ deleteNode, selectedNodeId, showToolbutton, toolbuttonPosition }) => {
   const dispatch = useDispatch();
   const [showNodeSettings, setShowNodeSettings] = useState(false);
+  const [deleteNodeQuery, { error: deleteError }] = useMutation(DELETE_NODE);
 
 
   const handleAddNode = (e: MouseEvent) => {
@@ -27,8 +31,14 @@ const Toolbutton: React.FC<ToolbuttonProps> = ({ deleteNode, selectedNodeId, sho
   const handleDeleteNode = (e: MouseEvent) => {
     e.stopPropagation();
     if (selectedNodeId !== null) {
-      dispatch(deleteNode(selectedNodeId));
-      dispatch(showToolbuttonAction(false));
+      deleteNodeQuery({ variables: { nodeId: selectedNodeId } })
+        .then(() => {
+          dispatch(deleteNode(selectedNodeId));
+          dispatch(showToolbuttonAction(false));
+        })
+        .catch(err => {
+          console.error('Error deleting node:', err);
+        });
     } else {
       window.alert("No node is selected for deletion. Please select a node first.");
     }

@@ -1,15 +1,17 @@
 // src/redux/reducers/nodes.ts
+import { v4 as uuidv4 } from 'uuid';
 import {
   ADD_NODE,
   DELETE_NODE,
   UPDATE_NODE_NAME,
   MOVE_NODE,
   DELETE_ALL_NODES,
-  DISCARD_NEW_NODE
+  DISCARD_NEW_NODE,
+  MARK_NODES_AS_OLD
 } from '../actions';
 
 const initialNodesState = [{
-  id: '1',
+  id: uuidv4(),
   name: 'Initial Node',
   x: 800,
   y: 300,
@@ -39,6 +41,8 @@ const nodes = (state = initialNodesState, action: any) => {
       return state.map(node =>
         node.id === action.payload ? { ...node, isNew: false } : node
       );
+    case MARK_NODES_AS_OLD:
+      return state.map(node => ({ ...node, isNew: false }));
     default:
       return state;
   }

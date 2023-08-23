@@ -16,6 +16,11 @@ from ..utils.database import (
     delete_confirmation_code,
     save_user_page_to_db,
     delete_user_page_from_db,
+    save_node_media_to_db,
+    save_page_node_to_db,
+    get_user_page_by_page_id,
+    delete_node_from_db,
+    get_nodes_by_page_uuid,
 )
 from ..utils.favorite_utils import add_favorite, remove_favorite, get_favorites
 from .types import (
@@ -25,6 +30,7 @@ from .types import (
     NodeProperties,
     RelationshipProperties,
     RelatedNode,
+    DeleteNodeResponse,
 )
 from ..utils.auth import (
     hash_password,
@@ -34,6 +40,13 @@ from ..utils.auth import (
     generate_confirmation_code,
     verify_google_token,
 )
+from ..utils.neo4j_utils import (
+    save_node_to_neo4j,
+    get_node_info_from_neo4j,
+    update_node_position_in_neo4j,
+    delete_node_from_neo4j,
+)
+
 import os
 from ..utils.email import send_confirmation_email
 import logging
@@ -340,3 +353,92 @@ def resolve_delete_user_page(root, info, email, page_id):
         raise GraphQLError(f"Failed to delete user page: {str(e)}")
     finally:
         close_connection(connection)
+
+
+def resolve_save_page_data(root, info, email, pageId, data):
+    connection = create_connection()
+    try:
+        user_page = get_user_page_by_page_id(connection, pageId)
+        if user_page is None:
+            logging.error(f"No user page found with pageId: {pageId}")
+            raise GraphQLError(f"No user page found with pageId: {pageId}")
+
+        user_page_id = user_page["user_page_id"]
+
+        for node in data["nodes"]:
+            logging.debug(f"Saving node to Neo4j: {node}")
+            neo4j_node_id = save_node_to_neo4j(node)
+            if neo4j_node_id is None:
+                logging.error(f"Failed to save node to Neo4j: {node}")
+                continue  # Decide how you want to handle this case
+
+            media_type = None
+            media_path = None
+            logging.debug(f"Saving media to DB: {neo4j_node_id}")
+            media_id = save_node_media_to_db(
+                connection, neo4j_node_id, media_type, media_path
+            )
+            if media_id is None:
+                logging.error(f"Failed to save media to DB: {neo4j_node_id}")
+                continue  # Decide how you want to handle this case
+
+            logging.debug(f"Saving page node to DB: {user_page_id}, {media_id}")
+            save_page_node_to_db(connection, user_page_id, media_id)
+
+        return {"success": True, "message": "Page data saved successfully"}
+    except Exception as e:
+        logging.error(f"Exception occurred: {str(e)}")
+        raise GraphQLError(f"Failed to save page data: {str(e)}")
+    finally:
+        close_connection(connection)
+
+
+def resolve_delete_node(info, nodeId):
+    success_mysql = delete_node_from_db(nodeId)
+
+    success_neo4j = delete_node_from_neo4j(nodeId)
+
+    if not success_mysql or not success_neo4j:
+        raise GraphQLError("Failed to delete node from either MySQL or Neo4j.")
+    return DeleteNodeResponse(success=True, message="Node deleted successfully")
+
+
+def resolve_get_nodes_by_page_id(obj, info, pageId):
+    # データベース接続を作成する
+    connection = create_connection()
+
+    try:
+        # 1. MySQLから関連するノードの情報を取得
+        node_media_info = get_nodes_by_page_uuid(connection, pageId)  # 修正した部分
+
+        # 2. neo4jから詳細情報を取得
+        complete_node_info = []
+        for media in node_media_info:
+            node_id = media.get("node_id")
+            if not node_id:
+                print(f"No node_id found for media: {media}")
+                continue
+
+            node_info = get_node_info_from_neo4j(node_id)
+
+            if node_info is None:  # 追加
+                continue
+
+            combined_info = {**media, **node_info}
+            complete_node_info.append(combined_info)
+
+        return complete_node_info
+
+    finally:
+        # データベース接続を閉じる
+        close_connection(connection)
+
+
+def resolve_update_node_position(info, nodeId, x, y):
+    """
+    Update the position of a node.
+    """
+    success = update_node_position_in_neo4j(nodeId, x, y)
+    if not success:
+        raise GraphQLError("Failed to update node position.")
+    return {"success": True, "message": "Node position updated successfully"}

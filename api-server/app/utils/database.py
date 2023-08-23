@@ -5,6 +5,7 @@ from mysql.connector import Error
 import os
 from datetime import timedelta
 import datetime
+from ..utils.neo4j_utils import get_node_info_from_neo4j
 
 
 # カスタム例外クラスを定義
@@ -184,5 +185,108 @@ def delete_user_page_from_db(connection, user_id, page_id):
     except Exception as e:
         print(f"Failed to delete user page: {e}")
         connection.rollback()
+    finally:
+        cursor.close()
+
+
+def save_node_media_to_db(connection, node_id, media_type, media_path):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO NodeMedia (node_id, media_type, media_path) VALUES (%s, %s, %s)",
+            (node_id, media_type, media_path),
+        )
+        connection.commit()
+        media_id = cursor.lastrowid
+        print(f"Node media data saved with media_id: {media_id}")
+        return media_id
+    except Exception as e:
+        print(f"Failed to save node media data: {e}")
+        connection.rollback()
+    finally:
+        cursor.close()
+
+
+def save_page_node_to_db(connection, user_page_id, media_id):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO PageNodes (user_page_id, media_id) VALUES (%s, %s)",
+            (user_page_id, media_id),
+        )
+        connection.commit()
+        print(
+            f"Page node data saved for user_page_id {user_page_id} and media_id {media_id}"
+        )
+    except Exception as e:
+        print(f"Failed to save page node data: {e}")
+        connection.rollback()
+    finally:
+        cursor.close()
+
+
+def get_user_page_by_page_id(connection, page_id):
+    cursor = connection.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "SELECT * FROM UserPages WHERE page_id=%s",
+            (page_id,),
+        )
+        user_page = cursor.fetchone()
+        return user_page
+    except Exception as e:
+        print(f"Failed to get user page by page_id: {e}")
+    finally:
+        cursor.close()
+
+
+def delete_node_from_db(node_id):
+    connection = create_connection()
+    try:
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM NodeMedia WHERE node_id = %s", (node_id,))
+        connection.commit()
+        return True
+    except Exception as e:
+        print(f"Failed to delete node: {str(e)}")
+        return False
+    finally:
+        close_connection(connection)
+
+
+def get_nodes_by_page_uuid(connection, page_uuid):
+    cursor = connection.cursor(dictionary=True)
+    try:
+        # UserPagesテーブルからuser_page_idを取得
+        cursor.execute(
+            "SELECT user_page_id FROM UserPages WHERE page_id=%s", (page_uuid,)
+        )
+        user_page = cursor.fetchone()
+        user_page_id = user_page["user_page_id"]
+
+        # PageNodesテーブルからmedia_idを取得
+        cursor.execute(
+            "SELECT media_id FROM PageNodes WHERE user_page_id=%s", (user_page_id,)
+        )
+        media_ids = [item["media_id"] for item in cursor.fetchall()]
+
+        nodes = []
+        for media_id in media_ids:
+            # NodeMediaテーブルからnode_idを取得
+            cursor.execute(
+                "SELECT node_id FROM NodeMedia WHERE media_id=%s", (media_id,)
+            )
+            result = cursor.fetchone()  # 追加
+            print(result)  # 追加: 結果をプリントして確認
+            node_id = result["node_id"]
+
+            # Neo4jからnodeの情報を取得
+            node_info = get_node_info_from_neo4j(node_id)
+            node_info["node_id"] = node_id
+            nodes.append(node_info)
+
+        return nodes
+    except Exception as e:
+        print(f"Failed to get nodes by page UUID: {e}")
     finally:
         cursor.close()

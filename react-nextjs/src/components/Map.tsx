@@ -3,6 +3,8 @@ import { RootState } from '../redux/reducers';
 import { useDrop } from 'react-dnd';
 import Node from './Node';
 import Edge from './Edge';
+import { useMutation } from '@apollo/client';
+import { SAVE_PAGE_DATA } from '../../src/graphql/mutations';
 import '../styles/Map.css';
 import { Node as NodeType, Edge as EdgeType, Position } from '../types/index';
 import { useSelector, useDispatch } from '../hooks/hooks';
@@ -14,9 +16,22 @@ import {
   hideNodeSettings,
   setMapSize,
   setPopupPosition,
+  markNodesAsOld,
+  addNode,
+  DELETE_ALL_NODES
 } from '../redux/actions';
+import { useQuery } from '@apollo/client';
+import { GET_NODES_BY_PAGE_ID, UPDATE_NODE_POSITION_MUTATION } from '../../src/graphql/mutations';
+import Loader from './Loader';
 
-const Map: React.FC = () => {
+
+
+type MapProps = {
+  email: string;
+  pageId: string;
+};
+
+const Map: React.FC<MapProps> = ({ email, pageId }) => {
   const dispatch = useDispatch();
   const nodes = useSelector((state: RootState) => state.nodes);
   const edges = useSelector((state: RootState) => state.edges);
@@ -29,6 +44,14 @@ const Map: React.FC = () => {
   const [viewport, setViewport] = useState<Position>({ x: window.innerWidth, y: window.innerHeight });
   const popupPosition = useSelector((state: RootState) => state.popupPosition);
   const [renderedEdges, setRenderedEdges] = useState<JSX.Element[] | null>(null);
+  const [savePageData, { error: saveError }] = useMutation(SAVE_PAGE_DATA);
+  const [updateNodePosition, { error: updateError }] = useMutation(UPDATE_NODE_POSITION_MUTATION);
+  const [addedNodes, setAddedNodes] = useState<NodeType[]>([]);
+  const { data, loading, error } = useQuery(GET_NODES_BY_PAGE_ID, {
+    variables: { pageId: pageId },
+    fetchPolicy: 'network-only'
+  });
+
 
   const startDrag = (e: MouseEvent) => {
     setStartPos({ x: e.clientX, y: e.clientY });
@@ -68,6 +91,13 @@ const Map: React.FC = () => {
       dispatch(setMapSize(newMapWidth, newMapHeight));
       dispatch(showToolbuttonAction(false));
       dispatch(setSelectedNodeId(item.id));
+      updateNodePosition({
+        variables: {
+          nodeId: item.id,
+          x: left,
+          y: top
+        }
+      });
       return undefined;
     },
   });
@@ -128,6 +158,58 @@ const Map: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const newAddedNodes = nodes.filter(node => node.isNew);
+    setAddedNodes(newAddedNodes);
+  }, [nodes]);
+
+
+  useEffect(() => {
+    if (addedNodes.length > 0) {
+      const sanitizedNodes = addedNodes.map((node: any) => {
+        const { __typename, ...rest } = node;
+        return rest;
+      });
+
+      savePageData({
+        variables: {
+          email: email,
+          pageId: pageId,
+          data: { nodes: sanitizedNodes },
+        },
+      })
+        .then(() => {
+          dispatch(markNodesAsOld());
+        })
+        .catch((err) => {
+          console.error('Error saving page data:', err);
+        });
+    }
+  }, [addedNodes, email, pageId]);
+
+
+  useEffect(() => {
+    if (!loading && data) {
+      dispatch({ type: 'DELETE_ALL_NODES' });
+
+      data.getNodesByPageId.forEach((node: NodeType) => {
+        dispatch(addNode(node));
+      });
+    }
+
+    if (error) {
+      console.error("Error fetching nodes:", error);
+    }
+  }, [loading, data, error, pageId]);
+
+
+
+
+  if (loading) {
+    return <Loader />;
+  }
+
 
 
   return (
