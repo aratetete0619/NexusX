@@ -18,7 +18,6 @@ import {
   setPopupPosition,
   markNodesAsOld,
   addNode,
-  DELETE_ALL_NODES
 } from '../redux/actions';
 import { useQuery } from '@apollo/client';
 import { GET_NODES_BY_PAGE_ID, UPDATE_NODE_POSITION_MUTATION } from '../../src/graphql/mutations';
