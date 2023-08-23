@@ -63,10 +63,12 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   // 新しいページを追加
   const handleAddClick = async () => {
     if (authenticated) {
-      const uuidForPage = uuidv4();
       dispatch({ type: DELETE_ALL_NODES });
+      const uuidForPage = uuidv4();
       dispatch({ type: ADD_NODE, payload: initialNodesState[0] });
+
       try {
+        // saveUserPage の非同期処理が完了するまで待つ
         await saveUserPage({
           variables: {
             email: email,
@@ -74,6 +76,7 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
           },
         });
 
+        // savePageData の非同期処理が完了するまで待つ
         await savePageData({
           variables: {
             email: email,
@@ -84,9 +87,9 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
 
         const newPageUUIDs = [...pageUUIDs, uuidForPage];
         setPageUUIDs(newPageUUIDs);
-
         localStorage.setItem('pageUUIDs', JSON.stringify(newPageUUIDs));
 
+        // 上記の処理がすべて完了した後で、新しいページに移行する
         router.push(`/registration/${userIdOrUsername}/${uuidForPage}`);
       } catch (err) {
         console.error("Error saving page:", err);
@@ -98,6 +101,7 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
       }
     }
   };
+
 
   // チェックボックスの処理
   const handleCheckboxChange = (uuid: string, checked: boolean) => {
