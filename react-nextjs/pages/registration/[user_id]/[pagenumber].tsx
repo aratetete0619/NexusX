@@ -4,6 +4,8 @@ import Map from '../../../src/components/Map';
 import MainLayout from '../../../src/components/layouts/MainLayout';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { parseCookies } from 'nookies';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 
 const RegistrationPage: React.FC = () => {
   const router = useRouter();
@@ -21,5 +23,11 @@ const RegistrationPage: React.FC = () => {
     </ThemeProvider>
   );
 };
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale!, ['Sidebar']),
+  },
+});
 
 export default RegistrationPage;
