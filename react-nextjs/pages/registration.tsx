@@ -64,6 +64,7 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   const handleAddClick = async () => {
     if (authenticated) {
       dispatch({ type: DELETE_ALL_NODES });
+      await new Promise(resolve => setTimeout(resolve, 5000));
       const uuidForPage = uuidv4();
       dispatch({ type: ADD_NODE, payload: initialNodesState[0] });
 
