@@ -1,4 +1,13 @@
-from graphene import ObjectType, String, Field, List, Float
+from graphene import (
+    ObjectType,
+    String,
+    Field,
+    List,
+    Float,
+    InputObjectType,
+    ID,
+    Boolean,
+)
 import graphene
 
 
@@ -107,3 +116,34 @@ class UserPage(ObjectType):
     page_id = String()
     email = String()
     created_at = String()
+
+
+class NodeInput(InputObjectType):
+    id = ID(required=True)
+    name = String(required=True)
+    description = String()
+    color = String()
+    backgroundColor = String()
+    x = Float()
+    y = Float()
+    isNew = Boolean()
+
+
+class PageNodeInput(InputObjectType):
+    nodes = List(NodeInput, required=True)
+
+
+class DeleteNodeResponse(ObjectType):
+    success = Boolean()
+    message = String()
+
+
+class NodeInfo(ObjectType):
+    id = ID(required=True)
+    name = String(required=True)
+    description = String()
+    color = String()
+    backgroundColor = String()
+    x = Float()
+    y = Float()
+    isNew = Boolean()
