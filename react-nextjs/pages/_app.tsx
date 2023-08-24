@@ -19,6 +19,7 @@ import { AuthProvider } from '../src/contexts/AuthContext';
 import { appWithTranslation } from 'next-i18next'
 import 'typeface-roboto';
 import '../src/styles/App.css';
+import nextI18NextConfig from '../next-i18next.config';
 
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
@@ -55,4 +56,4 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, nextI18NextConfig);
