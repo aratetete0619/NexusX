@@ -56,4 +56,4 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
-export default appWithTranslation(App, nextI18NextConfig);
+export default appWithTranslation(App);
