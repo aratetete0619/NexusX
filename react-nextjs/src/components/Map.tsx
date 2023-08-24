@@ -190,7 +190,6 @@ const Map: React.FC<MapProps> = ({ email, pageId }) => {
 
   useEffect(() => {
     if (!loading && data) {
-      dispatch({ type: 'DELETE_ALL_NODES' });
 
       data.getNodesByPageId.forEach((node: NodeType) => {
         dispatch(addNode(node));
