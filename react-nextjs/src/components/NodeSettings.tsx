@@ -95,7 +95,8 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
         top: `${toolbuttonPosition.y}px`,
         left: `${toolbuttonPosition.x}px`,
       }}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         dispatch(hidePicker('color'));
         dispatch(hidePicker('background'));
       }}
