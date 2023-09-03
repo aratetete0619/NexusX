@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/Node.css';
 import { useDrag } from 'react-dnd';
 import Handle from './Handle';
@@ -68,6 +68,21 @@ const Node: React.FC<NodeProps> = ({ node }) => {
   const handlePositionChange = (position: "top" | "bottom" | "left" | "right", coords: { x: number, y: number }) => {
     dispatch(updateHandlePosition(node.id, position, coords));
   };
+
+
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      setShowToolbutton(false);
+    };
+
+    if (showToolbutton) {
+      window.addEventListener('click', handleGlobalClick);
+    }
+
+    return () => {
+      window.removeEventListener('click', handleGlobalClick);
+    };
+  }, [showToolbutton]);
 
   return (
     <div
