@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -64,7 +63,6 @@ const RegistrationPage: React.FC<Props> = ({ authenticated, email, username }) =
   const handleAddClick = async () => {
     if (authenticated) {
       dispatch({ type: DELETE_ALL_NODES });
-      await new Promise(resolve => setTimeout(resolve, 5000));
       const uuidForPage = uuidv4();
       dispatch({ type: ADD_NODE, payload: initialNodesState[0] });
 

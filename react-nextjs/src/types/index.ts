@@ -9,6 +9,8 @@ export type Node = {
   backgroundColor?: string;
   isNew?: boolean;
   parentId?: number;
+  label?: string;
+  description?: string;
 };
 
 export type Edge = {
