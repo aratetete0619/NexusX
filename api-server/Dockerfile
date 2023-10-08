@@ -7,15 +7,21 @@ WORKDIR /usr/src/app
 # 環境変数を設定
 # Pythonがstdoutをバッファリングしないようにする
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH /usr/src/app
 
-# requirements.txtをコピー
-COPY requirements.txt ./
+RUN pip install --upgrade setuptools
+
+# poetryをインストール
+RUN pip install poetry
+
+# pyproject.tomlとpoetry.lockをコピー
+COPY pyproject.toml poetry.lock ./
 
 # 依存関係をインストール
-RUN pip install --no-cache-dir -r requirements.txt
+RUN poetry config virtualenvs.create false \
+  && poetry install
 
 # すべてのローカルファイルをコピー
 COPY . .
 
-# デフォルトのコマンドを指定
-CMD ["python", "./backend/app/main.py"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
