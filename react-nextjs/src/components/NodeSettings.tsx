@@ -22,6 +22,7 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
   const dispatch = useDispatch();
   const popupPosition = useSelector((state: RootState) => state.popupPosition);
   const [title, setTitle] = useState('');
+  const [label, setLabel] = useState('');
   const [description, setDescription] = useState('');
   const color = useSelector((state: RootState) => state.colorState.color);
   const backgroundColor = useSelector((state: RootState) => state.colorState.backgroundColor);
@@ -48,6 +49,7 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
     const node = {
       id: uuidv4(),
       name: title,
+      label: label,
       description: description,
       color: color,
       backgroundColor: backgroundColor,
@@ -93,7 +95,8 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
         top: `${toolbuttonPosition.y}px`,
         left: `${toolbuttonPosition.x}px`,
       }}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         dispatch(hidePicker('color'));
         dispatch(hidePicker('background'));
       }}
@@ -111,6 +114,18 @@ const NodeSettings: React.FC<NodeSettingsProps> = ({ toolbuttonPosition, setShow
           onChange={(e) => setTitle(e.target.value)}
           onClick={(e) => e.stopPropagation()}
           placeholder="Enter title here"
+        />
+      </label>
+
+      <label>
+        Label
+        <input
+          className="node-settings-input"
+          type="text"
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+          onClick={(e) => e.stopPropagation()}
+          placeholder="Enter label here"
         />
       </label>
 

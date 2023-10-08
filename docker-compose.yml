@@ -1,20 +1,18 @@
 version: '3'
 services:
-  react:
-    build: ./frontend
+  react-nextjs:
+    build: ./react-nextjs
     volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/.next
-      - /usr/src/app/node_modules
+      - ./react-nextjs:/usr/src/app
     ports:
       - 3000:3000
     command: npm start
     depends_on:
-      - backend
-  backend:
-    build: ./backend
+      - api-server
+  api-server:
+    build: ./api-server
     volumes:
-      - ./backend:/usr/src/app
+      - ./api-server:/usr/src/app
     ports:
       - 8000:8000
   db_neo4j:
@@ -24,10 +22,6 @@ services:
     ports:
       - 7474:7474
       - 7687:7687
-  db_dynamodb:
-    image: amazon/dynamodb-local:latest
-    ports:
-      - 8001:8000
   db_mysql:
     image: mysql:latest
     environment:
@@ -60,5 +54,3 @@ services:
       - ./redis-data:/data
     ports:
       - 6379:6379
-volumes:
-  node_modules:

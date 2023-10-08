@@ -11,12 +11,10 @@ from neo4j.exceptions import ServiceUnavailable
 import logging
 from neo4j.graph import Node, Relationship
 
-
 load_dotenv()
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
 
 nlp_ja = spacy.load("ja_ginza")
 nlp_en = spacy.load("en_core_web_sm")
@@ -28,6 +26,15 @@ password = os.getenv("NEO4J_PASSWORD")
 driver = GraphDatabase.driver(uri, auth=("neo4j", password))
 
 es_uri = os.getenv("NEXT_PUBLIC_ELASTICSEARCH_URI")
+# Elasticsearchへの接続を1度だけ初期化
+es = Elasticsearch([es_uri])
+
+# エラーハンドリングの最適化
+if not es.ping():
+    logger.error("Elasticsearch is not running!")
+
+# Elasticsearchの結果をキャッシュするための辞書
+es_cache = {}
 
 
 def node_to_dict(node):
@@ -39,20 +46,15 @@ def node_to_dict(node):
 
 
 def preprocess_query(query):
-    # 文字列の正規化
     query = query.lower()
-    query = re.sub(r"\W+", " ", query)
-    query = re.sub(r"\d+", "#", query)
+    query = re.sub(r"\W+|\d+", " ", query)
 
-    # 言語検出
     try:
         detected_lang = detect(query)
     except:
         detected_lang = "unknown"
 
     lemmas = []
-
-    # 形態素解析
     if detected_lang == "en":
         doc = nlp_en(query)
         lemmas = [token.lemma_ for token in doc]
@@ -60,10 +62,9 @@ def preprocess_query(query):
         doc = nlp_ja(query)
         lemmas = [token.lemma_ for token in doc]
     else:
-        doc_en = nlp_en(query)
-        lemmas.extend([token.lemma_ for token in doc_en])
-        doc_ja = nlp_ja(query)
-        lemmas.extend([token.lemma_ for token in doc_ja])
+        # ここでデフォルトの言語を選択するか、もしくは一方の形態素解析器のみを使用する
+        doc = nlp_en(query)
+        lemmas = [token.lemma_ for token in doc]
 
     return " ".join(lemmas)
 
@@ -87,18 +88,7 @@ def get_data_from_neo4j(es_id):
             return {"error": "An error occurred while executing the query."}
 
 
-def calculate_score_based_on_neo4j_data(neo4j_data):
-    # Neo4jのデータに基づいたスコアを計算する(行動履歴、評価など)
-    # ここではダミーの関数として、常に1を返すようにしています
-    return 1
-
-
 def search_in_elasticsearch(preprocessed_query):
-    try:
-        es = Elasticsearch([es_uri])
-    except ConnectionError as e:
-        return {"error": "An error occurred while connecting to the search service."}
-
     words = preprocessed_query.split()
 
     proximity_queries = []
@@ -150,7 +140,7 @@ def search_in_elasticsearch(preprocessed_query):
     }
 
     try:
-        response = es.search(index="people", body={"query": query, "size": 24})
+        response = es.search(body={"query": query, "size": 24})
     except (TransportError, NotFoundError) as e:
         return {"error": "An error occurred while executing the search."}
 
@@ -168,24 +158,19 @@ def search_in_elasticsearch(preprocessed_query):
             }
             processed_hits.append(processed_hit)
         else:
-            # handle error here, for example:
-            print(f"Error: Expected a dict but got {type(neo4j_data)}")
+            # handle error here
+            logger.error(f"Error: Expected a dict but got {type(neo4j_data)}")
 
     return processed_hits
 
 
 def get_description_from_elasticsearch(es_id, index):
-    try:
-        es = Elasticsearch([es_uri])
-    except ConnectionError as e:
-        raise GraphQLError("An error occurred while connecting to the search service.")
+    if es_id in es_cache:
+        return es_cache[es_id]
 
     try:
-        print(
-            f"Attempting to retrieve data from Elasticsearch with es_id: {es_id} and index: {index}"
-        )  # Add this line
         response = es.get(index=index, id=es_id)
-        print(f"Retrieved data from Elasticsearch: {response}")  # Add this line
+        es_cache[es_id] = response["_source"]["description"]
         return response["_source"]["description"]
     except (TransportError, NotFoundError) as e:
         raise GraphQLError("An error occurred while retrieving data.")
@@ -202,7 +187,6 @@ def get_related_nodes_from_neo4j(es_id):
                 """,
                 es_id=es_id,
             )
-            logger.debug(f"result: {result}")
             related_nodes = [
                 {
                     "start_node": element_to_dict(record["n"]),
@@ -212,7 +196,6 @@ def get_related_nodes_from_neo4j(es_id):
                 }
                 for record in result
             ]
-            logger.debug(f"Related nodes: {related_nodes}")
             return related_nodes
     except Exception as e:
         logger.error(f"Error occurred: {e}")
@@ -220,17 +203,14 @@ def get_related_nodes_from_neo4j(es_id):
 
 
 def element_to_dict(element):
-    index = ""  # Set initial value for index
+    index = ""
     element_dict = {
         "identity": element.id,
         "properties": getattr(element, "_properties", {}),
     }
-    print(f"エレメンと1　 {element_dict}")
     if isinstance(element, Node):
-        # Convert the frozenset to a list
         element_dict["labels"] = list(element.labels)
 
-        # The index is set to 'people' if 'Person' is in the labels, otherwise it is the first label
         if "Person" in element.labels:
             index = "people"
         elif "Skill" in element.labels:
@@ -250,6 +230,6 @@ def element_to_dict(element):
             if description:
                 element_dict["properties"]["description"] = description
         except GraphQLError as e:
-            print(f"Failed to get description from Elasticsearch: {e}")
-    print(f"エレメンと2　 {element_dict}")
+            logger.error(f"Failed to get description from Elasticsearch: {e}")
+
     return element_dict

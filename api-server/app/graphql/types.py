@@ -121,6 +121,7 @@ class UserPage(ObjectType):
 class NodeInput(InputObjectType):
     id = ID(required=True)
     name = String(required=True)
+    label = String()
     description = String()
     color = String()
     backgroundColor = String()
@@ -141,6 +142,7 @@ class DeleteNodeResponse(ObjectType):
 class NodeInfo(ObjectType):
     id = ID(required=True)
     name = String(required=True)
+    label = String()
     description = String()
     color = String()
     backgroundColor = String()

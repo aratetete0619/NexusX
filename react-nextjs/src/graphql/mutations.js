@@ -189,6 +189,7 @@ export const GET_NODES_BY_PAGE_ID = gql`
     getNodesByPageId(pageId: $pageId) {
       id
       name
+      label
       description
       color
       backgroundColor

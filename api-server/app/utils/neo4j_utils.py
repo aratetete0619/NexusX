@@ -23,6 +23,7 @@ def save_node_to_neo4j(node: Dict):
         "MERGE (n:Node {id: $id}) "
         "ON CREATE SET "
         "n.name = $name, "
+        "n.label = $label, "
         "n.description = $description, "
         "n.color = $color, "
         "n.backgroundColor = $backgroundColor, "
@@ -41,6 +42,7 @@ def save_node_to_neo4j(node: Dict):
     parameters = {
         "id": node["id"],
         "name": node["name"],
+        "label": node.get("label", ""),
         "description": node.get("description", ""),
         "color": node.get("color", "default_color_value"),
         "backgroundColor": node.get("backgroundColor", "default_color_value"),
@@ -62,7 +64,7 @@ def get_node_info_from_neo4j(node_id):
     query = (
         "MATCH (n:Node) "
         "WHERE n.id = $node_id "
-        "RETURN n.id, n.name, n.description, n.color, "
+        "RETURN n.id, n.name, n.label, n.description, n.color, "
         "n.backgroundColor, n.x, n.y"
     )
 
@@ -79,6 +81,7 @@ def get_node_info_from_neo4j(node_id):
             node_info = {
                 "id": record.get("n.id", None),
                 "name": record.get("n.name", ""),
+                "label": record.get("n.label", ""),
                 "description": record.get("n.description", ""),
                 "color": record.get("n.color", "default_color_value"),
                 "backgroundColor": record.get(
