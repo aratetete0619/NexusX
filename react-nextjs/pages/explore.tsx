@@ -15,7 +15,12 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const authResult = await authenticateUser(context);
   if (!authResult.authenticated) {
-    return { props: {} };
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
 
   const translations = await serverSideTranslations(context.locale!, ['Sidebar']);
