@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import styles from '../styles/Background.module.css';
+import AuthenticatedLink from './AuthenticatedLink';
 
 const Background = () => {
   const { t } = useTranslation('Background');
@@ -20,9 +20,11 @@ const Background = () => {
       <div className={styles.slogan}>
         <h1>{t('title')}</h1>
         <h2>{renderWithBreaks(t('subtitle'))}</h2>
-        <Link href="/explore">
-          <button className={styles.customButton}>{t('button')}</button>
-        </Link>
+        <AuthenticatedLink to="/explore">
+          <button className={styles.customButton}>
+            {t('button')}
+          </button>
+        </AuthenticatedLink>
       </div>
     </div>
   );

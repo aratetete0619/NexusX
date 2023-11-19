@@ -3,9 +3,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../styles/Header.module.css';
 import { useTranslation } from 'next-i18next';
+import AuthenticatedLink from './AuthenticatedLink';
 
 const Header = () => {
   const { t } = useTranslation('common');
+
   return (
     <header className={styles.header}>
       <div className={styles.nav}>
@@ -20,9 +22,11 @@ const Header = () => {
         <Link href="/login">
           <button className={`${styles.customButton} ${styles.login}`}>{t('login')}</button>
         </Link>
-        <Link href="/explore">
-          <button className={styles.customButton}>{t('tryNexusX')}</button>
-        </Link>
+        <AuthenticatedLink to="/explore">
+          <button className={styles.customButton}>
+            {t('tryNexusX')}
+          </button>
+        </AuthenticatedLink>
       </div>
     </header>
   );
