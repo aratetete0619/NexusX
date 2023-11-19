@@ -1,0 +1,20 @@
+/* src/styles/ColorPalette.css */
+
+.paletteContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 20px;
+}
+
+.paletteColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: border 0.3s ease;
+}
+
+.paletteColor:hover {
+  border: 2px solid blue;
+}

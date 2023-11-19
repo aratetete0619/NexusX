@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-weight: bold;
+}
+
+.container p {
+  margin-bottom: 30px;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputField {
+  margin-bottom: 10px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #d3d3d3;
+}
+
+.inputField::placeholder {
+  padding-left: 10px;
+}
+
+.oauthButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.oauthButtons>button {
+  width: 48%;
+}
+
+.redirectLink {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.redirectLink a {
+  color: #0070f3;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,0 +1,32 @@
+.pageContainer {
+  display: flex;
+  height: 100vh;
+  font-family: 'Roboto',
+    sans-serif;
+  font-family: 'Work Sans',
+    sans-serif;
+}
+
+.leftSection {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d2db10;
+}
+
+.rightSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  width: 500px;
+}

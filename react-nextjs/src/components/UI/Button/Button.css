@@ -1,0 +1,16 @@
+.button {
+  /* 全てのボタンに共通のスタイルを定義 */
+  color: #FFFFFF;
+  width: 157px;
+  height: 48px;
+  font-family: 'Roboto', sans-serif;
+  font-style: medium;
+  font-size: 14px;
+  border-radius: 6px;
+  background-color: #D2DB10;
+}
+
+.button.detail {
+  /* 詳細ボタンの特定のスタイル（例：色）を定義 */
+  background-color: green;
+}

@@ -1,0 +1,10 @@
+env
+.env
+.pytest_cache/
+__pycache__/
+*.pyc
+.ebextensions/
+.elasticbeanstalk/
+nohup.out
+demo_data_creater.py
+demo_images/

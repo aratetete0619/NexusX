@@ -1,0 +1,23 @@
+/* src/styles/ColorButton.css */
+
+.colorButtonContainer {
+  width: 30px;
+  height: 30px;
+  background-color: #DDDFE3;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.colorButtonContainer:hover {
+  box-shadow: 0 0 0 2px black;
+}
+
+.colorButton {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+}

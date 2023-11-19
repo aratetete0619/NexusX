@@ -1,0 +1,28 @@
+{
+  "features": [
+    {
+      "title": "Explore",
+      "description": "Uncover intricate connections in a network, visualized from your search, in an instant."
+    },
+    {
+      "title": "Optimization",
+      "description": "Enhance your exploration with AI-powered tools, refining and clarifying complex relationship diagrams."
+    },
+    {
+      "title": "Registration",
+      "description": "Sign up to create and save your unique relationship diagrams, personalizing your exploration experience."
+    },
+    {
+      "title": "Uploads",
+      "description": "Import your own data to generate custom relationship diagrams, expanding your exploration possibilities."
+    },
+    {
+      "title": "Favorites",
+      "description": "Save and revisit your favorite relationship diagrams, keeping your most intriguing discoveries at your fingertips."
+    },
+    {
+      "title": "Earning",
+      "description": "Your uploaded search algorithms and popular nodes can also earn you rewards. Make your exploration profitable."
+    }
+  ]
+}

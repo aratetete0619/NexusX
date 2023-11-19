@@ -1,0 +1,89 @@
+.userInfo {
+  display: flex;
+  align-items: center;
+  font-family: 'Mulish', sans-serif;
+  z-index: 100;
+}
+
+.userIcon {
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.username {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  margin-right: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.logoutButton {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+  background-color: #c82333;
+}
+
+.toggle {
+  margin-left: 20px;
+  width: 15px;
+  height: 15px;
+}
+
+.dropdownToggle {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: inherit;
+}
+
+
+.dropdownMenu {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: 100px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdownMenu div {
+  cursor: pointer;
+  padding: 10px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdownMenu .icon {
+  margin-right: 5px;
+}
+
+.dropdownMenu div:not(:first-child) {
+  border-top: 1px solid #e8e8f8;
+}
+
+.dropdownMenu div:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdownMenu .dropdown-item {
+  display: block;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+}

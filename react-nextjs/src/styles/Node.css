@@ -1,0 +1,66 @@
+.node {
+  position: relative;
+  padding: 10px;
+  min-height: 171px;
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: border 0.3s ease;
+  color: rgb(61, 71, 77);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  font-family: 'Noto Serif JP', serif;
+  line-height: 31px;
+  box-sizing: content-box;
+  white-space: pre-wrap;
+  min-width: 1px;
+  opacity: 1;
+  z-index: 2;
+  position: absolute;
+  min-width: 171px;
+  /* ノードの最小幅を指定 */
+  max-width: 200px;
+  /* ノードの最大幅を指定 */
+  white-space: normal;
+  /* 改行を有効にする */
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  border: 0.1px solid #DDDDDD;
+  animation: fadeIn 0.5s;
+}
+
+.node.selected {
+  box-shadow: 0 0 10px blue;
+  transform: none;
+}
+
+.node:hover {
+  box-shadow: 0 0 10px blue;
+  animation: fadeIn 1s;
+}
+
+.node:active {
+  box-shadow: 0 0 10px blue;
+  animation: fadeIn 1s;
+}
+
+.icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

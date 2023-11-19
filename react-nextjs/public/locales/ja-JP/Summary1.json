@@ -1,0 +1,5 @@
+{
+  "title": "発見へのステップ",
+  "steps": "様々な<span className={styles.pink}>つながり</span>を明確化",
+  "description": "<br />NexusXはあなたの検索に基づいてつながりを<span className={styles.pink}>視覚化</span>をします。<br />レストラン、メニュー、使用される材料の産地のつながり,<br />技術、またそれを誰が開発したのかなどのつながりまで、すべてを直感的に<span className={styles.pink}>探索</span>します。"
+}

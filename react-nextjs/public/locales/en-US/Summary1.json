@@ -1,0 +1,5 @@
+{
+  "title": "STEPS TO DISCOVER",
+  "steps": "Unveil the <span className={styles.pink}>World</span> Relations",
+  "description": "Dive into the myriad of connections.<br />NexusX <span className={styles.pink}>visualizes</span> based on your search.<br />From relationships among movie characters, celebrity interactions,<br />to the ties between technologies, <span className={styles.pink}>explore</span> it all intuitively."
+}
