@@ -8,3 +8,4 @@ __pycache__/
 nohup.out
 demo_data_creater.py
 demo_images/
+venv/
