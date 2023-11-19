@@ -37,6 +37,8 @@ const LoginForm = () => {
 
     if (!email || !emailRegex.test(email)) {
       showError('Please enter a valid email address');
+      setIsLoading(false);
+      setIsLoading(false);
       return false;
     }
 
