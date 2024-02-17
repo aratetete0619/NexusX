@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from logging_config import LOGGING_CONFIG
 from .graphql.resolvers import resolve_confirm_user
 from apscheduler.schedulers.background import BackgroundScheduler
-from utils.database import create_connection, close_connection
+from .utils.database import create_connection, close_connection
 
 
 load_dotenv()
